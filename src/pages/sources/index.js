@@ -1,5 +1,5 @@
 import { SelectLanguage } from '@/components/forSources'
-import { ChooseIfMultipleCountries, MultipleCountriesHandleInputs, RenderAllAvailableLanguages, RenderAllPublishingCountries, ShowTopics } from '@/components/shared'
+import { ChooseIfMultipleCountries, MultipleCountriesHandleInputs, ReUseableJustUi, RenderAllAvailableLanguages, RenderAllPublishingCountries, ShowTopics } from '@/components/shared'
 import React, { useState } from 'react'
 
 const NewsSources = () => {
@@ -10,27 +10,27 @@ const NewsSources = () => {
         <main>
             <div>NewsSources</div>
             {/* <SelectLanguage /> */}
-            <JustUi handleEntries={handleEntries} />
+            <ReUseableJustUi handleEntries={handleEntries} />
     </main>
     )
 }
 
-const JustUi = ({handleEntries}) => {
-    const [multiple, setMultiple] = useState("Single")
-    const handleIfMultiples = evt => setMultiple(evt.target.value)
+// const JustUi = ({handleEntries}) => {
+//     const [multiple, setMultiple] = useState("Single")
+//     const handleIfMultiples = evt => setMultiple(evt.target.value)
 
-    return (
-        <section>
-            <RenderAllAvailableLanguages />
-            <ChooseIfMultipleCountries handleChange={handleIfMultiples} />
-            {
-                multiple === "Multiple"
-                ? <MultipleCountriesHandleInputs handleChanges={handleEntries} />
-                : <RenderAllPublishingCountries handleCountries={handleEntries} />
-            }
-            <ShowTopics handleTopics={handleEntries} />
-        </section>
-    )
-}
+//     return (
+//         <section>
+//             <RenderAllAvailableLanguages />
+//             <ChooseIfMultipleCountries handleChange={handleIfMultiples} />
+//             {
+//                 multiple === "Multiple"
+//                 ? <MultipleCountriesHandleInputs handleChanges={handleEntries} />
+//                 : <RenderAllPublishingCountries handleCountries={handleEntries} />
+//             }
+//             <ShowTopics handleTopics={handleEntries} />
+//         </section>
+//     )
+// }
 
 export default NewsSources
