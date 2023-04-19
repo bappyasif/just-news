@@ -1,4 +1,4 @@
-import { ChooseNewsTimePeriod, GetNewsSourcesInput, GetUserSearchQuery, ReUseableJustUi } from '@/components/shared'
+import { AboutLanguage, ChooseNewsTimePeriod, GetNewsSourcesInput, GetUserSearchQuery, NotInThisLanguage, ReUseableJustUi } from '@/components/shared'
 import React, { useState } from 'react'
 
 const LatestHeadlines = () => {
@@ -13,13 +13,15 @@ const LatestHeadlines = () => {
   )
 }
 
-const RelatedUi = ({handleEntries}) => {
+const RelatedUi = ({ handleEntries }) => {
   return (
     <section>
       {/* <GetUserSearchQuery /> */}
       <ChooseNewsTimePeriod handleTime={handleEntries} />
       <GetNewsSourcesInput handleSources={handleEntries} />
       <ReUseableJustUi handleEntries={handleEntries} />
+      {/* <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} /> */}
+      <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />
     </section>
   )
 }

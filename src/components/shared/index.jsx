@@ -3,12 +3,12 @@ import countryCodes from "@/data/countryCodes.json"
 import { useState } from "react"
 import { types } from "@/data"
 
-export const RenderAllAvailableLanguages = ({ handleChange }) => {
+export const RenderAllAvailableLanguages = ({ handleChange, elemName }) => {
     const renderList = () => languageCodes?.map(item => <RenderListItem key={item.name} item={item} />)
 
     return (
-        <select onChange={e => handleChange(e, "languages")}>
-            <option value="-1">Select Language</option>
+        <select onChange={e => handleChange(e, elemName)}>
+            <option value="-1">Click To Select Language</option>
             {renderList()}
         </select>
     )
@@ -130,7 +130,7 @@ export const ChooseNewsTimePeriod = ({ handleTime }) => {
     return <RenderList handleChange={handleTime} items={periods} defaultText={"Time Period"} listName={"time"} />
 }
 
-export const GetNewsSourcesInput = ({handleSources}) => {
+export const GetNewsSourcesInput = ({ handleSources }) => {
     const handleChange = evt => handleSources(evt, "sources")
     return (
         <div>
@@ -150,7 +150,10 @@ export const ReUseableJustUi = ({ handleEntries }) => {
 
     return (
         <section>
-            <RenderAllAvailableLanguages handleChange={handleEntries} />
+            {/* <RenderAllAvailableLanguages handleChange={handleEntries} elemName={"languages"} /> */}
+            <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} />
+            {/* <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} />
+            <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} /> */}
             <ChooseIfMultipleCountries handleChange={handleIfMultiples} />
             {
                 multiple === "Multiple"
@@ -159,5 +162,16 @@ export const ReUseableJustUi = ({ handleEntries }) => {
             }
             <ShowTopics handleTopics={handleEntries} />
         </section>
+    )
+}
+
+export const NotInThisLanguage = ({handleEntries, labelText, elemName}) => {
+    return (
+        <div>
+            <span>
+                <span>{labelText}: </span>
+                <RenderAllAvailableLanguages handleChange={handleEntries} elemName={elemName} />
+            </span>
+        </div>
     )
 }
