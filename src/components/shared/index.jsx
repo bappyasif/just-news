@@ -64,7 +64,7 @@ export const MultipleCountriesHandleInputs = ({ handleChanges }) => {
 export const UserInput = ({ handleValueChanges, labelText, placeholderText }) => {
     return (
         <label>
-            <p className='text-violet-50'>{labelText}</p>
+            <p className='text-cyan-200 font-bold'>{labelText}</p>
             <input
                 className=""
                 type="text"
@@ -144,7 +144,7 @@ export const GetUserSearchQuery = () => {
 export const ChooseNewsTimePeriod = ({ handleTime }) => {
     const periods = ["30d", "7d", "24h", "1h"];
 
-    return <RenderList labelText={"News Period"} handleChange={handleTime} items={periods} defaultText={"Select Time Window"} listName={"time"} />
+    return <RenderList labelText={"News Period"} handleChange={handleTime} items={periods} defaultText={"Time Window"} listName={"time"} />
 }
 
 export const GetNewsSourcesInput = ({ handleSources }) => {
@@ -171,7 +171,7 @@ export const ReUseableJustUi = ({ handleEntries }) => {
             <ShowTopics handleTopics={handleEntries} />
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} />
             <label htmlFor="ifMult">
-                <p className="text-violet-50">If News From Single Country</p>
+                <p className="text-cyan-200 font-bold">If News From Single Country</p>
                 <ChooseIfMultipleCountries handleChange={handleIfMultiples} />
             </label>
             {
@@ -186,7 +186,7 @@ export const ReUseableJustUi = ({ handleEntries }) => {
 export const NotInThisLanguage = ({ handleEntries, labelText, elemName }) => {
     return (
         <div>
-            <p className="text-violet-50">{labelText}: </p>
+            <p className="text-cyan-200 font-bold">{labelText}: </p>
             <RenderAllAvailableLanguages handleChange={handleEntries} elemName={elemName} />
         </div>
     )

@@ -11,7 +11,7 @@ export const AppNavigations = () => {
     const router = useRouter();
     console.log(router.pathname)
     return (
-        <header>
+        <header className='mb-8'>
             {/* <HeaderImage /> */}
             {/* <ReUsableImageComponent height={"130px"} width={"100%"} altText={"abstract image as a header background"} imgSrc={headerImg} /> */}
             <ReUsableImageComponent height={"60px"} width={"100%"} altText={"abstract image as a header background"} imgSrc={headerImg} />
