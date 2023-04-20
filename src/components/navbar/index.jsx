@@ -11,16 +11,23 @@ export const AppNavigations = () => {
     console.log(router.pathname)
     return (
         <header className='mb-12'>
-            <ReUsableImageComponent height={"101px"} width={"100%"} altText={"abstract image as a header background"} imgSrc={headerImg} />
             <ReUsableImageComponent
                 height={"101px"}
-                width={"168px"}
-                // altText={"team work picture from unsplash used here as a background"}
-                // altText={"For Logo"}
-                altText={"For Fill"}
-                imgSrc={logoImg}
+                width={"100%"}
+                altText={"abstract image as a header background"}
+                imgSrc={headerImg}
             />
-            <RenderNavs />
+            <div className='flex gap-4 px-0 pr-6'>
+                <ReUsableImageComponent
+                    height={"101px"}
+                    width={"184px"}
+                    // altText={"team work picture from unsplash used here as a background"}
+                    // altText={"For Logo"}
+                    altText={"For Fill"}
+                    imgSrc={logoImg}
+                />
+                <RenderNavs />
+            </div>
         </header>
     )
 }

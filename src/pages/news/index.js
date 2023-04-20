@@ -40,7 +40,7 @@ const RelatedUi = ({ handleEntries }) => {
             }}
         >
             <ReUsableImageComponent
-                height={"434px"}
+                height={"479px"}
                 width={"305px"}
                 // altText={"team work picture from unsplash used here as a background"}
                 altText={"For Fill"}
@@ -49,6 +49,7 @@ const RelatedUi = ({ handleEntries }) => {
             <div
                 className='text-xl my-2 flex flex-col gap-2'
             >
+                <p className='text-cyan-400 font-extrabold text-center'>Select Your Filters Here</p>
                 <UserInput handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
                 <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />
                 <ReUseableJustUi handleEntries={handleEntries} />

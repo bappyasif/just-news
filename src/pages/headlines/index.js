@@ -3,7 +3,7 @@ import { AboutLanguage, ChooseNewsTimePeriod, GetNewsSourcesInput, GetUserSearch
 import React, { useState } from 'react'
 import filterBG from "../../../public/teamWork.jpg"
 import filterIcon from "../../../public/newspapersPile.jpg"
-import { MdFilter5, MdFilter6, MdFilter7 } from 'react-icons/md';
+import { MdFilter3, MdFilter5, MdFilter6, MdFilter7 } from 'react-icons/md';
 
 const LatestHeadlines = () => {
   const [entries, setEntries] = useState({});
@@ -32,23 +32,23 @@ const LatestHeadlines = () => {
   )
 }
 
-export const ToogleFilters = ({ fromNewsSearch,  showFilters, handleHideFilters, handleToggleShowFilters }) => {
+export const ToogleFilters = ({ fromNewsSource,  fromNewsSearch,  showFilters, handleHideFilters, handleToggleShowFilters }) => {
   return (
     <div
       className='text-center text-2xl text-zinc-200'
-      style={{ width: "166px" }}
+      style={{ width: "184px" }}
       onClick={handleToggleShowFilters}
     >
       <ReUsableImageComponent
         height={"31px"}
-        width={"168px"}
+        width={"184px"}
         // altText={"team work picture from unsplash used here as a background"}
         altText={"For Fill"}
         imgSrc={filterIcon}
       />
       <div className='flex gap-2 items-center justify-between' style={{padding: "0 4px !important"}}>
         <span className=''> {showFilters ? "Hide" : "Show"} Filters</span>
-        {fromNewsSearch ? <MdFilter5 /> : <MdFilter7 />}
+        {fromNewsSearch ? <MdFilter5 /> : fromNewsSource ? <MdFilter3 /> : <MdFilter7 />}
       </div>
 
     </div>

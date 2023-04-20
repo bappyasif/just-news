@@ -1,4 +1,4 @@
-import {MdSatelliteAlt, MdPerson4, MdDashboard, MdTrendingUp, MdViewList, MdVerified, MdWebStories, MdLogin, MdLogout, MdHome} from "react-icons/md"
+import {MdSatelliteAlt, MdPerson4, MdDashboard, MdSource, MdViewList, MdVerified, MdWebStories, MdLogin, MdLogout, MdHome} from "react-icons/md"
 
 export const types = [
     {
@@ -28,6 +28,11 @@ export const navs = [
         name: "Home",
         path: "/",
         icon: <MdHome />
+    },
+    {
+        name: "Sources",
+        path: "/sources",
+        icon: <MdSource />
     },
     {
         name: "Search News",
