@@ -7,7 +7,10 @@ export const RenderAllAvailableLanguages = ({ handleChange, elemName }) => {
     const renderList = () => languageCodes?.map(item => <RenderListItem key={item.name} item={item} />)
 
     return (
-        <select onChange={e => handleChange(e, elemName)}>
+        <select
+            className="w-full"
+            onChange={e => handleChange(e, elemName)}
+        >
             <option value="-1">Click To Select Language</option>
             {renderList()}
         </select>
@@ -26,10 +29,16 @@ export const RenderAllPublishingCountries = ({ handleCountries }) => {
     const renderList = () => countryCodes?.map(item => <RenderListItem key={item.name} item={item} />)
 
     return (
-        <select onChange={e => handleCountries(e, "countries")}>
-            <option value="-1">Publishing Country</option>
-            {renderList()}
-        </select>
+        <label htmlFor="newsPublished">
+            <p className="text-cyan-200 font-bold">Where News Published In</p>
+            <select 
+                className="w-full"
+                onChange={e => handleCountries(e, "countries")}
+            >
+                <option value="-1">Publishing Country</option>
+                {renderList()}
+            </select>
+        </label>
     )
 }
 
@@ -55,9 +64,9 @@ export const MultipleCountriesHandleInputs = ({ handleChanges }) => {
 export const UserInput = ({ handleValueChanges, labelText, placeholderText }) => {
     return (
         <label>
-            {labelText}
+            <p className='text-violet-50'>{labelText}</p>
             <input
-                className="ml-4"
+                className=""
                 type="text"
                 onChange={handleValueChanges}
                 placeholder={placeholderText}
@@ -68,24 +77,32 @@ export const UserInput = ({ handleValueChanges, labelText, placeholderText }) =>
 
 const ShowValidCountryCodesAsExample = () => {
     return (
-        <p className="absolute">use comma in bvetween: us,uk,bd,gb,jp,br</p>
+        <p className="absolute text-sm text-blue-400 font-bold">use comma in bvetween: us,uk,bd,gb,jp,br</p>
     )
 }
 
 export const ShowTopics = ({ handleTopics }) => {
     const list = ['tech', 'news', 'business', 'science', 'finance', 'food', 'politics', 'economics', 'travel', 'entertainment', 'music', 'sport', 'world']
 
-    return <RenderList handleChange={handleTopics} items={list} defaultText={"Select Topic"} listName={"topics"} />
+    return <RenderList labelText={"Choose From News Topics"} handleChange={handleTopics} items={list} defaultText={"Select Topic"} listName={"topics"} />
 }
 
-const RenderList = ({ items, defaultText, listName, handleChange }) => {
+const RenderList = ({ labelText, items, defaultText, listName, handleChange }) => {
     const renderList = () => items.map(name => <option key={name} value={name}>{name}</option>)
 
     return (
-        <select onChange={evt => handleChange(evt, listName)} name={listName} id={listName}>
-            {listName !== "isMultiple" ? <option value="-1">{defaultText}</option> : null}
-            {renderList()}
-        </select>
+        <label htmlFor={listName}>
+            <p className="text-cyan-200 font-bold">{labelText}</p>
+            <select
+                className="w-full"
+                onChange={evt => handleChange(evt, listName)}
+                name={listName}
+                id={listName}
+            >
+                {listName !== "isMultiple" ? <option value="-1">{defaultText}</option> : null}
+                {renderList()}
+            </select>
+        </label>
     )
 }
 
@@ -127,19 +144,19 @@ export const GetUserSearchQuery = () => {
 export const ChooseNewsTimePeriod = ({ handleTime }) => {
     const periods = ["30d", "7d", "24h", "1h"];
 
-    return <RenderList handleChange={handleTime} items={periods} defaultText={"Time Period"} listName={"time"} />
+    return <RenderList labelText={"News Period"} handleChange={handleTime} items={periods} defaultText={"Select Time Window"} listName={"time"} />
 }
 
 export const GetNewsSourcesInput = ({ handleSources }) => {
     const handleChange = evt => handleSources(evt, "sources")
     return (
-        <div>
+        <div className="">
             <UserInput
                 labelText={"Sources: "}
                 placeholderText={"Give sources proper url"}
                 handleValueChanges={handleChange}
             />
-            <p>For example, nytimes.com,theguardian.com</p>
+            <p className="text-sm text-yellow-400 font-bold">examples: nytimes.com,theguardian.com</p>
         </div>
     )
 }
@@ -149,29 +166,28 @@ export const ReUseableJustUi = ({ handleEntries }) => {
     const handleIfMultiples = evt => setMultiple(evt.target.value)
 
     return (
-        <section>
+        <section className="flex flex-col gap-2">
             {/* <RenderAllAvailableLanguages handleChange={handleEntries} elemName={"languages"} /> */}
+            <ShowTopics handleTopics={handleEntries} />
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} />
-            {/* <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} />
-            <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} /> */}
-            <ChooseIfMultipleCountries handleChange={handleIfMultiples} />
+            <label htmlFor="ifMult">
+                <p className="text-violet-50">If News From Single Country</p>
+                <ChooseIfMultipleCountries handleChange={handleIfMultiples} />
+            </label>
             {
                 multiple === "Multiple"
                     ? <MultipleCountriesHandleInputs handleChanges={handleEntries} />
                     : <RenderAllPublishingCountries handleCountries={handleEntries} />
             }
-            <ShowTopics handleTopics={handleEntries} />
         </section>
     )
 }
 
-export const NotInThisLanguage = ({handleEntries, labelText, elemName}) => {
+export const NotInThisLanguage = ({ handleEntries, labelText, elemName }) => {
     return (
         <div>
-            <span>
-                <span>{labelText}: </span>
-                <RenderAllAvailableLanguages handleChange={handleEntries} elemName={elemName} />
-            </span>
+            <p className="text-violet-50">{labelText}: </p>
+            <RenderAllAvailableLanguages handleChange={handleEntries} elemName={elemName} />
         </div>
     )
 }

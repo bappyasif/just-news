@@ -31,7 +31,7 @@ export const navs = [
     },
     {
         name: "Search News",
-        path: "/search",
+        path: "/news",
         icon: <MdWebStories />
     },
     {
@@ -40,8 +40,8 @@ export const navs = [
         icon: <MdSatelliteAlt />
     },
     {
-        name: "Dashboard",
-        path: "/dashboard",
+        name: "Saved Filters",
+        path: "/saved-filters",
         icon: <MdDashboard />
     },
     {

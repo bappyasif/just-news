@@ -4,14 +4,17 @@ import Link from 'next/link';
 import React from 'react'
 // import headerImg from "../../../public/newspapersPile.jpg"
 import headerImg from "../../../public/abstract.jpg"
+import { useRouter } from 'next/router';
 // import headerImg from "../../../public/teamWork.jpg"
 
 export const AppNavigations = () => {
-
+    const router = useRouter();
+    console.log(router.pathname)
     return (
         <header>
             {/* <HeaderImage /> */}
-            <ReUsableImageComponent height={"130px"} width={"100%"} altText={"abstract image as a header background"} imgSrc={headerImg} />
+            {/* <ReUsableImageComponent height={"130px"} width={"100%"} altText={"abstract image as a header background"} imgSrc={headerImg} /> */}
+            <ReUsableImageComponent height={"60px"} width={"100%"} altText={"abstract image as a header background"} imgSrc={headerImg} />
             <RenderNavs />
         </header>
     )
@@ -46,7 +49,10 @@ export const ImageComponent = ({imgSrc, altText}) => {
                 quality={100}
                 style={{
                     // rotate: "-360deg"
-                    objectFit: "cover"
+                    // objectFit: "cover"
+                    objectFit: altText === "For Fill" ? "fill"  : "cover",
+                    height: altText === "For Fill" && "inherit",
+                    opacity: altText === "For Fill" && ".81"
                 }}
             />
     )

@@ -9,7 +9,7 @@ export const FooterElement = () => {
         <footer
             className='absolute bottom-0'
         >
-            <div className='absolute w-full text-center'>FooterElement</div>
+            <div className='absolute w-full text-center z-10'>FooterElement</div>
             {/* <ReUsableImageComponent 
             height={"130px"} 
             width={"100%"} 
@@ -18,10 +18,11 @@ export const FooterElement = () => {
         /> */}
             <div
                 style={{
-                    height: "80px",
+                    height: "60px",
                     width: "100%",
                     overflow: "hidden",
-                    zIndex: -1
+                    zIndex: -1,
+                    rotate: "-180deg"
                 }}
             >
                 {/* <div>FooterElement</div> */}
