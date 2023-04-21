@@ -20,16 +20,16 @@ const LatestHeadlines = () => {
       </div>
       {
         showFilters
-          ? <RelatedUi handleEntries={handleEntries} />
+          ? <RelatedUi handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
           : null
       }
     </main>
   )
 }
 
-const RelatedUi = ({ handleEntries }) => {
+const RelatedUi = ({ handleEntries, handleHideFilters }) => {
   return (
-    <ReuseableRelatedUi width={"305px"} height={"562px"} handleEntries={handleEntries}>
+    <ReuseableRelatedUi width={"305px"} height={"562px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
         <ChooseNewsTimePeriod handleTime={handleEntries} />
         <GetNewsSourcesInput handleSources={handleEntries} />
         <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />

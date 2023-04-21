@@ -153,7 +153,7 @@ export const ChooseNewsTimePeriod = ({ handleTime }) => {
 
 export const GetNewsSourcesInput = ({ handleSources }) => {
     const handleChange = evt => handleSources(evt, "sources")
-    
+
     return (
         <div className="">
             <UserInput
@@ -219,7 +219,7 @@ export const ToogleFilters = ({ fromNewsSource, fromNewsSearch, showFilters, han
     )
 }
 
-export const ReuseableRelatedUi = ({ height, width, children, handleEntries }) => {
+export const ReuseableRelatedUi = ({ height, width, children, handleEntries, handleHideFilters }) => {
     return (
         <section
             className='absolute px-2 mt-2'
@@ -240,7 +240,12 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries }) =
                 {children}
                 <ReUseableJustUi handleEntries={handleEntries} />
             </div>
-            <button className='bg-cyan-400 w-full rounded-md mt-4 text-2xl'>Search Now</button>
+            <button
+                className='bg-cyan-400 w-full rounded-md mt-4 text-2xl'
+                onClick={handleHideFilters}
+            >
+                Search Now
+            </button>
         </section>
     )
 }

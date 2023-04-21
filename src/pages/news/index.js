@@ -20,17 +20,17 @@ const SearchNews = () => {
             </div>
             {
                 showFilters
-                    ? <RelatedUi handleEntries={handleEntries} />
+                    ? <RelatedUi handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
                     : null
             }
         </main>
     )
 }
 
-const RelatedUi = ({ handleEntries }) => {
+const RelatedUi = ({ handleEntries, handleHideFilters }) => {
     const handleSearchText = e => handleEntries(e, "searchTerm")
     return (
-        <ReuseableRelatedUi width={"305px"} height={"479px"} handleEntries={handleEntries}>
+        <ReuseableRelatedUi width={"305px"} height={"479px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
             <UserInput handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />
         </ReuseableRelatedUi>
