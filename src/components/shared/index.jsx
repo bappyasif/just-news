@@ -2,6 +2,10 @@ import languageCodes from "@/data/languageCodes.json"
 import countryCodes from "@/data/countryCodes.json"
 import { useState } from "react"
 import { types } from "@/data"
+import filterIcon from "../../../public/newspapersPile.jpg"
+import { MdFilter3, MdFilter5, MdFilter7 } from 'react-icons/md';
+import filterBG from "../../../public/teamWork.jpg"
+import Image from "next/image"
 
 export const RenderAllAvailableLanguages = ({ handleChange, elemName }) => {
     const renderList = () => languageCodes?.map(item => <RenderListItem key={item.name} item={item} />)
@@ -31,7 +35,7 @@ export const RenderAllPublishingCountries = ({ handleCountries }) => {
     return (
         <label htmlFor="newsPublished">
             <p className="text-cyan-200 font-bold">Where News Published In</p>
-            <select 
+            <select
                 className="w-full"
                 onChange={e => handleCountries(e, "countries")}
             >
@@ -149,6 +153,7 @@ export const ChooseNewsTimePeriod = ({ handleTime }) => {
 
 export const GetNewsSourcesInput = ({ handleSources }) => {
     const handleChange = evt => handleSources(evt, "sources")
+    
     return (
         <div className="">
             <UserInput
@@ -167,7 +172,6 @@ export const ReUseableJustUi = ({ handleEntries }) => {
 
     return (
         <section className="flex flex-col gap-2">
-            {/* <RenderAllAvailableLanguages handleChange={handleEntries} elemName={"languages"} /> */}
             <ShowTopics handleTopics={handleEntries} />
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} />
             <label htmlFor="ifMult">
@@ -189,5 +193,90 @@ export const NotInThisLanguage = ({ handleEntries, labelText, elemName }) => {
             <p className="text-cyan-200 font-bold">{labelText}: </p>
             <RenderAllAvailableLanguages handleChange={handleEntries} elemName={elemName} />
         </div>
+    )
+}
+
+export const ToogleFilters = ({ fromNewsSource, fromNewsSearch, showFilters, handleHideFilters, handleToggleShowFilters }) => {
+    return (
+        <div
+            className='text-center text-2xl text-zinc-200'
+            style={{ width: "184px" }}
+            onClick={handleToggleShowFilters}
+        >
+            <ReUsableImageComponent
+                height={"31px"}
+                width={"184px"}
+                // altText={"team work picture from unsplash used here as a background"}
+                altText={"For Fill"}
+                imgSrc={filterIcon}
+            />
+            <div className='flex gap-2 items-center justify-between' style={{ padding: "0 4px !important" }}>
+                <span className=''> {showFilters ? "Hide" : "Show"} Filters</span>
+                {fromNewsSearch ? <MdFilter5 /> : fromNewsSource ? <MdFilter3 /> : <MdFilter7 />}
+            </div>
+
+        </div>
+    )
+}
+
+export const ReuseableRelatedUi = ({ height, width, children, handleEntries }) => {
+    return (
+        <section
+            className='absolute px-2 mt-2'
+            style={{
+                width: "fit-content"
+            }}
+        >
+            <ReUsableImageComponent
+                height={height}
+                width={width}
+                altText={"For Fill"}
+                imgSrc={filterBG}
+            />
+            <div
+                className='text-xl my-2 flex flex-col gap-2'
+            >
+                <p className='text-cyan-400 font-extrabold text-center'>Select Your Filters Here</p>
+                {children}
+                <ReUseableJustUi handleEntries={handleEntries} />
+            </div>
+            <button className='bg-cyan-400 w-full rounded-md mt-4 text-2xl'>Search Now</button>
+        </section>
+    )
+}
+
+export const ReUsableImageComponent = ({ height, width, imgSrc, altText }) => {
+    return (
+        <div
+            className='fixed'
+            style={{
+                height: height,
+                width: width,
+                overflow: "hidden",
+                zIndex: - 1
+            }}
+        >
+            <ImageComponent
+                imgSrc={imgSrc}
+                altText={altText}
+            />
+        </div>
+    )
+}
+
+export const ImageComponent = ({ imgSrc, altText }) => {
+    return (
+        <Image
+            // className='fixed'
+            src={imgSrc}
+            alt={altText}
+            placeholder="blur"
+            quality={100}
+            style={{
+                objectFit: altText === "For Fill" ? "fill" : altText === "For Logo" ? "contain" : "cover",
+                height: altText === "For Fill" && "inherit",
+                opacity: altText === "For Fill" && ".81"
+            }}
+        />
     )
 }

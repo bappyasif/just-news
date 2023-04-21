@@ -1,8 +1,5 @@
-import { ReUsableImageComponent } from '@/components/navbar';
-import { AboutLanguage, NotInThisLanguage, ReUseableJustUi, UserInput } from '@/components/shared'
+import { NotInThisLanguage, ReuseableRelatedUi, ToogleFilters, UserInput } from '@/components/shared'
 import React, { useState } from 'react'
-import filterBG from "../../../public/teamWork.jpg"
-import { ToogleFilters } from '../headlines';
 
 const SearchNews = () => {
     const [entries, setEntries] = useState({});
@@ -33,30 +30,10 @@ const SearchNews = () => {
 const RelatedUi = ({ handleEntries }) => {
     const handleSearchText = e => handleEntries(e, "searchTerm")
     return (
-        <section
-            className='absolute px-2 mt-2'
-            style={{
-                width: "fit-content"
-            }}
-        >
-            <ReUsableImageComponent
-                height={"479px"}
-                width={"305px"}
-                // altText={"team work picture from unsplash used here as a background"}
-                altText={"For Fill"}
-                imgSrc={filterBG}
-            />
-            <div
-                className='text-xl my-2 flex flex-col gap-2'
-            >
-                <p className='text-cyan-400 font-extrabold text-center'>Select Your Filters Here</p>
-                <UserInput handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
-                <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />
-                <ReUseableJustUi handleEntries={handleEntries} />
-                {/* <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} /> */}
-            </div>
-            <button className='bg-cyan-400 w-full rounded-md mt-4 text-2xl'>Search Now</button>
-        </section>
+        <ReuseableRelatedUi width={"305px"} height={"479px"} handleEntries={handleEntries}>
+            <UserInput handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
+            <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />
+        </ReuseableRelatedUi>
     )
 }
 

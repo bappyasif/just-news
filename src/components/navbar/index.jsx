@@ -1,10 +1,10 @@
 import { navs } from '@/data'
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 import headerImg from "../../../public/abstract.jpg"
 import logoImg from "../../../public/logo.png"
 import { useRouter } from 'next/router';
+import { ReUsableImageComponent } from '../shared';
 
 export const AppNavigations = () => {
     const router = useRouter();
@@ -21,50 +21,12 @@ export const AppNavigations = () => {
                 <ReUsableImageComponent
                     height={"101px"}
                     width={"184px"}
-                    // altText={"team work picture from unsplash used here as a background"}
-                    // altText={"For Logo"}
                     altText={"For Fill"}
                     imgSrc={logoImg}
                 />
                 <RenderNavs />
             </div>
         </header>
-    )
-}
-
-export const ReUsableImageComponent = ({ height, width, imgSrc, altText }) => {
-    return (
-        <div
-            className='fixed'
-            style={{
-                height: height,
-                width: width,
-                overflow: "hidden",
-                zIndex: - 1
-            }}
-        >
-            <ImageComponent
-                imgSrc={imgSrc}
-                altText={altText}
-            />
-        </div>
-    )
-}
-
-export const ImageComponent = ({ imgSrc, altText }) => {
-    return (
-        <Image
-            // className='fixed'
-            src={imgSrc}
-            alt={altText}
-            placeholder="blur"
-            quality={100}
-            style={{
-                objectFit: altText === "For Fill" ? "fill" : altText === "For Logo" ? "contain" : "cover",
-                height: altText === "For Fill" && "inherit",
-                opacity: altText === "For Fill" && ".81"
-            }}
-        />
     )
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
-import { ImageComponent, ReUsableImageComponent } from '../navbar'
 import footerImg from "../../../public/abstract.jpg"
+import { ImageComponent } from '../shared'
 // import footerImg from "../../../public/footerPic.jpg"
 // import footerImg from "../../../public/newspapersPile.jpg"
 
@@ -10,12 +10,6 @@ export const FooterElement = () => {
             className='absolute bottom-0'
         >
             <div className='absolute w-full text-center z-10'>FooterElement</div>
-            {/* <ReUsableImageComponent 
-            height={"130px"} 
-            width={"100%"} 
-            altText={"abstract image as a footer background"} 
-            imgSrc={footerImg}
-        /> */}
             <div
                 style={{
                     height: "60px",
@@ -25,14 +19,11 @@ export const FooterElement = () => {
                     rotate: "-180deg"
                 }}
             >
-                {/* <div>FooterElement</div> */}
                 <ImageComponent
                     imgSrc={footerImg}
                     altText={"abstract image as a footer background"}
                 />
-                {/* <div>FooterElement</div> */}
             </div>
-            {/* <div>FooterElement</div> */}
         </footer>
     )
 }
