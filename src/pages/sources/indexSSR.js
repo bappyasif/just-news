@@ -1,13 +1,13 @@
 import { ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 
 const fetchSources = () => fetch("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US",
     { headers: { 'x-api-key': 'L2auYD6LCiCr0xDqxJKH8o1HPib8kJq_2EJUGwy_i8o' } })
-    .then(resp => resp.json()).then(d => d)
+    .then(resp => resp.json())
 
-const NewsSources = ({ data }) => {
+const NewsSources = ({ dehydratedState }) => {
     const [entries, setEntries] = useState({});
     const [showFilters, setShowFilters] = useState(true);
     const [fetchData, setFetchData] = useState(false);
@@ -16,15 +16,22 @@ const NewsSources = ({ data }) => {
     const handleToggleShowFilters = () => setShowFilters(prev => !prev);
     const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
 
-    const router = useRouter();
-
-    const {data: sources} = useQuery({
-        queryKey: ["sources", "us"],
+    const { data } = useQuery({
+        queryKey: ["sources, us"],
         queryFn: fetchSources,
-        initialData: data
+        initialData: () => {
+            console.log(dehydratedState.data, "data!!")
+            return dehydratedState.data
+        },
+        cacheTime: 86400000,
+        staleTime: 86400000
     })
 
-    console.log(sources, entries, "!!", data, data?.length, router.query, fetchData)
+    const router = useRouter();
+
+    // console.log(entries, "!!", test, data?.length, router.query, fetchData, posts?.length, dehydratedState?.data?.data?.length, dehydratedState?.queries[0]?.state?.data?.length)
+    // console.log(entries, "!!", test, data?.length, router.query, fetchData, posts?.length, dehydratedState?.data?.data?.length)
+    
 
     const makeRoutes = () => {
         let str = '';
@@ -70,23 +77,33 @@ const NewsSources = ({ data }) => {
     )
 }
 
-export const getServerSideProps = async (context) => {
+export const getStaticProps = async (context) => {
     // query will show up when app runs in "start" mode
     const { params, req, res, query } = context;
     // const ctx = useContext()
     console.log("pre-rendeing", params, query)
-    res.setHeader(
-        'Cache-Control',
-        'public, s-maxage=10, stale-while-revalidate=59'
-    )
-    const resp = await fetch("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US",
-    { headers: { 'x-api-key': 'L2auYD6LCiCr0xDqxJKH8o1HPib8kJq_2EJUGwy_i8o' } })
-    const data = await resp.json();
-    // res.setHeader("Cache-Control", "public, s-maxage=20, stale-while-revalidate=19")
+
+    // just change  axios.get(url) to axios.get(url).then(res=>res.data)
+    // as data needs to be serializable, thats why sending data back as an object form for dehydratedState
+    // const fetchSources = () => fetch("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US",
+    //     { headers: { 'x-api-key': 'L2auYD6LCiCr0xDqxJKH8o1HPib8kJq_2EJUGwy_i8o' } })
+    //     .then(resp => resp.json())
+
+    const queryClient = new QueryClient();
+
+    await queryClient.prefetchQuery({
+        queryKey: ["sources", "us"],
+        queryFn: fetchSources,
+        staleTime: 86400000,
+        cacheTime: 86400000
+    })
+
+    // const posts = await resp2.json()
+
 
     return {
         props: {
-            data: data
+            dehydratedState: dehydrate(queryClient).queries[0].state,
         }
     }
 }

@@ -2,26 +2,34 @@ import { BackgroundImage } from '@/components/background';
 import { FooterElement } from '@/components/footer';
 import { AppNavigations } from '@/components/navbar';
 import '@/styles/globals.css'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { useState } from 'react';
+// import { useDehydratedState } from 'use-dehydrated-state';
 
 export default function App({ Component, pageProps }) {
-  const queryClient = new QueryClient();
+  // const queryClient = new QueryClient();
+  // const [queryClient] = useState(() => new QueryClient())
+
+  // const dehydratedState = useDehydratedState();
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 86400000
+      }
+    }
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BackgroundImage />
-      {/* <div className='flex flex-col justify-between'>
-        <div className='h-full'>
-          <AppNavigations />
-          <Component {...pageProps} />
-        </div>
+      <Hydrate state={pageProps.dehydratedState}>
+        <BackgroundImage />
+        <AppNavigations />
+        <Component {...pageProps} />
         <FooterElement />
-      </div> */}
-      <AppNavigations />
-      <Component {...pageProps} />
-      <FooterElement />
-      <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </Hydrate>
     </QueryClientProvider>
   )
 }

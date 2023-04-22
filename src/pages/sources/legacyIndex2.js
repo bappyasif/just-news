@@ -1,13 +1,9 @@
 import { ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 
-const fetchSources = () => fetch("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US",
-    { headers: { 'x-api-key': 'L2auYD6LCiCr0xDqxJKH8o1HPib8kJq_2EJUGwy_i8o' } })
-    .then(resp => resp.json()).then(d => d)
-
-const NewsSources = ({ data }) => {
+const NewsSources = ({ dehydratedState }) => {
     const [entries, setEntries] = useState({});
     const [showFilters, setShowFilters] = useState(true);
     const [fetchData, setFetchData] = useState(false);
@@ -18,13 +14,9 @@ const NewsSources = ({ data }) => {
 
     const router = useRouter();
 
-    const {data: sources} = useQuery({
-        queryKey: ["sources", "us"],
-        queryFn: fetchSources,
-        initialData: data
-    })
-
-    console.log(sources, entries, "!!", data, data?.length, router.query, fetchData)
+    // console.log(entries, "!!", test, data?.length, router.query, fetchData, posts?.length, dehydratedState?.data?.data?.length, dehydratedState?.queries[0]?.state?.data?.length)
+    // console.log(entries, "!!", test, data?.length, router.query, fetchData, posts?.length, dehydratedState?.data?.data?.length)
+    console.log(entries, "!!", router.query, fetchData, dehydratedState?.data?.data?.length, dehydratedState)
 
     const makeRoutes = () => {
         let str = '';
@@ -75,18 +67,40 @@ export const getServerSideProps = async (context) => {
     const { params, req, res, query } = context;
     // const ctx = useContext()
     console.log("pre-rendeing", params, query)
+
+    // just change  axios.get(url) to axios.get(url).then(res=>res.data)
+    // const fetchPosts = () => fetch("https://jsonplaceholder.typicode.com/posts").then(resp => resp.json()).then(data => data)
+    // as data needs to be serializable, thats why sending data back as an object form for dehydratedState
+    // const fetchSources = () => fetch("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US",
+    //     { headers: { 'x-api-key': 'L2auYD6LCiCr0xDqxJKH8o1HPib8kJq_2EJUGwy_i8o' } })
+    //     .then(resp => resp.json())
+        // .then(data => ({ data }))
+
+    // const queryClient = new QueryClient();
+
+    // await queryClient.prefetchQuery({
+    //     queryKey: ["sources", "us"],
+    //     queryFn: fetchSources,
+    //     staleTime: 86400000,
+    //     cacheTime: 86400000
+    // })
+
     res.setHeader(
         'Cache-Control',
-        'public, s-maxage=10, stale-while-revalidate=59'
+        'public, s-maxage=86400000, stale-while-revalidate=86400000'
     )
     const resp = await fetch("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US",
     { headers: { 'x-api-key': 'L2auYD6LCiCr0xDqxJKH8o1HPib8kJq_2EJUGwy_i8o' } })
+
     const data = await resp.json();
-    // res.setHeader("Cache-Control", "public, s-maxage=20, stale-while-revalidate=19")
+
+    // const posts = await resp2.json()
+
 
     return {
         props: {
             data: data
+            // dehydratedState: dehydrate(queryClient).queries[0].state,
         }
     }
 }
