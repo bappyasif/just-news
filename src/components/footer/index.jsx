@@ -7,9 +7,9 @@ import { ImageComponent } from '../shared'
 export const FooterElement = () => {
     return (
         <footer
-            className='absolute bottom-0'
+            // className='absolute bottom-0'
         >
-            <div className='absolute w-full text-center z-10'>FooterElement</div>
+            <div className='w-full text-center'>FooterElement</div>
             <div
                 style={{
                     height: "60px",

@@ -11,7 +11,7 @@ const LatestHeadlines = () => {
   console.log(entries, "!!")
   
   return (
-    <main className=''>
+    <main className='min-h-screen'>
       <div
         className='flex gap-4 relative'
       >
@@ -29,7 +29,7 @@ const LatestHeadlines = () => {
 
 const RelatedUi = ({ handleEntries, handleHideFilters }) => {
   return (
-    <ReuseableRelatedUi width={"305px"} height={"562px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
+    <ReuseableRelatedUi width={"434px"} height={"562px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
         <ChooseNewsTimePeriod handleTime={handleEntries} />
         <GetNewsSourcesInput handleSources={handleEntries} />
         <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />

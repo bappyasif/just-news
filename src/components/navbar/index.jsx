@@ -10,7 +10,7 @@ export const AppNavigations = () => {
     const router = useRouter();
     console.log(router.pathname)
     return (
-        <header className='mb-12'>
+        <header className='mb-28 z-40'>
             <ReUsableImageComponent
                 height={"101px"}
                 width={"100%"}
@@ -34,7 +34,7 @@ const RenderNavs = () => {
     const renderNavs = () => navs.map(item => <RenderNav key={item.name} item={item} />);
 
     return (
-        <nav className='flex justify-end gap-4 w-full'>
+        <nav className='flex justify-end gap-4 w-full fixed'>
             {renderNavs()}
         </nav>
     )

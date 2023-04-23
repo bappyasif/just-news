@@ -70,7 +70,7 @@ export const UserInput = ({ handleValueChanges, labelText, placeholderText }) =>
         <label>
             <p className='text-cyan-200 font-bold'>{labelText}</p>
             <input
-                className=""
+                className="w-full"
                 type="text"
                 onChange={handleValueChanges}
                 placeholder={placeholderText}
@@ -222,17 +222,24 @@ export const ToogleFilters = ({ fromNewsSource, fromNewsSearch, showFilters, han
 export const ReuseableRelatedUi = ({ height, width, children, handleEntries, handleHideFilters }) => {
     return (
         <section
-            className='absolute px-2 mt-2'
+            className='absolute px-2 mt-2 z-20'
             style={{
-                width: "fit-content"
+                // width: "fit-content",
+                width: width,
+                height: height,
+                background: `url(${'/teamWork.jpg'})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPositionX: "63.2%"
+                // objectFit: "contain"
             }}
         >
-            <ReUsableImageComponent
+            {/* <ReUsableImageComponent
                 height={height}
                 width={width}
                 altText={"For Fill"}
                 imgSrc={filterBG}
-            />
+            /> */}
             <div
                 className='text-xl my-2 flex flex-col gap-2'
             >

@@ -11,7 +11,7 @@ const SearchNews = () => {
     const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
     console.log(entries, "!!")
     return (
-        <main>
+        <main className='min-h-screen'>
             <div
                 className='flex gap-4 relative'
             >
@@ -30,7 +30,7 @@ const SearchNews = () => {
 const RelatedUi = ({ handleEntries, handleHideFilters }) => {
     const handleSearchText = e => handleEntries(e, "searchTerm")
     return (
-        <ReuseableRelatedUi width={"305px"} height={"479px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
+        <ReuseableRelatedUi width={"434px"} height={"479px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
             <UserInput handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />
         </ReuseableRelatedUi>

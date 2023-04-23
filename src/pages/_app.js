@@ -25,9 +25,11 @@ export default function App({ Component, pageProps }) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <BackgroundImage />
-        <AppNavigations />
-        <Component {...pageProps} />
-        <FooterElement />
+        <div className='flex flex-col' style={{minHeight: "100vh"}}>
+          <AppNavigations />
+          <Component {...pageProps} />
+          <FooterElement />
+        </div>
         <ReactQueryDevtools />
       </Hydrate>
     </QueryClientProvider>

@@ -41,13 +41,30 @@ export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
   }
 
   const handleBackward = () => {
-    if (arrParts <= sources?.length && arrParts >= 0) {
-      if(sources.length - arrParts >= 100) {
-        handleSourcesParts(arrParts, arrParts - 100)
-        setArrParts(prev => prev - 100)
+    if (arrParts?.to <= sources?.length && arrParts?.to >= 0) {
+      if(sources.length - arrParts?.from >= 100 && arrParts?.from > 0) {
+        setArrParts(prev => {
+          // console.log(prev.to + 100, typeof prev.to + 100)
+          return {
+            from: prev.from - 100,
+            to: prev.from
+          }
+        })
       } else {
-        handleSourcesParts(arrParts, arrParts - (sources.length - arrParts))
-        setArrParts(prev => prev - (sources.length - arrParts))
+        setArrParts(prev => {
+          const nextFrom = prev.from - (sources.length - prev.from)
+          if(nextFrom < prev.from && nextFrom > 0) {
+            return {
+              from: nextFrom,
+              to: prev.to - (sources.length - prev.to)
+            }
+          } else {
+            return {
+              from: prev.from,
+              to: prev.to
+            }
+          }
+        })
       }
     }
   }
@@ -83,7 +100,7 @@ const PaginationsButtons = ({ handleForward, handleBackward }) => {
   const renderBtns = () => btns?.map(item => <RenderButton key={item.name} item={item} />);
 
   return (
-    <div>
+    <div className='flex gap-4 w-full justify-center'>
       {renderBtns()}
     </div>
   )
@@ -93,18 +110,18 @@ const RenderButton = ({ item }) => {
   const { name, handler } = item;
 
   return (
-    <button onClick={handler}>{name}</button>
+    <button className='p-2 bg-sky-400 rounded-md' onClick={handler}>{name}</button>
   )
 }
 
 const RenderSources = ({ data }) => {
   // const renderNames = () => [data]?.map((item, idx) => <li key={idx}>{Object.values(item)[0]}</li>)
-  const renderNames = () => data?.map(item => <li className='px-4' key={item}>{item}</li>)
+  const renderNames = () => data?.map(item => <li className='px-4 bg-gray-400 py-2 h-fit rounded-sm' key={item}>{item}</li>)
 
 
 
   return (
-    <ul className='flex gap-2 flex-wrap'>
+    <ul className='flex gap-2 justify-start flex-wrap' style={{minHeight: "710px"}}>
       {renderNames()}
     </ul>
   )
@@ -125,7 +142,7 @@ const RenderFiltersInUse = ({ data }) => {
   return (
     <div className='text-xl bg-zinc-400 w-fit px-2'>
       <h2 className='text-2xl'>Filters In Use</h2>
-      <ul className=''>
+      <ul className='flex gap-4 '>
         {renderFilters()}
       </ul>
     </div>
