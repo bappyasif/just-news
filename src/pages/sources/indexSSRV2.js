@@ -65,7 +65,7 @@ const NewsSources = () => {
             }
 
             {
-                fetchData || sources?.sources?.length
+                fetchData && sources?.sources?.length
                     ? <RenderAllNewsSources sources={sources?.sources} filtersInUse={sources?.user_input} />
                     : null
             }
@@ -74,7 +74,7 @@ const NewsSources = () => {
     )
 }
 
-export const getStaticProps = async (context) => {
+export const getServerSideProps = async (context) => {
     // query will show up when app runs in "start" mode
     const { params, req, res, query } = context;
     // const ctx = useContext()

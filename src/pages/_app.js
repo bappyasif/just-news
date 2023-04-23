@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }) {
         <AppNavigations />
         <Component {...pageProps} />
         <FooterElement />
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools />
       </Hydrate>
     </QueryClientProvider>
   )
