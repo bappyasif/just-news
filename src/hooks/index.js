@@ -1,13 +1,12 @@
-// import languageCodes from "@/utils/languageCodes.json"
+import { AppContext } from "@/contexts"
+import { useContext } from "react"
 
-export const useGetJsonData = async (url) => {
-    // const response = await fetch(url)
-    // const data = await response.json()
+export const useAppContext = () => {
+    const ctx = useContext(AppContext)
 
-    // return {data}
+    if(ctx === undefined) {
+        throw new Error ("Context is not found")
+    }
 
-    // console.log(languageCodes, "!!!!!!")
-
-    // return languageCodes
-    // return {data: languageCodes}
+    return ctx;
 }

@@ -1,3 +1,4 @@
+import { restructureAllUsedFilters } from '@/utils';
 import React, { useEffect, useState } from 'react'
 
 export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
@@ -128,16 +129,9 @@ const RenderSources = ({ data }) => {
 }
 
 const RenderFiltersInUse = ({ data }) => {
-  const dataset = [];
+  const dataset = restructureAllUsedFilters(data)
 
-  for (let key in data) {
-    if (data[key]) {
-      const temp = { name: key, vals: data[key] }
-      dataset.push(temp)
-    }
-  }
-
-  const renderFilters = () => dataset.map((item, idx) => <RenderFilter key={idx} item={item} />)
+  const renderFilters = () => dataset?.map((item, idx) => <RenderFilter key={idx} item={item} />)
 
   return (
     <div className='text-xl bg-zinc-400 w-fit px-2'>

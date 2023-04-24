@@ -1,5 +1,7 @@
 import { RenderAllNewsSources } from '@/components/forSources';
 import { ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
+import { useAppContext } from '@/hooks';
+import { makeRoutes } from '@/utils';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
@@ -19,28 +21,23 @@ const NewsSources = () => {
 
     const router = useRouter();
 
+    const appCtx = useAppContext()
+
     const { data: sources } = useQuery({
         queryKey: ["sources", "us"],
-        queryFn: fetchSources
+        queryFn: fetchSources,
+        onSuccess: (data) => {
+            console.log(data, "!!data!!", appCtx.sources)
+        }
     })
 
-    console.log(sources, entries, "!!", router.query, fetchData)
-
-    const makeRoutes = () => {
-        let str = '';
-        for (let key in entries) {
-            if (entries[key]) {
-                str += `?${key}=${entries[key]}`
-            }
-        }
-        return str
-    }
+    console.log(sources, entries, "!!", router.query, fetchData, appCtx.sources)
 
     const handleShallowRoutes = () => {
         if (Object.keys(entries).length) {
             handleHideFilters();
             setFetchData(true)
-            router.push(`/sources${makeRoutes()}`, undefined, { shallow: true })
+            router.push(`/sources${makeRoutes(entries)}`, undefined, { shallow: true })
         }
     }
 

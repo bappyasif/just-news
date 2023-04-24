@@ -1,17 +1,12 @@
 import { BackgroundImage } from '@/components/background';
 import { FooterElement } from '@/components/footer';
 import { AppNavigations } from '@/components/navbar';
+import { AppContextProvider } from '@/contexts';
 import '@/styles/globals.css'
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useState } from 'react';
-// import { useDehydratedState } from 'use-dehydrated-state';
 
 export default function App({ Component, pageProps }) {
-  // const queryClient = new QueryClient();
-  // const [queryClient] = useState(() => new QueryClient())
-
-  // const dehydratedState = useDehydratedState();
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -22,16 +17,18 @@ export default function App({ Component, pageProps }) {
   });
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <BackgroundImage />
-        <div className='flex flex-col' style={{minHeight: "100vh"}}>
-          <AppNavigations />
-          <Component {...pageProps} />
-          <FooterElement />
-        </div>
-        <ReactQueryDevtools />
-      </Hydrate>
-    </QueryClientProvider>
+    <AppContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <BackgroundImage />
+          <div className='flex flex-col' style={{ minHeight: "100vh" }}>
+            <AppNavigations />
+            <Component {...pageProps} />
+            <FooterElement />
+          </div>
+          <ReactQueryDevtools />
+        </Hydrate>
+      </QueryClientProvider>
+    </AppContextProvider>
   )
 }
