@@ -88,7 +88,7 @@ const ShowValidCountryCodesAsExample = () => {
 export const ShowTopics = ({ handleTopics }) => {
     const list = ['tech', 'news', 'business', 'science', 'finance', 'food', 'politics', 'economics', 'travel', 'entertainment', 'music', 'sport', 'world']
 
-    return <RenderList labelText={"Choose From News Topics"} handleChange={handleTopics} items={list} defaultText={"Select Topic"} listName={"topics"} />
+    return <RenderList labelText={"Choose From News Topics"} handleChange={handleTopics} items={list} defaultText={"Select Topic"} listName={"topic"} />
 }
 
 const RenderList = ({ labelText, items, defaultText, listName, handleChange }) => {
@@ -173,7 +173,7 @@ export const ReUseableJustUi = ({ handleEntries }) => {
     return (
         <section className="flex flex-col gap-2">
             <ShowTopics handleTopics={handleEntries} />
-            <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} />
+            <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"lang"} />
             <label htmlFor="ifMult">
                 <p className="text-cyan-200 font-bold">If News From Single Country</p>
                 <ChooseIfMultipleCountries handleChange={handleIfMultiples} />

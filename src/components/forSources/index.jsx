@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
   const [arrParts, setArrParts] = useState({from: 0, to: 100});
+  // const [arrParts, setArrParts] = useState({from: 0, to: sources?.length});
   const [sourcesParts, setSourcesParts] = useState();
 
   // const handlePaginations = (action) => action === "fwd" ? setArrParts(prev => prev + 1) : action === "bck" ? setArrParts(prev => prev - 1) : null
@@ -81,7 +82,7 @@ export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
 
   useEffect(() => {
     handleSourcesParts()
-  }, [arrParts])
+  }, [arrParts, filtersInUse])
 
   console.log(sources, filtersInUse, sources?.length, sources[0])
 
@@ -117,6 +118,7 @@ const RenderButton = ({ item }) => {
 
 const RenderSources = ({ data }) => {
   // const renderNames = () => [data]?.map((item, idx) => <li key={idx}>{Object.values(item)[0]}</li>)
+  console.log(data, "what data!!>><<!!")
   const renderNames = () => data?.map(item => <li className='px-4 bg-gray-400 py-2 h-fit rounded-sm' key={item}>{item}</li>)
 
 
