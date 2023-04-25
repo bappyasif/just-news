@@ -82,7 +82,7 @@ export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
 
   useEffect(() => {
     handleSourcesParts()
-  }, [arrParts, filtersInUse])
+  }, [arrParts, filtersInUse, sources])
 
   console.log(sources, filtersInUse, sources?.length, sources[0])
 

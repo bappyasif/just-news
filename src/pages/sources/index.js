@@ -2,9 +2,9 @@ import { RenderAllNewsSources } from '@/components/forSources';
 import { ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
 import { useAppContext } from '@/hooks';
 import { makeKeys, makeRoutes, newsApiRequestInterceptor } from '@/utils';
-import { QueryClient, dehydrate, useQuery, useQueryClient } from '@tanstack/react-query';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 const fetchSourcesForDefault = () => fetch("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US",
     { headers: { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY } })
@@ -16,7 +16,6 @@ const NewsSources = () => {
     const [entries, setEntries] = useState({});
     const [showFilters, setShowFilters] = useState(true);
     const [fetchData, setFetchData] = useState(false);
-    // const [sourcesData, setSourcesData] = useState({})
 
     const handleHideFilters = () => setShowFilters(false);
     const handleToggleShowFilters = () => setShowFilters(prev => !prev);
@@ -30,7 +29,7 @@ const NewsSources = () => {
         queryKey: ["sources", "us"],
         queryFn: fetchSourcesForDefault,
         onSuccess: (data) => {
-            console.log(data, "!!data!!", appCtx.sources)
+            console.log(data, "!! default data!!", appCtx.sources)
         }
     })
 
@@ -41,19 +40,6 @@ const NewsSources = () => {
     //     exact: true,
     //     // predicate: query => query.queryKey[1]
     //     predicate: Object.values(entries).length ? false : true
-    // })
-
-    // const {data: testData} = useQuery({
-    //     queryKey: ["sources", `${makeKeys(entries)}`],
-    //     queryFn: () => fetch("https://jsonplaceholder.typicode.com/posts").then(r => r.json()),
-    //     // enabled: fetchData && makeKeys(entries).length ? false : true,
-    //     enabled: fetchData && Object.values(entries).length ? true : false,
-    //     refetchOnWindowFocus: false,
-    //     onSuccess: (data) => {
-    //         console.log(data, "!!data!!", appCtx.sources, `${makeKeys(entries)}`, Object.keys(entries).length)
-    //         setFetchData(false);
-    //         setEntries({})
-    //     }
     // })
 
     const makeRequest = () => {
@@ -73,40 +59,13 @@ const NewsSources = () => {
         onSuccess: (data) => {
             console.log(data, "!!data!!", appCtx.sources, `${makeKeys(entries)}`, Object.keys(entries).length)
             setFetchData(false);
-            setEntries({})
+            // setEntries({})
         },
         cacheTime: 86400000
     })
 
     // const queryClient = useQueryClient()
-
-    // const { data: testData } = useQuery({
-    //     queryKey: ["sources", `${makeKeys(entries)}`],
-    //     queryFn: makeRequest,
-    //     // enabled: fetchData && makeKeys(entries).length ? false : true,
-    //     enabled: fetchData && Object.values(entries).length ? true : false,
-    //     refetchOnWindowFocus: false,
-    //     initialData: () => {
-    //         console.log(queryClient.getQueryData(["sources", `${makeKeys(entries)}`]), "cahced data")
-    //         return queryClient.getQueryData(["sources", `${makeKeys(entries)}`])
-    //     },
-    //     onSuccess: (data) => {
-    //         console.log(data, "!!data!!", appCtx.sources, `${makeKeys(entries)}`, Object.keys(entries).length)
-    //         setFetchData(false);
-    //         setEntries({})
-    //     },
-    //     cacheTime: 86400000
-    // })
-
-    // const updateNewsSourcesDataset = () => {
-    //     if (sourcesRequested?.data?.sources) {
-    //         setSourcesData(sourcesRequested.data)
-    //     } else if (sources?.sources) {
-    //         setSourcesData(sources)
-    //     }
-    //     // console.log(sourcesRequested?.data?.sources, sources.sources, sourcesRequested?.data?.sources || sources.sources)
-    //     console.log(sourcesData, "sourcesData!!")
-    // }
+    // queryClient.getQueryData(["sources", `${makeKeys(entries)}`])
 
     // console.log(sources, entries, "!!", router.query, fetchData, appCtx.sources, makeKeys(entries))
     // console.log(sourcesRequested, "testData!!", entries, fetchData && Object.values(entries).length)
@@ -120,10 +79,6 @@ const NewsSources = () => {
         // setEntries({})
         handleHideFilters();
     }
-
-    // useEffect(() => {
-    //     updateNewsSourcesDataset()
-    // }, [sources, sourcesRequested])
 
     return (
         <main>
@@ -145,19 +100,11 @@ const NewsSources = () => {
                     : null
             }
 
-            {/* {
-                fetchData || sources?.sources?.length
-                    // ? <RenderAllNewsSources sources={sourcesData?.sources || sources?.sources} filtersInUse={sourcesData?.user_input || sources?.user_input} />
-                    ? <RenderAllNewsSources sources={ sourcesRequested?.data?.sources || sources?.sources} filtersInUse={ sourcesRequested?.data?.user_input || sources?.user_input} />
-                    : null
-            } */}
-
             {
                 sourcesRequested?.data?.sources?.length || sources?.sources?.length
                     ? <RenderAllNewsSources sources={sourcesRequested?.data?.sources || sources?.sources} filtersInUse={sourcesRequested?.data?.user_input || sources?.user_input} />
                     : null
             }
-
         </main>
     )
 }
