@@ -1,5 +1,6 @@
+import { ShowAllArticlesData } from '@/components/forHeadlines';
 import { ChooseNewsTimePeriod, GetNewsSourcesInput, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { fetchSourcesForDefault } from '@/utils';
+import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
 
@@ -24,19 +25,20 @@ const LatestHeadlines = () => {
     }
   })
 
-  const filterArticlesOfDuplicates = () => {
-    let articles = [];
-    articles = headlinesData?.articles.filter((val, idx, self) => {
-      return idx === self.findIndex(t => (t.title === val.title && t.author.toLowerCase() === val.author.toLowerCase()))
-    })
-    console.log(articles, "HERE")
-  }
+  // const filterArticlesOfDuplicates = (arr) => {
+  //   let articles = [];
+  //   articles = arr?.filter((val, idx, self) => {
+  //     return idx === self.findIndex(t => (t.title === val.title && t.author.toLowerCase() === val.author.toLowerCase()))
+  //   })
+  //   console.log(articles, "HERE")
+  //   return articles
+  // }
 
   console.log(headlinesData)
 
-  useEffect(() => {
-    filterArticlesOfDuplicates()
-  }, [headlinesData])
+  // useEffect(() => {
+  //   filterArticlesOfDuplicates()
+  // }, [headlinesData])
 
   return (
     <main className='min-h-screen'>
@@ -50,6 +52,12 @@ const LatestHeadlines = () => {
         showFilters
           ? <RelatedUi handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
           : null
+      }
+
+      {
+        headlinesData?.articles?.length
+        ? <ShowAllArticlesData list={filterArticlesOfDuplicates(headlinesData?.articles)} filtersUsed={headlinesData?.user_input} />
+        : null
       }
     </main>
   )

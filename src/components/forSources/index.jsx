@@ -1,5 +1,6 @@
 import { restructureAllUsedFilters } from '@/utils';
 import React, { useEffect, useState } from 'react'
+import { PaginationsButtons, RenderFiltersInUse } from '../shared/forDataRendering';
 
 export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
   const [arrParts, setArrParts] = useState({from: 0, to: 100});
@@ -105,24 +106,24 @@ export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
   )
 }
 
-const PaginationsButtons = ({ handleForward, handleBackward }) => {
-  const btns = [{ name: "Prev", handler: handleBackward }, { name: "Next", handler: handleForward }]
-  const renderBtns = () => btns?.map(item => <RenderButton key={item.name} item={item} />);
+// const PaginationsButtons = ({ handleForward, handleBackward }) => {
+//   const btns = [{ name: "Prev", handler: handleBackward }, { name: "Next", handler: handleForward }]
+//   const renderBtns = () => btns?.map(item => <RenderButton key={item.name} item={item} />);
 
-  return (
-    <div className='flex gap-4 w-full justify-center'>
-      {renderBtns()}
-    </div>
-  )
-}
+//   return (
+//     <div className='flex gap-4 w-full justify-center'>
+//       {renderBtns()}
+//     </div>
+//   )
+// }
 
-const RenderButton = ({ item }) => {
-  const { name, handler } = item;
+// const RenderButton = ({ item }) => {
+//   const { name, handler } = item;
 
-  return (
-    <button className='p-2 bg-sky-400 rounded-md' onClick={handler}>{name}</button>
-  )
-}
+//   return (
+//     <button className='p-2 bg-sky-400 rounded-md' onClick={handler}>{name}</button>
+//   )
+// }
 
 const RenderSources = ({ data }) => {
   // const renderNames = () => [data]?.map((item, idx) => <li key={idx}>{Object.values(item)[0]}</li>)
@@ -138,34 +139,34 @@ const RenderSources = ({ data }) => {
   )
 }
 
-const RenderFiltersInUse = ({ data }) => {
-  const dataset = restructureAllUsedFilters(data)
+// const RenderFiltersInUse = ({ data }) => {
+//   const dataset = restructureAllUsedFilters(data)
 
-  const renderFilters = () => dataset?.map((item, idx) => <RenderFilter key={idx} item={item} />)
+//   const renderFilters = () => dataset?.map((item, idx) => <RenderFilter key={idx} item={item} />)
 
-  return (
-    <div className='text-xl bg-zinc-400 w-fit px-2'>
-      <h2 className='text-2xl'>Filters In Use</h2>
-      <ul className='flex gap-4 '>
-        {renderFilters()}
-      </ul>
-    </div>
-  )
-}
+//   return (
+//     <div className='text-xl bg-zinc-400 w-fit px-2'>
+//       <h2 className='text-2xl'>Filters In Use</h2>
+//       <ul className='flex gap-4 '>
+//         {renderFilters()}
+//       </ul>
+//     </div>
+//   )
+// }
 
-const RenderFilter = ({ item }) => {
-  const { name, vals } = item;
+// const RenderFilter = ({ item }) => {
+//   const { name, vals } = item;
 
-  // console.log(item, "item!!")
+//   // console.log(item, "item!!")
 
-  return (
-    <li>
-      <span>{name} : </span>
-      {
-        vals?.length && typeof vals !== "string"
-          ? <span>{vals?.map(txt => `${txt}`)}</span>
-          : <span>{vals}</span>
-      }
-    </li>
-  )
-}
+//   return (
+//     <li>
+//       <span>{name} : </span>
+//       {
+//         vals?.length && typeof vals !== "string"
+//           ? <span>{vals?.map(txt => `${txt}`)}</span>
+//           : <span>{vals}</span>
+//       }
+//     </li>
+//   )
+// }

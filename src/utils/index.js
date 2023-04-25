@@ -33,6 +33,15 @@ export const makeKeys = (entries) => {
     return allKeys.sort().join(", ")
 }
 
+export const filterArticlesOfDuplicates = (arr) => {
+    let articles = [];
+    articles = arr?.filter((val, idx, self) => {
+      return idx === self.findIndex(t => (t.title === val.title && t.author.toLowerCase() === val.author.toLowerCase()))
+    })
+    console.log(articles, "HERE")
+    return articles
+  }
+
 export const fetchSourcesForDefault = (url) => fetch(
     url,
     { headers: { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY } })
