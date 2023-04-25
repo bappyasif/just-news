@@ -55,6 +55,14 @@ export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
       } else {
         setArrParts(prev => {
           const nextFrom = prev.from - (sources.length - prev.from)
+          // console.log(nextFrom, prev.from, prev.to === sources?.length)
+          if(prev.to === sources?.length) {
+            // console.log(100 - prev.to, prev.to, sources.length, sources.length % 100)
+            return {
+              from: sources.length - (sources.length % 100) - 100,
+              to: sources.length - (sources.length % 100)
+            }
+          } 
           if(nextFrom < prev.from && nextFrom > 0) {
             return {
               from: nextFrom,
@@ -75,7 +83,7 @@ export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
     const from = arrParts?.from
     const to = arrParts?.to
 
-    console.log(from, to, sources?.filter((v, i) => i >= from && i < to && v))
+    // console.log(from, to, sources?.filter((v, i) => i >= from && i < to && v))
     
     setSourcesParts(sources?.filter((v, i) => i >= from && i < to && v))
   }
@@ -84,7 +92,7 @@ export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
     handleSourcesParts()
   }, [arrParts, filtersInUse, sources])
 
-  console.log(sources, filtersInUse, sources?.length, sources[0])
+  // console.log(sources, filtersInUse, sources?.length, sources[0])
 
   return (
     <section className='flex flex-col gap-2'>
@@ -118,7 +126,7 @@ const RenderButton = ({ item }) => {
 
 const RenderSources = ({ data }) => {
   // const renderNames = () => [data]?.map((item, idx) => <li key={idx}>{Object.values(item)[0]}</li>)
-  console.log(data, "what data!!>><<!!")
+  // console.log(data, "what data!!>><<!!")
   const renderNames = () => data?.map(item => <li className='px-4 bg-gray-400 py-2 h-fit rounded-sm' key={item}>{item}</li>)
 
 
