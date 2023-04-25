@@ -2,10 +2,10 @@ import axios from "axios";
 
 export const restructureAllUsedFilters = (filtersUsed) => {
     const filters = [];
-    
-    for(let key in filtersUsed) {
-        if(filtersUsed[key]) {
-            const temp = {name: key, vals: filtersUsed[key]}
+
+    for (let key in filtersUsed) {
+        if (filtersUsed[key]) {
+            const temp = { name: key, vals: filtersUsed[key] }
             filters.push(temp)
         }
     }
@@ -33,8 +33,15 @@ export const makeKeys = (entries) => {
     return allKeys.sort().join(", ")
 }
 
-export const newsApiRequestInterceptor = ({...options}) => {
-    const client = axios.create({baseURL: "https://api.newscatcherapi.com/v2"})
+export const fetchSourcesForDefault = (url) => fetch(
+    url,
+    { headers: { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY } })
+    .then(resp => resp.json()).then(d => d)
+
+export const fetchSourcesOnRequests = (options) => newsApiRequestInterceptor(options).then(data => data)
+
+export const newsApiRequestInterceptor = ({ ...options }) => {
+    const client = axios.create({ baseURL: "https://api.newscatcherapi.com/v2" })
 
     const onSuccess = resp => resp
 

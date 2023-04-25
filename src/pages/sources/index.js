@@ -1,16 +1,16 @@
 import { RenderAllNewsSources } from '@/components/forSources';
 import { ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
 import { useAppContext } from '@/hooks';
-import { makeKeys, makeRoutes, newsApiRequestInterceptor } from '@/utils';
+import { fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys, makeRoutes, newsApiRequestInterceptor } from '@/utils';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 
-const fetchSourcesForDefault = () => fetch("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US",
-    { headers: { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY } })
-    .then(resp => resp.json()).then(d => d)
+// const fetchSourcesForDefault = () => fetch("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US",
+//     { headers: { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY } })
+//     .then(resp => resp.json()).then(d => d)
 
-const fetchSourcesOnRequests = (options) => newsApiRequestInterceptor(options).then(data => data)
+// const fetchSourcesOnRequests = (options) => newsApiRequestInterceptor(options).then(data => data)
 
 const NewsSources = () => {
     const [entries, setEntries] = useState({});
@@ -27,7 +27,8 @@ const NewsSources = () => {
 
     const { data: sources } = useQuery({
         queryKey: ["sources", "us"],
-        queryFn: fetchSourcesForDefault,
+        // queryFn: fetchSourcesForDefault,
+        queryFn: () => fetchSourcesForDefault("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US"),
         onSuccess: (data) => {
             console.log(data, "!! default data!!", appCtx.sources)
         }
@@ -119,7 +120,8 @@ export const getStaticProps = async (context) => {
 
     await queryClient.prefetchQuery({
         queryKey: ["sources", "us"],
-        queryFn: fetchSourcesForDefault,
+        // queryFn: fetchSourcesForDefault,
+        queryFn: () => fetchSourcesForDefault("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US"),
         cacheTime: 86400000
     })
 
