@@ -1,3 +1,4 @@
+import { useForContentRendering } from "@/hooks"
 import { restructureAllUsedFilters } from "@/utils"
 import Link from "next/link"
 
@@ -40,20 +41,25 @@ const RenderFilter = ({ item }) => {
 }
 
 export const RenderNewsArticles = ({ data }) => {
-    const renderArticles = () => data?.map((item, idx) => idx <= 6 && <RenderArticle key={item._id} item={item} />)
+    const {sourcesParts, handleBackward, handleForward} = useForContentRendering(data, null, 9)
+
+    const renderArticles = () => sourcesParts?.map((item, idx) => item?.media && <RenderArticle key={item._id} item={item} />)
 
     return (
         <section>
+            {/* <ReUseableContentRendering sources={data} initialDatasetCounts={{from: 0, to: 20}}>
+
+            </ReUseableContentRendering> */}
             <h2>News Snippets</h2>
             <div className="columns-3 px-2 gap-3 mb-6">
                 {renderArticles()}
             </div>
-            <PaginationsButtons handleForward={() => console.log("forward")} handleBackward={() => console.log("backward") } />
+            <PaginationsButtons handleForward={handleForward} handleBackward={handleBackward} />
         </section>
     )
 }
 
-const RenderArticle = ({ item }) => {
+export const RenderArticle = ({ item }) => {
     const { excerpt, link, media, summary, title } = item
 
     return (
@@ -71,7 +77,7 @@ const RenderArticle = ({ item }) => {
             <div className="bg-gray-800 opacity-90 px-2 text-xl font-bold">
                 <RenderContent text={excerpt} label={"Excerpt"} ftype={true} />
             </div>
-            <img className="w-fit" src={media} alt={excerpt} />
+            <img className="w-full" src={media} alt={excerpt} />
             <div className="bg-gray-800 opacity-90 px-2 text-xl font-semibold">
                 <RenderContent text={summary} label={"Summary"} ftype={true} />
             </div>
@@ -82,13 +88,15 @@ const RenderArticle = ({ item }) => {
 const RenderArticleMetaData = ({ item }) => {
     const {
         author, country, language, published_date,
-        rank, topic, twitter_account
+        rank, topic, twitter_account, rights, clean_url
     } = item
 
     return (
-        <div className="bg-gray-800 opacity-90">
+        <div className="bg-gray-900 opacity-90 text-stone-400 font-light">
             <ReUsableContentRenderer>
                 <RenderContent text={author} label={"By"} />
+                <RenderContent text={rights || clean_url} label={"Rights"} />
+                <RenderContent text={rank} label={"Rank"} />
             </ReUsableContentRenderer>
             <ReUsableContentRenderer>
                 <RenderContent text={country.toUpperCase()} label={"Country"} />
@@ -98,7 +106,6 @@ const RenderArticleMetaData = ({ item }) => {
             <ReUsableContentRenderer>
                 <RenderContent text={new Date(published_date).toLocaleDateString()} label={"Published On"} />
                 <RenderContent text={twitter_account} label={"Twitter"} />
-                <RenderContent text={rank} label={"Rank"} />
             </ReUsableContentRenderer>
         </div>
     )
