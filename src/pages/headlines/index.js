@@ -1,9 +1,9 @@
 import { ShowAllArticlesData } from '@/components/forHeadlines';
 import { ChooseNewsTimePeriod, GetNewsSourcesInput, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useFilteredDataFetching } from '@/hooks';
+import { useFilteredDataFetching, useForDefaultFetching } from '@/hooks';
 import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react'
+import { QueryClient, dehydrate } from '@tanstack/react-query';
+import React, { useState } from 'react'
 
 const LatestHeadlines = () => {
   const [entries, setEntries] = useState({});
@@ -20,18 +20,11 @@ const LatestHeadlines = () => {
 
   const waitASecond = () => setTimeout(() => true, 1001)
 
-  const { data: headlinesData } = useQuery({
-    queryKey: ["headlines", "us"],
-    queryFn: () => fetchSourcesForDefault("https://api.newscatcherapi.com/v2/latest_headlines?countries=US&lang=en&topic=world&page_size=100"),
-    // enabled: false
-    onSuccess: (data) => {
-      console.log(data, "!! default data!!")
-    }
-  })
+  const { defaultFetchedData } = useForDefaultFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
 
   const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/latest_headlines")
 
-  console.log(headlinesData, filteredFetchedData, filteredFetchedData || headlinesData)
+  // console.log(headlinesData, filteredFetchedData, filteredFetchedData || headlinesData)
 
   return (
     <main className='min-h-screen'>
@@ -53,9 +46,15 @@ const LatestHeadlines = () => {
           : null
       } */}
 
-      {
+      {/* {
         filteredFetchedData?.data?.articles?.length || headlinesData?.articles?.length
         ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || headlinesData?.articles)} filtersUsed={filteredFetchedData?.data?.user_input || headlinesData?.user_input} />
+          : null
+      } */}
+
+      {
+        filteredFetchedData?.data?.articles?.length || defaultFetchedData?.articles?.length
+          ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || defaultFetchedData?.articles)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
           : null
       }
     </main>

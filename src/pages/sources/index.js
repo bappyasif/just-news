@@ -1,8 +1,8 @@
 import { RenderAllNewsSources } from '@/components/forSources';
 import { ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useAppContext, useFilteredDataFetching } from '@/hooks';
-import { fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys, makeRoutes, newsApiRequestInterceptor } from '@/utils';
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
+import { useAppContext, useFilteredDataFetching, useForDefaultFetching } from '@/hooks';
+import { fetchSourcesForDefault, makeRoutes } from '@/utils';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 
@@ -19,14 +19,7 @@ const NewsSources = () => {
 
     const appCtx = useAppContext()
 
-    const { data: sources } = useQuery({
-        queryKey: ["sources", "us"],
-        // queryFn: fetchSourcesForDefault,
-        queryFn: () => fetchSourcesForDefault("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US"),
-        onSuccess: (data) => {
-            console.log(data, "!! default data!!", appCtx.sources)
-        }
-    })
+    const { defaultFetchedData } = useForDefaultFetching("sources?topic=business&lang=en&countries=US", ["sources", "us"])
 
     // const clientQuery = new QueryClient();
 
@@ -53,7 +46,7 @@ const NewsSources = () => {
         handleHideFilters();
     }
 
-    const {filteredFetchedData} = useFilteredDataFetching( fetchData, entries, setFetchData, "/sources" )
+    const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/sources")
 
     return (
         <main>
@@ -75,9 +68,15 @@ const NewsSources = () => {
                     : null
             }
 
-            {
+            {/* {
                 filteredFetchedData?.data?.sources?.length || sources?.sources?.length
                     ? <RenderAllNewsSources sources={filteredFetchedData?.data?.sources || sources?.sources} filtersInUse={filteredFetchedData?.data?.user_input || sources?.user_input} />
+                    : null
+            } */}
+
+            {
+                filteredFetchedData?.data?.sources?.length || defaultFetchedData?.sources?.length
+                    ? <RenderAllNewsSources sources={filteredFetchedData?.data?.sources || defaultFetchedData?.sources} filtersInUse={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
                     : null
             }
         </main>

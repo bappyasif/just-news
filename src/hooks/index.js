@@ -1,5 +1,5 @@
 import { AppContext } from "@/contexts"
-import { fetchSourcesOnRequests, makeKeys } from "@/utils"
+import { fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys } from "@/utils"
 import { useQuery } from "@tanstack/react-query"
 import { useContext, useEffect, useState } from "react"
 
@@ -122,5 +122,18 @@ export const useFilteredDataFetching = (fetchData, entries, setFetchData, endpoi
         cacheTime: 86400000
     })
 
-    return {filteredFetchedData}
+    return { filteredFetchedData }
+}
+
+export const useForDefaultFetching = (urlStr, keys) => {
+    const { data: defaultFetchedData } = useQuery({
+        queryKey: keys,
+        queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/${urlStr}`),
+        // enabled: false
+        onSuccess: (data) => {
+            console.log(data, "!! default data!!")
+        }
+    })
+
+    return { defaultFetchedData }
 }
