@@ -1,16 +1,10 @@
 import { RenderAllNewsSources } from '@/components/forSources';
 import { ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useAppContext } from '@/hooks';
+import { useAppContext, useFilteredDataFetching } from '@/hooks';
 import { fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys, makeRoutes, newsApiRequestInterceptor } from '@/utils';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
-
-// const fetchSourcesForDefault = () => fetch("https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US",
-//     { headers: { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY } })
-//     .then(resp => resp.json()).then(d => d)
-
-// const fetchSourcesOnRequests = (options) => newsApiRequestInterceptor(options).then(data => data)
 
 const NewsSources = () => {
     const [entries, setEntries] = useState({});
@@ -43,28 +37,6 @@ const NewsSources = () => {
     //     predicate: Object.values(entries).length ? false : true
     // })
 
-    const makeRequest = () => {
-        const method = "GET"
-        const url = "/sources"
-        const params = { ...entries }
-        const headers = { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY }
-        console.log(url, params, headers)
-        return fetchSourcesOnRequests({ method, url, params, headers })
-    }
-
-    const { data: sourcesRequested } = useQuery({
-        queryKey: ["sources", `${makeKeys(entries)}`],
-        queryFn: makeRequest,
-        enabled: fetchData && Object.values(entries).length ? true : false,
-        refetchOnWindowFocus: false,
-        onSuccess: (data) => {
-            console.log(data, "!!data!!", appCtx.sources, `${makeKeys(entries)}`, Object.keys(entries).length)
-            setFetchData(false);
-            // setEntries({})
-        },
-        cacheTime: 86400000
-    })
-
     // const queryClient = useQueryClient()
     // queryClient.getQueryData(["sources", `${makeKeys(entries)}`])
 
@@ -80,6 +52,8 @@ const NewsSources = () => {
         // setEntries({})
         handleHideFilters();
     }
+
+    const {filteredFetchedData} = useFilteredDataFetching( fetchData, entries, setFetchData, "/sources" )
 
     return (
         <main>
@@ -102,8 +76,8 @@ const NewsSources = () => {
             }
 
             {
-                sourcesRequested?.data?.sources?.length || sources?.sources?.length
-                    ? <RenderAllNewsSources sources={sourcesRequested?.data?.sources || sources?.sources} filtersInUse={sourcesRequested?.data?.user_input || sources?.user_input} />
+                filteredFetchedData?.data?.sources?.length || sources?.sources?.length
+                    ? <RenderAllNewsSources sources={filteredFetchedData?.data?.sources || sources?.sources} filtersInUse={filteredFetchedData?.data?.user_input || sources?.user_input} />
                     : null
             }
         </main>

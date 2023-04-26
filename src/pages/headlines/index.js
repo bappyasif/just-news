@@ -1,5 +1,6 @@
 import { ShowAllArticlesData } from '@/components/forHeadlines';
 import { ChooseNewsTimePeriod, GetNewsSourcesInput, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
+import { useFilteredDataFetching } from '@/hooks';
 import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
@@ -7,9 +8,12 @@ import React, { useEffect, useState } from 'react'
 const LatestHeadlines = () => {
   const [entries, setEntries] = useState({});
   const [showFilters, setShowFilters] = useState(true);
-  // const []
+  const [fetchData, setFetchData] = useState(false);
 
-  const handleHideFilters = () => setShowFilters(false);
+  const handleHideFilters = () => {
+    setFetchData(true);
+    setShowFilters(false);
+  }
   const handleToggleShowFilters = () => setShowFilters(prev => !prev);
   const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
   console.log(entries, "!!")
@@ -25,20 +29,9 @@ const LatestHeadlines = () => {
     }
   })
 
-  // const filterArticlesOfDuplicates = (arr) => {
-  //   let articles = [];
-  //   articles = arr?.filter((val, idx, self) => {
-  //     return idx === self.findIndex(t => (t.title === val.title && t.author.toLowerCase() === val.author.toLowerCase()))
-  //   })
-  //   console.log(articles, "HERE")
-  //   return articles
-  // }
+  const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/latest_headlines")
 
-  console.log(headlinesData)
-
-  // useEffect(() => {
-  //   filterArticlesOfDuplicates()
-  // }, [headlinesData])
+  console.log(headlinesData, filteredFetchedData, filteredFetchedData || headlinesData)
 
   return (
     <main className='min-h-screen'>
@@ -54,10 +47,16 @@ const LatestHeadlines = () => {
           : null
       }
 
-      {
+      {/* {
         headlinesData?.articles?.length
-        ? <ShowAllArticlesData list={filterArticlesOfDuplicates(headlinesData?.articles)} filtersUsed={headlinesData?.user_input} />
-        : null
+          ? <ShowAllArticlesData list={filterArticlesOfDuplicates(headlinesData?.articles)} filtersUsed={headlinesData?.user_input} />
+          : null
+      } */}
+
+      {
+        filteredFetchedData?.data?.articles?.length || headlinesData?.articles?.length
+        ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || headlinesData?.articles)} filtersUsed={filteredFetchedData?.data?.user_input || headlinesData?.user_input} />
+          : null
       }
     </main>
   )

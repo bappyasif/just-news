@@ -33,13 +33,20 @@ export const makeKeys = (entries) => {
     return allKeys.sort().join(", ")
 }
 
+const remove = "Country\n\nUnited States of America US Virgin Islands United States Minor Outlying Islands Canada Mexico, United Mexican States Bahamas, Commonwealth of the Cuba, Republic of Dominican Republic Haiti, Republic of Jamaica Afghanistan Albania, People's Socialist Republic of Algeria, People's Democratic Republic of American Samoa Andorra, Principality of Angola, Republic of Anguilla Antarctica (the territory South of 60 deg S) Antigua and Barbuda Argentina, Argentine Republic Armenia Aruba Australia,"
+
+const removeArticlesContainingSummary = (arr) => {
+    return arr.filter(item => item?.summary !== remove)
+}
+
 export const filterArticlesOfDuplicates = (arr) => {
     let articles = [];
     articles = arr?.filter((val, idx, self) => {
       return idx === self.findIndex(t => (t.title === val.title && t.author.toLowerCase() === val.author.toLowerCase()))
     })
     console.log(articles, "HERE")
-    return articles
+    // return articles
+    return removeArticlesContainingSummary(articles)
   }
 
 export const fetchSourcesForDefault = (url) => fetch(
