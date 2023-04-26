@@ -148,7 +148,7 @@ export const GetUserSearchQuery = () => {
 export const ChooseNewsTimePeriod = ({ handleTime }) => {
     const periods = ["30d", "7d", "24h", "1h"];
 
-    return <RenderList labelText={"News Period"} handleChange={handleTime} items={periods} defaultText={"Time Window"} listName={"time"} />
+    return <RenderList labelText={"News Period"} handleChange={handleTime} items={periods} defaultText={"Time Window"} listName={"when"} />
 }
 
 export const GetNewsSourcesInput = ({ handleSources }) => {

@@ -1,6 +1,7 @@
-import { ShowAllArticlesData } from '@/components/forHeadlines';
+// import { ShowAllArticlesData } from '@/components/forHeadlines';
 import { ChooseNewsTimePeriod, GetNewsSourcesInput, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useFilteredDataFetching, useForDefaultFetching } from '@/hooks';
+import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
+import { useFilteredDataFetching, useForDefaultFetching, useSSGPreFetching } from '@/hooks';
 import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import React, { useState } from 'react'
@@ -40,18 +41,6 @@ const LatestHeadlines = () => {
           : null
       }
 
-      {/* {
-        headlinesData?.articles?.length
-          ? <ShowAllArticlesData list={filterArticlesOfDuplicates(headlinesData?.articles)} filtersUsed={headlinesData?.user_input} />
-          : null
-      } */}
-
-      {/* {
-        filteredFetchedData?.data?.articles?.length || headlinesData?.articles?.length
-        ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || headlinesData?.articles)} filtersUsed={filteredFetchedData?.data?.user_input || headlinesData?.user_input} />
-          : null
-      } */}
-
       {
         filteredFetchedData?.data?.articles?.length || defaultFetchedData?.articles?.length
           ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || defaultFetchedData?.articles)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
@@ -72,13 +61,7 @@ const RelatedUi = ({ handleEntries, handleHideFilters }) => {
 }
 
 export const getStaticProps = () => {
-  const queryClient = new QueryClient();
-
-  queryClient.prefetchQuery({
-    queryKey: ["headlines", "us"],
-    queryFn: () => fetchSourcesForDefault("https://api.newscatcherapi.com/v2/latest_headlines?countries=US&lang=en&topic=world&page_size=100"),
-    cacheTime: 86400000
-  })
+  const { queryClient } = useSSGPreFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
 
   return {
     props: {

@@ -1,15 +1,29 @@
 import { NotInThisLanguage, ReuseableRelatedUi, ToogleFilters, UserInput } from '@/components/shared'
+import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
+import { useFilteredDataFetching, useForDefaultFetching, useSSGPreFetching } from '@/hooks';
+import { filterArticlesOfDuplicates } from '@/utils';
+import { hydrate } from '@tanstack/react-query';
 import React, { useState } from 'react'
 
 const SearchNews = () => {
     const [entries, setEntries] = useState({});
     const [showFilters, setShowFilters] = useState(true);
+    const [fetchData, setFetchData] = useState(false);
 
-    const handleHideFilters = () => setShowFilters(false);
+    const handleHideFilters = () => {
+        setFetchData(true);
+        setShowFilters(false);
+    }
     const handleToggleShowFilters = () => setShowFilters(prev => !prev);
 
     const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
-    console.log(entries, "!!")
+
+    const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
+
+    const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/latest_headlines")
+
+    console.log(entries, "!!", defaultFetchedData)
+
     return (
         <main className='min-h-screen'>
             <div
@@ -21,6 +35,12 @@ const SearchNews = () => {
             {
                 showFilters
                     ? <RelatedUi handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
+                    : null
+            }
+
+            {
+                filteredFetchedData?.data?.articles?.length || defaultFetchedData?.articles?.length
+                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || defaultFetchedData?.articles)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
                     : null
             }
         </main>
@@ -35,6 +55,16 @@ const RelatedUi = ({ handleEntries, handleHideFilters }) => {
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />
         </ReuseableRelatedUi>
     )
+}
+
+export const getStaticProps = () => {
+    const { queryClient } = useSSGPreFetching("search?q=Apple&countries=CA", ["news", "ca"])
+
+    return {
+        props: {
+            dehydratedState: hydrate(queryClient) || null
+        }
+    }
 }
 
 export default SearchNews

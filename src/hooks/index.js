@@ -1,6 +1,6 @@
 import { AppContext } from "@/contexts"
 import { fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys } from "@/utils"
-import { useQuery } from "@tanstack/react-query"
+import { QueryClient, useQuery } from "@tanstack/react-query"
 import { useContext, useEffect, useState } from "react"
 
 export const useAppContext = () => {
@@ -136,4 +136,16 @@ export const useForDefaultFetching = (urlStr, keys) => {
     })
 
     return { defaultFetchedData }
+}
+
+export const useSSGPreFetching = (urlStr, keys) => {
+    const queryClient = new QueryClient();
+
+    queryClient.prefetchQuery({
+        queryKey: keys,
+        queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/${urlStr}`),
+        cacheTime: 86400000
+    })
+
+    return { queryClient }
 }
