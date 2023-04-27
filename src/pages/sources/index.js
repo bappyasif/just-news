@@ -1,19 +1,13 @@
 import { RenderAllNewsSources } from '@/components/forSources';
 import { ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useAppContext, useFilteredDataFetching, useForDefaultFetching, useSSGPreFetching } from '@/hooks';
+import { useAppContext, useFilteredDataFetching, useForDefaultFetching, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
 import { makeRoutes } from '@/utils';
 import { dehydrate } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 
 const NewsSources = () => {
-    const [entries, setEntries] = useState({});
-    const [showFilters, setShowFilters] = useState(true);
-    const [fetchData, setFetchData] = useState(false);
-
-    const handleHideFilters = () => setShowFilters(false);
-    const handleToggleShowFilters = () => setShowFilters(prev => !prev);
-    const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
+    const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters} = useMaintainUserInteractions()
 
     const router = useRouter();
 

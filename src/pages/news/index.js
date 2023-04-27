@@ -1,26 +1,16 @@
 import { NotInThisLanguage, ReuseableRelatedUi, ToogleFilters, UserInput } from '@/components/shared'
 import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
-import { useFilteredDataFetching, useForDefaultFetching, useSSGPreFetching } from '@/hooks';
+import { useFilteredDataFetching, useForDefaultFetching, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
 import { filterArticlesOfDuplicates } from '@/utils';
 import { hydrate } from '@tanstack/react-query';
 import React, { useState } from 'react'
 
 const SearchNews = () => {
-    const [entries, setEntries] = useState({});
-    const [showFilters, setShowFilters] = useState(true);
-    const [fetchData, setFetchData] = useState(false);
-
-    const handleHideFilters = () => {
-        setFetchData(true);
-        setShowFilters(false);
-    }
-    const handleToggleShowFilters = () => setShowFilters(prev => !prev);
-
-    const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
+    const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters} = useMaintainUserInteractions()
 
     const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
 
-    const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/latest_headlines")
+    const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/search")
 
     console.log(entries, "!!", defaultFetchedData)
 
@@ -48,7 +38,7 @@ const SearchNews = () => {
 }
 
 const RelatedUi = ({ handleEntries, handleHideFilters }) => {
-    const handleSearchText = e => handleEntries(e, "searchTerm")
+    const handleSearchText = e => handleEntries(e, "q")
     return (
         <ReuseableRelatedUi width={"434px"} height={"479px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
             <UserInput handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />

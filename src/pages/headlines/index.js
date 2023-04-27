@@ -1,22 +1,13 @@
 // import { ShowAllArticlesData } from '@/components/forHeadlines';
 import { ChooseNewsTimePeriod, GetNewsSourcesInput, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
 import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
-import { useFilteredDataFetching, useForDefaultFetching, useSSGPreFetching } from '@/hooks';
+import { useFilteredDataFetching, useForDefaultFetching, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
 import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import React, { useState } from 'react'
 
 const LatestHeadlines = () => {
-  const [entries, setEntries] = useState({});
-  const [showFilters, setShowFilters] = useState(true);
-  const [fetchData, setFetchData] = useState(false);
-
-  const handleHideFilters = () => {
-    setFetchData(true);
-    setShowFilters(false);
-  }
-  const handleToggleShowFilters = () => setShowFilters(prev => !prev);
-  const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
+  const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters} = useMaintainUserInteractions()
   console.log(entries, "!!")
 
   const waitASecond = () => setTimeout(() => true, 1001)

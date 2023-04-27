@@ -126,6 +126,7 @@ export const useFilteredDataFetching = (fetchData, entries, setFetchData, endpoi
 }
 
 export const useForDefaultFetching = (urlStr, keys) => {
+    console.log(urlStr, keys, "wtf!!")
     const { data: defaultFetchedData } = useQuery({
         queryKey: keys,
         queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/${urlStr}`),
@@ -148,4 +149,19 @@ export const useSSGPreFetching = (urlStr, keys) => {
     })
 
     return { queryClient }
+}
+
+export const useMaintainUserInteractions = () => {
+    const [entries, setEntries] = useState({});
+    const [showFilters, setShowFilters] = useState(true);
+    const [fetchData, setFetchData] = useState(false);
+
+    const handleHideFilters = () => {
+        setFetchData(true);
+        setShowFilters(false);
+    }
+    const handleToggleShowFilters = () => setShowFilters(prev => !prev);
+    const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
+
+    return {entries, showFilters, fetchData, setFetchData, handleEntries, handleToggleShowFilters, handleHideFilters}
 }
