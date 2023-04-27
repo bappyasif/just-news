@@ -5,10 +5,12 @@ import headerImg from "../../../public/abstract.jpg"
 import logoImg from "../../../public/logo.png"
 import { useRouter } from 'next/router';
 import { ReUsableImageComponent } from '../shared';
+import { useSession } from 'next-auth/react';
 
 export const AppNavigations = () => {
+    const { data: session } = useSession();
     const router = useRouter();
-    console.log(router.pathname)
+    console.log(router.pathname, session?.user)
     return (
         <header className='mb-28 z-40'>
             <ReUsableImageComponent
@@ -42,14 +44,20 @@ const RenderNavs = () => {
 
 const RenderNav = ({ item }) => {
     const { name, path, icon } = item
+    const { data: session } = useSession();
 
     return (
-        <Link
-            className='flex items-center gap-2 p-4 text-2xl bg-zinc-600 text-zinc-200 rounded-md'
-            href={path}
-        >
-            <span>{name}</span>
-            {icon}
-        </Link>
+        name !== "Sign In" && session?.user?.name
+            ||
+            (name !== "Saved Filters" && name !== "Sign Out" && !session?.user?.name)
+            ?
+            <Link
+                className='flex items-center gap-2 p-4 text-2xl bg-zinc-600 text-zinc-200 rounded-md'
+                href={path}
+            >
+                <span>{name}</span>
+                {icon}
+            </Link>
+            : null
     )
 }

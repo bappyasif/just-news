@@ -1,10 +1,10 @@
-// import { ShowAllArticlesData } from '@/components/forHeadlines';
+import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { ChooseNewsTimePeriod, GetNewsSourcesInput, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
+// import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
 import { useFilteredDataFetching, useForDefaultFetching, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
-import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
-import { QueryClient, dehydrate } from '@tanstack/react-query';
-import React, { useState } from 'react'
+import { filterArticlesOfDuplicates } from '@/utils';
+import { dehydrate } from '@tanstack/react-query';
+import React from 'react'
 
 const LatestHeadlines = () => {
   const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters} = useMaintainUserInteractions()

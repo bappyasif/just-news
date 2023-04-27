@@ -51,12 +51,12 @@ export const navs = [
     },
     {
         name: "Sign In",
-        path: "/",
+        path: "/api/auth/signin",
         icon: <MdLogin />
     },
     {
         name: "Sign Out",
-        path: "/",
+        path: "/api/auth/signout",
         icon: <MdLogout />
     },
 ]

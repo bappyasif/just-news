@@ -1,5 +1,6 @@
+import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { NotInThisLanguage, ReuseableRelatedUi, ToogleFilters, UserInput } from '@/components/shared'
-import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
+// import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
 import { useFilteredDataFetching, useForDefaultFetching, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
 import { filterArticlesOfDuplicates } from '@/utils';
 import { hydrate } from '@tanstack/react-query';
