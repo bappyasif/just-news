@@ -1,5 +1,5 @@
 import { AppContext } from "@/contexts"
-import { fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys } from "@/utils"
+import { fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys, sendHttpReuestToInternalApi } from "@/utils"
 import { QueryClient, useQuery } from "@tanstack/react-query"
 import { useContext, useEffect, useState } from "react"
 
@@ -133,7 +133,8 @@ export const useForDefaultFetching = (urlStr, keys) => {
         // enabled: false
         onSuccess: (data) => {
             console.log(data, "!! default data!!")
-        }
+        },
+        refetchOnWindowFocus: false
     })
 
     return { defaultFetchedData }
@@ -151,7 +152,7 @@ export const useSSGPreFetching = (urlStr, keys) => {
     return { queryClient }
 }
 
-export const useMaintainUserInteractions = () => {
+export const useMaintainUserInteractions = (endpoint) => {
     const [entries, setEntries] = useState({});
     const [showFilters, setShowFilters] = useState(true);
     const [fetchData, setFetchData] = useState(false);
@@ -160,8 +161,34 @@ export const useMaintainUserInteractions = () => {
         setFetchData(true);
         setShowFilters(false);
     }
+
+    // const handleSaveSearchedFilters = () => {
+    //     console.log("save it!!")
+    //     const url = endpoint;
+    //     const params = {...entries}
+    //     const method = "GET"
+    //     sendHttpReuestToInternalApi({url, params, method})
+    //     .then((v) => {
+    //         console.log(v, "<><><><>")
+    //     }).catch(err => console.log(err))
+    //     .finally(() => setShowFilters(false))
+    // }
+    const handleSaveSearchedFilters = () => {
+        console.log("save it!!")
+        const url = endpoint;
+        // const body = JSON.stringify({...entries})
+        const data = JSON.stringify(entries)
+        const method = "POST"
+        const headers = { "Content-Type": "application/json" }
+        sendHttpReuestToInternalApi({url, data, method, headers})
+        .then((v) => {
+            console.log(v, "<><><><>")
+        }).catch(err => console.log(err))
+        .finally(() => setShowFilters(false))
+    }
+
     const handleToggleShowFilters = () => setShowFilters(prev => !prev);
     const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
 
-    return {entries, showFilters, fetchData, setFetchData, handleEntries, handleToggleShowFilters, handleHideFilters}
+    return {entries, showFilters, fetchData, setFetchData, handleEntries, handleToggleShowFilters, handleHideFilters, handleSaveSearchedFilters}
 }

@@ -220,7 +220,7 @@ export const ToogleFilters = ({ fromNewsSource, fromNewsSearch, showFilters, han
     )
 }
 
-export const ReuseableRelatedUi = ({ height, width, children, handleEntries, handleHideFilters }) => {
+export const ReuseableRelatedUi = ({ height, width, children, handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
     return (
         <section
             className='absolute px-2 mt-2 z-20'
@@ -251,7 +251,7 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
             <div className="flex w-full gap-2 mt-4 ">
                 <button
                     className='bg-cyan-400 w-full rounded-md text-2xl'
-                    onClick={handleHideFilters}
+                    onClick={handleSaveSearchedFilters}
                 >
                     Save Search
                 </button>

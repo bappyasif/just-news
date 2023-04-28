@@ -6,7 +6,7 @@ import { hydrate } from '@tanstack/react-query';
 import React from 'react'
 
 const SearchNews = () => {
-    const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters} = useMaintainUserInteractions()
+    const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters} = useMaintainUserInteractions("/forNews")
 
     const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
 
@@ -24,7 +24,7 @@ const SearchNews = () => {
             </div>
             {
                 showFilters
-                    ? <RelatedUi handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
+                    ? <RelatedUi handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
                     : null
             }
 
@@ -37,10 +37,11 @@ const SearchNews = () => {
     )
 }
 
-const RelatedUi = ({ handleEntries, handleHideFilters }) => {
+const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
     const handleSearchText = e => handleEntries(e, "q")
+
     return (
-        <ReuseableRelatedUi width={"434px"} height={"499px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
+        <ReuseableRelatedUi width={"434px"} height={"499px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
             <GetUserSearchQuery handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
             {/* <UserInput handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} /> */}
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />

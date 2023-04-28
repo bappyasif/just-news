@@ -65,3 +65,15 @@ export const newsApiRequestInterceptor = ({ ...options }) => {
 
     return client(options).then(onSuccess).catch(onError)
 }
+
+export const sendHttpReuestToInternalApi = options => internalApiRequestInterceptor(options)
+
+const internalApiRequestInterceptor = ({...options}) => {
+    const client = axios.create({baseURL: "http://localhost:3000/api/saveFilters"})
+
+    const onSuccess = resp => resp
+
+    const onError = err => err
+
+    return client(options).then(onSuccess).catch(onError)
+}
