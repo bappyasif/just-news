@@ -156,35 +156,31 @@ export const useMaintainUserInteractions = (endpoint) => {
     const [entries, setEntries] = useState({});
     const [showFilters, setShowFilters] = useState(true);
     const [fetchData, setFetchData] = useState(false);
+    const {handleUpdateSavedFilters} = useAppContext()
 
     const handleHideFilters = () => {
         setFetchData(true);
         setShowFilters(false);
     }
 
-    // const handleSaveSearchedFilters = () => {
-    //     console.log("save it!!")
-    //     const url = endpoint;
-    //     const params = {...entries}
-    //     const method = "GET"
-    //     sendHttpReuestToInternalApi({url, params, method})
-    //     .then((v) => {
-    //         console.log(v, "<><><><>")
-    //     }).catch(err => console.log(err))
-    //     .finally(() => setShowFilters(false))
-    // }
     const handleSaveSearchedFilters = () => {
         console.log("save it!!")
-        const url = endpoint;
-        // const body = JSON.stringify({...entries})
-        const data = JSON.stringify(entries)
-        const method = "POST"
-        const headers = { "Content-Type": "application/json" }
-        sendHttpReuestToInternalApi({url, data, method, headers})
-        .then((v) => {
-            console.log(v, "<><><><>")
-        }).catch(err => console.log(err))
-        .finally(() => setShowFilters(false))
+        setShowFilters(false)
+        handleUpdateSavedFilters(entries, "news")
+
+        // uncomment when ready for db sync
+        // const url = endpoint;
+        // // const body = JSON.stringify({...entries})
+        // // const params = {...entries}
+        // // const method = "GET"
+        // const data = JSON.stringify(entries)
+        // const method = "POST"
+        // const headers = { "Content-Type": "application/json" }
+        // sendHttpReuestToInternalApi({url, data, method, headers})
+        // .then((v) => {
+        //     console.log(v, "<><><><>")
+        // }).catch(err => console.log(err))
+        // .finally(() => setShowFilters(false))
     }
 
     const handleToggleShowFilters = () => setShowFilters(prev => !prev);
