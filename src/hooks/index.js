@@ -126,7 +126,7 @@ export const useFilteredDataFetching = (fetchData, entries, setFetchData, endpoi
 }
 
 export const useForDefaultFetching = (urlStr, keys) => {
-    console.log(urlStr, keys, "wtf!!")
+    // console.log(urlStr, keys, "wtf!!")
     const { data: defaultFetchedData } = useQuery({
         queryKey: keys,
         queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/${urlStr}`),

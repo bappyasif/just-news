@@ -1,10 +1,9 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
-import { NotInThisLanguage, ReuseableRelatedUi, ToogleFilters, UserInput } from '@/components/shared'
-// import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
+import { GetUserSearchQuery, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
 import { useFilteredDataFetching, useForDefaultFetching, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
 import { filterArticlesOfDuplicates } from '@/utils';
 import { hydrate } from '@tanstack/react-query';
-import React, { useState } from 'react'
+import React from 'react'
 
 const SearchNews = () => {
     const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters} = useMaintainUserInteractions()
@@ -41,8 +40,9 @@ const SearchNews = () => {
 const RelatedUi = ({ handleEntries, handleHideFilters }) => {
     const handleSearchText = e => handleEntries(e, "q")
     return (
-        <ReuseableRelatedUi width={"434px"} height={"479px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
-            <UserInput handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
+        <ReuseableRelatedUi width={"434px"} height={"499px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
+            <GetUserSearchQuery handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
+            {/* <UserInput handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} /> */}
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />
         </ReuseableRelatedUi>
     )

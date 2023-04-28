@@ -67,7 +67,7 @@ export const MultipleCountriesHandleInputs = ({ handleChanges }) => {
 
 export const UserInput = ({ handleValueChanges, labelText, placeholderText }) => {
     return (
-        <label>
+        <label className="w-full">
             <p className='text-cyan-200 font-bold'>{labelText}</p>
             <input
                 className="w-full"
@@ -123,23 +123,24 @@ const AdvancedNewsQueryExamples = () => {
     const renderList = () => types.map(item => <option key={item.name} value={item.name}>{item.name}</option>)
 
     return (
-        <div>
-            <select onChange={e => handleTypes(e)}>
+        <div className="w-full">
+            <select className="w-full" onChange={e => handleTypes(e)}>
                 <option value="-1">Query Examples</option>
                 {renderList()}
             </select>
-            <p>{whichType?.text}</p>
+            <p className="text-teal-400 bg-slate-600 opacity-90 font-bold">{whichType?.text}</p>
         </div>
     )
 }
 
-export const GetUserSearchQuery = () => {
+export const GetUserSearchQuery = ({ handleValueChanges, labelText, placeholderText }) => {
     return (
-        <div className="flex items-baseline">
+        <div className="flex flex-col items-baseline w-full">
             <AdvancedNewsQueryExamples />
             <UserInput
-                labelText={"Search Term"}
-                placeholderText={"Enter Your Search Term"}
+                labelText={labelText}
+                placeholderText={placeholderText}
+                handleValueChanges={handleValueChanges}
             />
         </div>
     )
@@ -247,12 +248,28 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
                 {children}
                 <ReUseableJustUi handleEntries={handleEntries} />
             </div>
-            <button
+            <div className="flex w-full gap-2 mt-4 ">
+                <button
+                    className='bg-cyan-400 w-full rounded-md text-2xl'
+                    onClick={handleHideFilters}
+                >
+                    Save Search
+                </button>
+
+                <button
+                    className='bg-cyan-400 w-full rounded-md text-2xl'
+                    onClick={handleHideFilters}
+                >
+                    Search Now
+                </button>
+
+            </div>
+            {/* <button
                 className='bg-cyan-400 w-full rounded-md mt-4 text-2xl'
                 onClick={handleHideFilters}
             >
                 Search Now
-            </button>
+            </button> */}
         </section>
     )
 }
