@@ -17,7 +17,8 @@ export const AppContextProvider = ({ children }) => {
     }
 
     const handleUpdateSavedFilters = (filtersUsed, type) => {
-        const found = initialState.savedFilters.find(item => {
+        const found = state?.savedFilters.find(item => {
+            console.log(item, item?.type, type, item?.type === type)
             if (item?.type === type) {
                 // console.log(Object.entries(filtersUsed) === Object.entries(item?.user_input))
                 console.log(JSON.stringify(filtersUsed) === JSON.stringify(item?.user_input))
@@ -28,13 +29,13 @@ export const AppContextProvider = ({ children }) => {
 
         let newList = []
 
-        const filtersEntries = { user_input: filtersUsed, type }
+        const filtersEntries = { user_input: filtersUsed, type, name: "NewsFilters:" + (state?.savedFilters?.length || 0),  }
 
         // !found ? newList.push(...initialState.savedFilters, filtersEntries) : newList.push(...initialState.savedFilters)
         // !found ? newList.push(...state?.savedFilters, filtersEntries) : newList.push(state?.savedFilters)
         newList = !found ? newList.concat(...state?.savedFilters, filtersEntries) : state?.savedFilters
 
-        console.log(found, "found!!")
+        console.log(found, "found!!", newList)
         // console.log(found, filtersEntries, filtersUsed, initialState.savedFilters, newList, state.savedFilters)
 
         dispatch({
