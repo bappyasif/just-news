@@ -7,7 +7,7 @@ import { dehydrate } from '@tanstack/react-query';
 import React from 'react'
 
 const LatestHeadlines = () => {
-  const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters} = useMaintainUserInteractions()
+  const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters} = useMaintainUserInteractions("/forHeadlines", "Headlines", "HeadlinesFilters")
   console.log(entries, "!!")
 
   const waitASecond = () => setTimeout(() => true, 1001)
@@ -28,7 +28,7 @@ const LatestHeadlines = () => {
       </div>
       {
         showFilters
-          ? <RelatedUi handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
+          ? <RelatedUi handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
           : null
       }
 
@@ -41,9 +41,9 @@ const LatestHeadlines = () => {
   )
 }
 
-const RelatedUi = ({ handleEntries, handleHideFilters }) => {
+const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
   return (
-    <ReuseableRelatedUi width={"434px"} height={"562px"} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
+    <ReuseableRelatedUi width={"434px"} height={"562px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
       <ChooseNewsTimePeriod handleTime={handleEntries} />
       <GetNewsSourcesInput handleSources={handleEntries} />
       <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />

@@ -152,7 +152,7 @@ export const useSSGPreFetching = (urlStr, keys) => {
     return { queryClient }
 }
 
-export const useMaintainUserInteractions = (endpoint) => {
+export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
     const [entries, setEntries] = useState({});
     const [showFilters, setShowFilters] = useState(true);
     const [fetchData, setFetchData] = useState(false);
@@ -166,7 +166,7 @@ export const useMaintainUserInteractions = (endpoint) => {
     const handleSaveSearchedFilters = () => {
         console.log("save it!!")
         setShowFilters(false)
-        handleUpdateSavedFilters(entries, "news")
+        handleUpdateSavedFilters(entries, type, defaultName)
 
         // uncomment when ready for db sync
         // const url = endpoint;

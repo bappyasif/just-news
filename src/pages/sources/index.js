@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 
 const NewsSources = () => {
-    const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters} = useMaintainUserInteractions()
+    const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters} = useMaintainUserInteractions("/forSources", "Sources", "SourcesFilters")
 
     const router = useRouter();
 
@@ -58,6 +58,7 @@ const NewsSources = () => {
                         height={"355px"}
                         handleEntries={handleEntries}
                         handleHideFilters={handleShallowRoutes}
+                        handleSaveSearchedFilters={handleSaveSearchedFilters}
                     />
                     : null
             }
