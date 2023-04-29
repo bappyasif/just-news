@@ -17,7 +17,7 @@ export const makeRoutes = (entries) => {
     let str = '';
     for (let key in entries) {
         if (entries[key]) {
-            str += `?${key}=${entries[key]}`
+            str += `${key}=${entries[key]}&`
         }
     }
     return str

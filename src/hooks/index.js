@@ -1,6 +1,7 @@
 import { AppContext } from "@/contexts"
 import { fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys, sendHttpReuestToInternalApi } from "@/utils"
 import { QueryClient, useQuery } from "@tanstack/react-query"
+import { useRouter } from "next/router"
 import { useContext, useEffect, useState } from "react"
 
 export const useAppContext = () => {
@@ -187,4 +188,18 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
     const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
 
     return {entries, showFilters, fetchData, setFetchData, handleEntries, handleToggleShowFilters, handleHideFilters, handleSaveSearchedFilters}
+}
+
+export const useForShallowQuery = (setFetchData) => {
+    const router = useRouter()
+
+    useEffect(() => {
+        if(Object.values(router.query).length) {
+            setTimeout(() => {
+                setFetchData(true)
+            }, 1003)
+        }
+    }, [router.query])
+
+    return {routerQuery: router.query}
 }

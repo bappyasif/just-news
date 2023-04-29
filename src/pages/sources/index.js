@@ -1,10 +1,10 @@
 import { RenderAllNewsSources } from '@/components/forSources';
 import { ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useAppContext, useFilteredDataFetching, useForDefaultFetching, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
+import { useAppContext, useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
 import { makeRoutes } from '@/utils';
 import { dehydrate } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const NewsSources = () => {
     const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters} = useMaintainUserInteractions("/forSources", "Sources", "SourcesFilters")
@@ -40,7 +40,20 @@ const NewsSources = () => {
         handleHideFilters();
     }
 
-    const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/sources")
+    // useEffect(() => {
+    //     if(Object.values(router.query).length) {
+    //         setTimeout(() => {
+    //             setFetchData(true)
+    //         }, 1003)
+    //     }
+    // }, [router.query])
+    const {routerQuery} = useForShallowQuery(setFetchData)
+
+    console.log(router.query, "QUERY!!")
+
+    // const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/sources")
+    // const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( router.query || entries), setFetchData, "/sources")
+    const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), setFetchData, "/sources")
 
     return (
         <main>

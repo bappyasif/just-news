@@ -7,7 +7,7 @@ const SavedFilters = () => {
   console.log(savedFilters, "savedFilters!!")
   return (
     <main className='min-h-screen'>
-      <div>SavedFilters</div>
+      {/* <div>SavedFilters</div> */}
       <ShowAllSavedFilters data={savedFilters} />
     </main>
   )

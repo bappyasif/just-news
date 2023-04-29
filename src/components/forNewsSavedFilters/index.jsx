@@ -1,6 +1,8 @@
 import React from 'react'
 import { RenderFiltersInUse } from '../shared/forDataRendering'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { makeRoutes } from '@/utils'
 
 export const ShowAllSavedFilters = ({ data }) => {
     const forHeadlines = data?.filter(item => item?.type === "Headlines" && item)
@@ -26,7 +28,7 @@ export const ShowAllSavedFilters = ({ data }) => {
 
     return (
         <div>
-            <div className='bg-slate-400 mb-4 w-full px-4 text-xl text-center'>Showing All Saved Filters When Any</div>
+            <div className='bg-slate-400 opacity-80 mb-4 w-full px-4 text-6xl text-center'>Showing All Saved Filters When There Is Any</div>
             {
                 data?.length
                     ? renderAllFiltersData()
@@ -61,7 +63,7 @@ const RenderSpecificTypeFilters = ({ text, data }) => {
         data?.length
             ?
             <section className='w-full'>
-                <h2 className='bg-slate-400 my-4 px-4 text-4xl w-1/3 text-center'>{text}</h2>
+                <h2 className='bg-slate-800 opacity-90 text-stone-400 my-4 px-4 text-4xl w-1/3 text-center'>{text}</h2>
                 <div className='flex gap-4'>
                     {renderInfo()}
                 </div>
@@ -73,6 +75,12 @@ const RenderSpecificTypeFilters = ({ text, data }) => {
 const RenderFiltersInfo = ({ item }) => {
     const { name, type, user_input } = item
 
+    const router = useRouter();
+
+    const makeShallowUrl = () => {
+        router.push(`${type.toLowerCase()}?${makeRoutes(user_input)}`, undefined, { shallow: true })
+    }
+
     const decideBtnText = () => `See ${type === "News" ? "News" : type === "Headlines" ? "Headlines" : type === "Sources" ? "Sources" : null} Based On These Filters`
 
     return (
@@ -80,7 +88,7 @@ const RenderFiltersInfo = ({ item }) => {
             <h2><span className='bg-zinc-800 text-stone-200 px-2 mr-2'>Filter Name:</span><span className='bg-blue-600 text-slate-950 px-2'>{name}</span></h2>
             <h3><span className='bg-zinc-800 text-stone-200 px-2 mr-1'>Filter Type:</span> <span className='bg-blue-400 px-2'>For {type}</span></h3>
             <RenderFiltersInUse data={user_input} />
-            <button className='bg-cyan-400 text-gray-950 font-bold p-2 py-1 rounded-sm'>{decideBtnText()}</button>
+            <button onClick={makeShallowUrl} className='bg-cyan-400 text-gray-950 font-bold p-2 py-1 rounded-sm'>{decideBtnText()}</button>
         </div>
     )
 }

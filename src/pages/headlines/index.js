@@ -1,7 +1,7 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { ChooseNewsTimePeriod, GetNewsSourcesInput, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
 // import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
-import { useFilteredDataFetching, useForDefaultFetching, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
+import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
 import { filterArticlesOfDuplicates } from '@/utils';
 import { dehydrate } from '@tanstack/react-query';
 import React from 'react'
@@ -14,7 +14,11 @@ const LatestHeadlines = () => {
 
   const { defaultFetchedData } = useForDefaultFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
 
-  const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/latest_headlines")
+  const {routerQuery} = useForShallowQuery(setFetchData)
+
+  const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), setFetchData, "/latest_headlines")
+
+  // const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/latest_headlines")
 
   // console.log(headlinesData, filteredFetchedData, filteredFetchedData || headlinesData)
 
@@ -46,7 +50,7 @@ const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters
     <ReuseableRelatedUi width={"434px"} height={"562px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
       <ChooseNewsTimePeriod handleTime={handleEntries} />
       <GetNewsSourcesInput handleSources={handleEntries} />
-      <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"excludeLanguage"} />
+      <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} />
     </ReuseableRelatedUi>
   )
 }
