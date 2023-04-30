@@ -1,6 +1,6 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { GetUserSearchQuery, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useFilteredDataFetching, useForDefaultFetching, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
+import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
 import { filterArticlesOfDuplicates } from '@/utils';
 import { hydrate } from '@tanstack/react-query';
 import React from 'react'
@@ -10,7 +10,11 @@ const SearchNews = () => {
 
     const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
 
-    const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/search")
+    const {routerQuery} = useForShallowQuery(setFetchData)
+
+    const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), setFetchData, "/search")
+
+    // const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/search")
 
     console.log(entries, "!!", defaultFetchedData)
 
