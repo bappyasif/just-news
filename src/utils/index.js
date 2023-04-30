@@ -77,3 +77,14 @@ const internalApiRequestInterceptor = ({...options}) => {
 
     return client(options).then(onSuccess).catch(onError)
 }
+
+export const convertUserInputsDataFromServer = (dataset) => {
+    let data =  [];
+    dataset?.forEach(item => {
+        item.user_input = item.user_input[0]
+        console.log(item.user_input[0])
+        data.push(item)
+    })
+
+    return data
+}

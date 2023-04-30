@@ -1,5 +1,5 @@
 import { AppContext } from "@/contexts"
-import { fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys, sendHttpReuestToInternalApi } from "@/utils"
+import { convertUserInputsDataFromServer, fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys, sendHttpReuestToInternalApi } from "@/utils"
 import { QueryClient, useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
@@ -158,9 +158,9 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
     const [entries, setEntries] = useState({});
     const [showFilters, setShowFilters] = useState(true);
     const [fetchData, setFetchData] = useState(false);
-    const {handleUpdateSavedFilters} = useAppContext();
+    const { handleUpdateSavedFilters } = useAppContext();
 
-    const {data: session} = useSession()
+    const { data: session } = useSession()
 
     const handleHideFilters = () => {
         setFetchData(true);
@@ -169,40 +169,80 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
 
     const handleSaveSearchedFilters = () => {
         console.log("save it!!")
-        setShowFilters(false)
-        handleUpdateSavedFilters(entries, type, defaultName, session?.user?.sub)
+        // setShowFilters(false)
+        // handleUpdateSavedFilters(entries, type, defaultName, session?.user?.sub)
 
         // uncomment when ready for db sync
-        // const url = endpoint;
-        // // const body = JSON.stringify({...entries})
-        // // const params = {...entries}
-        // // const method = "GET"
-        // const data = JSON.stringify(entries)
-        // const method = "POST"
-        // const headers = { "Content-Type": "application/json" }
+        const url = endpoint;
+        // const body = JSON.stringify({...entries})
+        // const params = {...entries}
+        // const method = "GET"
+        // const data = JSON.stringify(entries, {user_id: session?.user?.sub})
+        // const data = JSON.stringify({user_id: session?.user?.sub, ...entries})
+        const data = JSON.stringify(entries)
+        const params = { user_id: session?.user?.sub, type }
+        const method = "POST"
+        const headers = { "Content-Type": "application/json" }
         // sendHttpReuestToInternalApi({url, data, method, headers})
-        // .then((v) => {
-        //     console.log(v, "<><><><>")
-        // }).catch(err => console.log(err))
-        // .finally(() => setShowFilters(false))
+        sendHttpReuestToInternalApi({ url: "/forNews", data, method, params, headers })
+            .then(resp => {
+                console.log(resp, "<><><><>")
+                if (resp.status === 200) {
+                    handleUpdateSavedFilters(entries, type, defaultName, session?.user?.sub)
+                    setShowFilters(false)
+                } else if (resp.status >= 400) {
+                    alert(resp.data.msg)
+                }
+            }).catch(err => console.log(err))
+            .finally(() => setShowFilters(false))
     }
 
     const handleToggleShowFilters = () => setShowFilters(prev => !prev);
     const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
 
-    return {entries, showFilters, fetchData, setFetchData, handleEntries, handleToggleShowFilters, handleHideFilters, handleSaveSearchedFilters}
+    return { entries, showFilters, fetchData, setFetchData, handleEntries, handleToggleShowFilters, handleHideFilters, handleSaveSearchedFilters }
 }
 
 export const useForShallowQuery = (setFetchData) => {
     const router = useRouter()
 
     useEffect(() => {
-        if(Object.values(router.query).length) {
+        if (Object.values(router.query).length) {
             setTimeout(() => {
                 setFetchData(true)
             }, 1003)
         }
     }, [router.query])
 
-    return {routerQuery: router.query}
+    return { routerQuery: router.query }
+}
+
+export const useForFetchFiltersSavedByUserFromServer = () => {
+    const { data: session } = useSession()
+    const { handleInitialFiltersSavedByUser } = useAppContext(AppContext)
+
+    const params = { user_id: session?.user?.sub };
+    const method = "GET";
+    const url = "/forNews"
+
+    // console.log(url, params, method, session?.user)
+
+    const fetchOnce = () => {
+        sendHttpReuestToInternalApi({ url, params, method })
+            .then(resp => {
+                if (resp.status === 200) {
+                    console.log(resp.data, resp)
+                    // console.log(convertUserInputsDataFromServer(resp.data.savedFilters))
+                    const dataConverted = convertUserInputsDataFromServer(resp.data.savedFilters)
+                    handleInitialFiltersSavedByUser(dataConverted)
+                    // handleInitialFiltersSavedByUser(resp.data.savedFilters)
+                } else if (resp.status >= 400) {
+                    alert(resp.data.msg)
+                }
+            })
+    }
+
+    useEffect(() => {
+        fetchOnce()
+    }, [session?.user?.sub])
 }

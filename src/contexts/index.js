@@ -48,10 +48,19 @@ export const AppContextProvider = ({ children }) => {
         })
     }
 
+    const initialUpdateForFiltersSavedByUser = (data) => {
+        dispatch({
+            type: ACTIONS.UPDATE_FILTERS,
+            payload: {savedFilters: data}
+            // payload: !found ? initialState.savedFilters.push(filtersEntries) : initialState.savedFilters
+        })
+    }
+
     const value = {
         sources: state.sources,
         updateNewsSources: updateNewsSources,
         handleUpdateSavedFilters: handleUpdateSavedFilters,
+        handleInitialFiltersSavedByUser: initialUpdateForFiltersSavedByUser,
         savedFilters: state.savedFilters
         // savedFilters: initialState.savedFilters
     }
