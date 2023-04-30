@@ -1,6 +1,7 @@
 import { AppContext } from "@/contexts"
 import { fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys, sendHttpReuestToInternalApi } from "@/utils"
 import { QueryClient, useQuery } from "@tanstack/react-query"
+import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useContext, useEffect, useState } from "react"
 
@@ -157,7 +158,9 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
     const [entries, setEntries] = useState({});
     const [showFilters, setShowFilters] = useState(true);
     const [fetchData, setFetchData] = useState(false);
-    const {handleUpdateSavedFilters} = useAppContext()
+    const {handleUpdateSavedFilters} = useAppContext();
+
+    const {data: session} = useSession()
 
     const handleHideFilters = () => {
         setFetchData(true);
@@ -167,7 +170,7 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
     const handleSaveSearchedFilters = () => {
         console.log("save it!!")
         setShowFilters(false)
-        handleUpdateSavedFilters(entries, type, defaultName)
+        handleUpdateSavedFilters(entries, type, defaultName, session?.user?.sub)
 
         // uncomment when ready for db sync
         // const url = endpoint;
