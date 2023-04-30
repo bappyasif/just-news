@@ -95,17 +95,17 @@ const RenderArticleMetaData = ({ item }) => {
         <div className="bg-gray-900 opacity-90 text-stone-400 font-light">
             <ReUsableContentRenderer>
                 <RenderContent text={author} label={"By"} />
-                <RenderContent text={rights || clean_url} label={"Rights"} />
+                <RenderContent text={topic.toUpperCase()} label={"Topic"} />
                 <RenderContent text={rank} label={"Rank"} />
             </ReUsableContentRenderer>
             <ReUsableContentRenderer>
                 <RenderContent text={country.toUpperCase()} label={"Country"} />
                 <RenderContent text={(language || "en").toUpperCase()} label={"Langugae"} />
-                <RenderContent text={topic.toUpperCase()} label={"Topic"} />
+                <RenderContent text={twitter_account} label={"Twitter"} />
             </ReUsableContentRenderer>
             <ReUsableContentRenderer>
+                <RenderContent text={rights || clean_url} label={"Rights"} />
                 <RenderContent text={new Date(published_date).toLocaleDateString()} label={"Published On"} />
-                <RenderContent text={twitter_account} label={"Twitter"} />
             </ReUsableContentRenderer>
         </div>
     )
@@ -113,7 +113,7 @@ const RenderArticleMetaData = ({ item }) => {
 
 const ReUsableContentRenderer = ({ children, test }) => {
     return (
-        <p className="flex gap-2">
+        <p className="flex gap-2 justify-between w-full">
             {children}
         </p>
     )

@@ -1,7 +1,17 @@
 import newsFilters from "@/models/news"
 import connectMongoDB from "@/utils/connectMongo"
+import { getServerSession } from "next-auth"
+import { authOptions } from "../auth/[...nextauth]"
 
 const handler = async (req, res) => {
+    const session = await getServerSession(req, res, authOptions)
+
+    console.log(session, "SESSION!!")
+
+    if(!session) {
+        return res.status(402).json({msg: "access un-authorized"})
+    }
+
     connectMongoDB()
 
     const method = req.method;

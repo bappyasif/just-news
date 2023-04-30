@@ -4,7 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github"
 import Google from "next-auth/providers/google";
 
-export default NextAuth({
+export const authOptions = ({
     providers: [
         GithubProvider({
             clientId: process.env.GITHUB_CLIENT_ID,
@@ -34,3 +34,5 @@ export default NextAuth({
         }
     }
 })
+
+export default NextAuth(authOptions)
