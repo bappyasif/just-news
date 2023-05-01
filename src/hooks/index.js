@@ -1,4 +1,5 @@
 import { AppContext } from "@/contexts"
+import { happensAfterHttpRequest } from "@/utils"
 import { convertUserInputsDataFromServer, fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys, sendHttpReuestToInternalApi } from "@/utils"
 import { QueryClient, useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
@@ -162,9 +163,24 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
 
     const { data: session } = useSession()
 
+    const handleHttpRequestWhenSourceOrSearchQueryExists = () => {
+        console.log("OUTSIE")
+        if(entries?.q || entries.sources) {
+            let data;
+            console.log("INSIDE")
+            if(entries.q) {
+                data = {type: "q", text: entries.q}
+            } else if(entries.sources) {
+                data = {type: "sources", text: entries.sources}
+            }
+            happensAfterHttpRequest(() => setShowFilters(false), {data, url: "/liveSearch", method: "POST"})
+        }
+    }
+
     const handleHideFilters = () => {
         setFetchData(true);
-        setShowFilters(false);
+        handleHttpRequestWhenSourceOrSearchQueryExists();
+        // setShowFilters(false);
     }
 
     const handleSaveSearchedFilters = () => {
