@@ -46,9 +46,11 @@ const handler = async (req, res) => {
         })
 
     } else if (method === "DELETE") {
-        const body = req.body;
-        console.log("save news filters handler DELETE method", body, method)
-        return res.status(200).json({ msg: "save news filters handler" })
+        console.log("save news filters handler DELETE method", query, method)
+        newsFilters.findByIdAndDelete({_id: query.filter_id})
+        .then(() => {
+            return res.status(200).json({ msg: "save news filters handler" })
+        }).catch(err => console.log("error occured while deleting", err))
     }
 }
 

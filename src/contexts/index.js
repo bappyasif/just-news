@@ -56,11 +56,20 @@ export const AppContextProvider = ({ children }) => {
         })
     }
 
+    const deleteThisSavedFilter = (id) => {
+        const newList = state.savedFilters.filter(item => item._id !== id)
+        dispatch({
+            type: ACTIONS.UPDATE_FILTERS,
+            payload: {savedFilters: newList}
+        })
+    }
+
     const value = {
         sources: state.sources,
         updateNewsSources: updateNewsSources,
         handleUpdateSavedFilters: handleUpdateSavedFilters,
         handleInitialFiltersSavedByUser: initialUpdateForFiltersSavedByUser,
+        handleDeleteSavedFilter: deleteThisSavedFilter,
         savedFilters: state.savedFilters
         // savedFilters: initialState.savedFilters
     }

@@ -88,3 +88,16 @@ export const convertUserInputsDataFromServer = (dataset) => {
 
     return data
 }
+
+export const happensAfterHttpRequest = (dataUpdater, options) => {
+    sendHttpReuestToInternalApi(options)
+        .then(resp => {
+            if(resp.status === 200) {
+                dataUpdater(resp.data.data)
+            } else if(resp.status >= 400) {
+                console.log("oops something is wrong!!")
+            }
+        }).catch(err => {
+            copnsole.log("error occured", err)
+        })
+}
