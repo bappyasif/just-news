@@ -1,3 +1,4 @@
+import { useForLiveSearches } from "@/hooks"
 import { MdDoubleArrow } from "react-icons/md"
 
 export const AppHeadline = () => {
@@ -9,27 +10,33 @@ export const AppHeadline = () => {
     )
 }
 
-export const ReturningUserNewsSearches = () => {
-    const searchTerms = ["test search query term", "another test Search query"]
+export const ShowAllLiveSearches = () => {
+    const dataset = [
+        { type: "q", titleText: "Live News Search Query" },
+        { type: "sources", titleText: "Live News Source Search" }
+    ]
+
+    const renderData = () => dataset.map(item => <RenderLiveSearchData key={item.type} type={item.type} titleText={item.titleText} />);
+
     return (
-        <div className="w-1/2">
-            <RenderAllSearchTerms data={searchTerms} titleText={"News Searched By User"} />
+        <div className="flex gap-4">
+            {renderData()}
         </div>
     )
 }
 
-export const PopularSearches = () => {
-    const searchTerms = ["popular search", "another popular search"]
-
+const RenderLiveSearchData = ({type, titleText}) => {
+    const demoData = {q: [{ text: "world" }, { text: "political" }, {text: "standpoints"}], sources: [{ text: "wsj.com" }, { text: "wire.com" }]}
+    const { results } = useForLiveSearches(type)
     return (
-        <div className="w-1/2">
-            <RenderAllSearchTerms data={searchTerms} titleText={"Live search goes here"} />
+        <div className="w-full">
+            <RenderAllSearchTerms data={results?.length ? results : demoData[type]} titleText={titleText} />
         </div>
     )
 }
 
 const RenderAllSearchTerms = ({ data, titleText }) => {
-    const renderSearchTerms = () => data.map(text => <RenderSeachTerm key={text} text={text} />)
+    const renderSearchTerms = () => data.map(item => <RenderSeachTerm key={item?.text} text={item?.text} />)
     return (
         <div className="w-full bg-slate-800 opacity-90 h-full">
             <RenderSomeHeaderText titleText={titleText} />
@@ -78,7 +85,7 @@ export const LandingPageContentRendering = () => {
     ];
 
     return (
-        <section className="w-full">
+        <section className="w-3/4">
             {/* <RenderTexts titleText={"Want To Look Into News Snippet From All Over This Planet?"} descTexts={headlineTexts} /> */}
             <RenderTexts titleText={"Just News App In-A-Nutshell"} descTexts={introTexts} />
             <RenderTexts titleText={"Just News App Call-To-Action"} descTexts={ctaTexts} />

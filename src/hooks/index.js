@@ -262,3 +262,30 @@ export const useForFetchFiltersSavedByUserFromServer = () => {
         fetchOnce()
     }, [session?.user?.sub])
 }
+
+export const useForLiveSearches = (type) => {
+    const [results, setResults] = useState([]);
+    const url = "/liveSearch";
+    const method = "GET";
+
+    const handleUpdate = (data) => {
+        console.log(data, "DATA!! runnig every two seconds")
+        setResults(data)
+    }
+
+    const fetchInEveryCoupleOfMinutes = () => {
+        const timer = setInterval(() => {
+            const params = {type}
+            happensAfterHttpRequest(handleUpdate, {url, method, params})
+            // 240000
+        }, 120000)
+
+        return () => clearInterval(timer)
+    }
+
+    useEffect(() => {
+        fetchInEveryCoupleOfMinutes();
+    }, [])
+
+    return {results}
+}
