@@ -10,15 +10,16 @@ const handler = async (req, res) => {
     const session = await getServerSession(req, res, authOptions)
 
     if (!session) {
-        console.log("SESSION!!")
+        // console.log("SESSION!!")
         return res.status(402).json({ msg: "access un-authorized" })
     }
 
     if (method === "GET") {
         const firstTwenty = await liveSearch.find({ type: query.type }).sort([['_id', 1]]).limit(20)
-        console.log("firstTwenty", firstTwenty)
+        // console.log("firstTwenty", firstTwenty?.length, query)
         return res.status(200).json({ msg: "a successfull get request", data: firstTwenty })
     } else if (method === "POST") {
+        // console.log(body, "POST")
         const newEntry = new liveSearch(body);
         newEntry.save().then(() => {
             return res.status(200).json({ msg: "a successfull post request" })

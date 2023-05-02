@@ -265,27 +265,23 @@ export const useForFetchFiltersSavedByUserFromServer = () => {
 
 export const useForLiveSearches = (type) => {
     const [results, setResults] = useState([]);
+
     const url = "/liveSearch";
     const method = "GET";
+
+    const router = useRouter();
 
     const handleUpdate = (data) => {
         console.log(data, "DATA!! runnig every two seconds")
         setResults(data)
     }
 
-    const fetchInEveryCoupleOfMinutes = () => {
-        const timer = setInterval(() => {
-            const params = {type}
-            happensAfterHttpRequest(handleUpdate, {url, method, params})
-            // 240000
-        }, 120000)
-
-        return () => clearInterval(timer)
-    }
-
-    useEffect(() => {
-        fetchInEveryCoupleOfMinutes();
-    }, [])
+    useQuery({
+        queryKey: ["live search", `${type}`],
+        queryFn: () => happensAfterHttpRequest(handleUpdate, {url, method, params:{type}}),
+        enabled: router.pathname === "/" ? true : false,
+        refetchInterval: 240000
+    })
 
     return {results}
 }
