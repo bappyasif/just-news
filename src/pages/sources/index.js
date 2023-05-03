@@ -33,7 +33,7 @@ const NewsSources = () => {
     const handleShallowRoutes = () => {
         if (Object.keys(entries).length) {
             setFetchData(true)
-            router.push(`/sources${makeRoutes(entries)}`, undefined, { shallow: true })
+            router.push(`/sources?${makeRoutes(entries)}`, undefined, { shallow: true })
         }
 
         // setEntries({})

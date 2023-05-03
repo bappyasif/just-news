@@ -1,5 +1,5 @@
 import { AppContext } from "@/contexts"
-import { happensAfterHttpRequest } from "@/utils"
+import { happensAfterHttpRequest, makeRoutes } from "@/utils"
 import { convertUserInputsDataFromServer, fetchSourcesForDefault, fetchSourcesOnRequests, makeKeys, sendHttpReuestToInternalApi } from "@/utils"
 import { QueryClient, useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
@@ -163,6 +163,8 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
 
     const { data: session } = useSession()
 
+    const router = useRouter()
+
     const handleHttpRequestWhenSourceOrSearchQueryExists = () => {
         console.log("OUTSIE")
         if(entries?.q || entries.sources) {
@@ -181,6 +183,7 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
         setFetchData(true);
         handleHttpRequestWhenSourceOrSearchQueryExists();
         // setShowFilters(false);
+        router.push(`/${type.toLowerCase()}?${makeRoutes(entries)}`, undefined, { shallow: true })
     }
 
     const handleSaveSearchedFilters = () => {
@@ -229,6 +232,8 @@ export const useForShallowQuery = (setFetchData) => {
             }, 1003)
         }
     }, [router.query])
+
+    console.log(router.query, "router.query!!!!")
 
     return { routerQuery: router.query }
 }

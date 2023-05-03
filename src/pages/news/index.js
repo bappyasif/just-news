@@ -16,7 +16,7 @@ const SearchNews = () => {
 
     // const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/search")
 
-    console.log(entries, "!!", defaultFetchedData)
+    console.log(entries, "!!", defaultFetchedData, routerQuery)
 
     return (
         <main className='min-h-screen'>

@@ -16,10 +16,10 @@ export const ShowAllLiveSearches = () => {
         { type: "sources", titleText: "Live News Source Search" }
     ]
 
-    const renderData = () => dataset.map(item => <RenderLiveSearchData key={item.type} type={item.type} titleText={item.titleText} />);
+    const renderData = () => dataset.map((item, idx) => <RenderLiveSearchData key={item.type} type={item.type} titleText={item.titleText} />);
 
     return (
-        <div className="flex gap-4">
+        <div className="flex gap-4 w-3/4">
             {renderData()}
         </div>
     )
@@ -36,7 +36,7 @@ const RenderLiveSearchData = ({type, titleText}) => {
 }
 
 const RenderAllSearchTerms = ({ data, titleText }) => {
-    const renderSearchTerms = () => data.map(item => <RenderSeachTerm key={item?.text} text={item?.text} />)
+    const renderSearchTerms = () => data.map((item, idx) => <RenderSeachTerm key={item?.text + idx} text={item?.text} />)
     return (
         <div className="w-full bg-slate-800 opacity-90 h-full">
             <RenderSomeHeaderText titleText={titleText} />
@@ -85,7 +85,7 @@ export const LandingPageContentRendering = () => {
     ];
 
     return (
-        <section className="w-3/4">
+        <section className="w-full">
             {/* <RenderTexts titleText={"Want To Look Into News Snippet From All Over This Planet?"} descTexts={headlineTexts} /> */}
             <RenderTexts titleText={"Just News App In-A-Nutshell"} descTexts={introTexts} />
             <RenderTexts titleText={"Just News App Call-To-Action"} descTexts={ctaTexts} />
@@ -94,7 +94,7 @@ export const LandingPageContentRendering = () => {
 }
 
 const RenderTexts = ({ titleText, descTexts }) => {
-    const renderTexts = () => descTexts.map(text => <p className="px-2 text-slate-400 flex gap-2 items-center"><span className="text-2xl"><MdDoubleArrow /></span> <span>{text}</span></p>)
+    const renderTexts = () => descTexts.map(text => <p key={text} className="px-2 text-slate-400 flex gap-2 items-center"><span className="text-2xl"><MdDoubleArrow /></span> <span>{text}</span></p>)
 
     return (
         <div className="bg-slate-800 opacity-90 mb-2">

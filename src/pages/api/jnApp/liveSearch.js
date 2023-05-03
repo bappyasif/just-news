@@ -1,3 +1,5 @@
+import connectMongoDB from "@/utils/connectMongo"
+
 const { getServerSession } = require("next-auth")
 const { authOptions } = require("../auth/[...nextauth]")
 const { default: liveSearch } = require("@/models/liveSearch")
@@ -13,6 +15,8 @@ const handler = async (req, res) => {
         // console.log("SESSION!!")
         return res.status(402).json({ msg: "access un-authorized" })
     }
+
+    connectMongoDB()
 
     if (method === "GET") {
         const firstTwenty = await liveSearch.find({ type: query.type }).sort([['_id', 1]]).limit(20)

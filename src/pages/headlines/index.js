@@ -8,13 +8,14 @@ import React from 'react'
 
 const LatestHeadlines = () => {
   const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters} = useMaintainUserInteractions("/forHeadlines", "Headlines", "HeadlinesFilters")
-  console.log(entries, "!!")
 
   const waitASecond = () => setTimeout(() => true, 1001)
 
   const { defaultFetchedData } = useForDefaultFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
 
   const {routerQuery} = useForShallowQuery(setFetchData)
+
+  console.log(entries, "!!", routerQuery)
 
   const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), setFetchData, "/latest_headlines")
 
