@@ -43,12 +43,12 @@ const removeArticlesContainingSummary = (arr) => {
 export const filterArticlesOfDuplicates = (arr) => {
     let articles = [];
     articles = arr?.filter((val, idx, self) => {
-      return idx === self.findIndex(t => (t.title === val.title && t.author.toLowerCase() === val.author.toLowerCase()))
+        return idx === self.findIndex(t => (t.title === val.title && t.author.toLowerCase() === val.author.toLowerCase()))
     })
     console.log(articles, "HERE")
     // return articles
     return removeArticlesContainingSummary(articles)
-  }
+}
 
 export const fetchSourcesForDefault = (url) => fetch(
     url,
@@ -69,9 +69,9 @@ export const newsApiRequestInterceptor = ({ ...options }) => {
 
 export const sendHttpReuestToInternalApi = options => internalApiRequestInterceptor(options)
 
-const internalApiRequestInterceptor = ({...options}) => {
+const internalApiRequestInterceptor = ({ ...options }) => {
     // const client = axios.create({baseURL: "http://localhost:3000/api/saveFilters"})
-    const client = axios.create({baseURL: "http://localhost:3000/api/jnApp"})
+    const client = axios.create({ baseURL: "http://localhost:3000/api/jnApp" })
 
     const onSuccess = resp => resp
 
@@ -81,7 +81,7 @@ const internalApiRequestInterceptor = ({...options}) => {
 }
 
 export const convertUserInputsDataFromServer = (dataset) => {
-    let data =  [];
+    let data = [];
     dataset?.forEach(item => {
         item.user_input = item.user_input[0]
         console.log(item.user_input[0])
@@ -94,9 +94,9 @@ export const convertUserInputsDataFromServer = (dataset) => {
 export const happensAfterHttpRequest = (dataUpdater, options) => {
     return sendHttpReuestToInternalApi(options)
         .then(resp => {
-            if(resp.status === 200) {
+            if (resp.status === 200) {
                 dataUpdater(resp.data.data)
-            } else if(resp.status >= 400) {
+            } else if (resp.status >= 400) {
                 console.log("oops something is wrong!!")
             }
             console.log(resp)
@@ -106,22 +106,30 @@ export const happensAfterHttpRequest = (dataUpdater, options) => {
         })
 }
 
+const afterFoundBadWord = (fidx, text, badWord) => {
+    let str = ''
+    const b4 = text.substring(0, fidx)
+    const after = text.substring(badWord.length + fidx)
+    const bw = text.substring(fidx, badWord.length + fidx)
+    const bwMids = bw[0] + text.substring(fidx + 1, badWord.length + fidx - 1).split('').map(v => '*').join('') + bw[bw.length - 1]
+    // const bwMids = text.substring(fidx+1, badWord.length+fidx - 1).split('').map(v => '*').join('')
+    // console.log(fidx, "FIUND", text, b4, bw, bwMids, after, str, b4 + bwMids + after)
+
+    str = b4 + bwMids + after
+    text = str
+
+    return str
+}
+
 export const checkIfProfanityExists = (text) => {
-    let str = text;        
+    let str = text;
 
     swearWords.forEach(badWord => {
         const fidx = text.toLowerCase().indexOf(badWord.toLowerCase())
-        if(fidx !== -1) {
-            const b4 = text.substring(0, fidx)
-            const after = text.substring(badWord.length+fidx)
-            const bw = text.substring(fidx, badWord.length+fidx)
-            const bwMids = bw[0]+text.substring(fidx+1, badWord.length+fidx - 1).split('').map(v => '*').join('')+bw[bw.length-1]
-            // const bwMids = text.substring(fidx+1, badWord.length+fidx - 1).split('').map(v => '*').join('')
-            console.log(fidx, "FIUND", text, b4, bw, bwMids)
-            // str = "fuck off"
-            str = b4 + bwMids + after
-        }     
+        if (fidx !== -1) {
+            str = afterFoundBadWord(fidx, str, badWord)
+        }
     })
-   
+
     return str;
 }
