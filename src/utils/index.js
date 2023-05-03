@@ -1,3 +1,4 @@
+import { swearWords } from "@/data";
 import axios from "axios";
 
 export const restructureAllUsedFilters = (filtersUsed) => {
@@ -103,4 +104,24 @@ export const happensAfterHttpRequest = (dataUpdater, options) => {
         }).catch(err => {
             copnsole.log("error occured", err)
         })
+}
+
+export const checkIfProfanityExists = (text) => {
+    let str = text;        
+
+    swearWords.forEach(badWord => {
+        const fidx = text.toLowerCase().indexOf(badWord.toLowerCase())
+        if(fidx !== -1) {
+            const b4 = text.substring(0, fidx)
+            const after = text.substring(badWord.length+fidx)
+            const bw = text.substring(fidx, badWord.length+fidx)
+            const bwMids = bw[0]+text.substring(fidx+1, badWord.length+fidx - 1).split('').map(v => '*').join('')+bw[bw.length-1]
+            // const bwMids = text.substring(fidx+1, badWord.length+fidx - 1).split('').map(v => '*').join('')
+            console.log(fidx, "FIUND", text, b4, bw, bwMids)
+            // str = "fuck off"
+            str = b4 + bwMids + after
+        }     
+    })
+   
+    return str;
 }

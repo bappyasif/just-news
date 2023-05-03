@@ -1,4 +1,4 @@
-import {MdSatelliteAlt, MdPerson4, MdDashboard, MdSource, MdViewList, MdVerified, MdWebStories, MdLogin, MdLogout, MdHome} from "react-icons/md"
+import { MdSatelliteAlt, MdPerson4, MdDashboard, MdSource, MdViewList, MdVerified, MdWebStories, MdLogin, MdLogout, MdHome } from "react-icons/md"
 
 export const types = [
     {
@@ -59,4 +59,13 @@ export const navs = [
         path: "/api/auth/signout",
         icon: <MdLogout />
     },
+];
+
+export const swearWords = [
+    "Arse", "Bloody", "Bugger", "Crap", "Damn", "Goddam", "Minger", "Sod-off",
+    "Arsehole", "Balls", "Bint", "Bitch", "Bollocks", "Bullshit", "Feck", "Munter",
+    "Pissed off", "Shit", "Son of a bitch", "Tits", "Bastard", "Beef curtains",
+    "Bellend", "Bloodclaat", "Clunge", "Cock", "Dick", "Dickhead", "Fanny", 
+    "Flaps", "Gash", "Knob", "Minge", "Prick", "Punani", "Pussy", "Twat", "Cunt", 
+    "Fuck", "Motherfucker"
 ]

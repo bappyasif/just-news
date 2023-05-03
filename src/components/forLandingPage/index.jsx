@@ -1,4 +1,6 @@
+import { swearWords } from "@/data"
 import { useForLiveSearches } from "@/hooks"
+import { checkIfProfanityExists } from "@/utils"
 import { MdDoubleArrow } from "react-icons/md"
 
 export const AppHeadline = () => {
@@ -50,7 +52,7 @@ const RenderAllSearchTerms = ({ data, titleText }) => {
 
 const RenderSeachTerm = ({ text }) => {
     return (
-        <button className="bg-blue-400 px-5 py-1 rounded-full">{text}</button>
+        <button className="bg-blue-400 px-5 py-1 rounded-full">{checkIfProfanityExists(text)}</button>
     )
 }
 
