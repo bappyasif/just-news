@@ -1,6 +1,7 @@
 import { swearWords } from "@/data"
 import { useForLiveSearches } from "@/hooks"
-import { checkIfProfanityExists } from "@/utils"
+import { checkIfProfanityExists, decideRoutePath, decideWhich, makeRoutes } from "@/utils"
+import { useRouter } from "next/router"
 import { MdDoubleArrow } from "react-icons/md"
 
 export const AppHeadline = () => {
@@ -32,13 +33,13 @@ const RenderLiveSearchData = ({type, titleText}) => {
     const { results } = useForLiveSearches(type)
     return (
         <div className="w-full">
-            <RenderAllSearchTerms data={results?.length ? results : demoData[type]} titleText={titleText} />
+            <RenderAllSearchTerms type={type} data={results?.length ? results : demoData[type]} titleText={titleText} />
         </div>
     )
 }
 
-const RenderAllSearchTerms = ({ data, titleText }) => {
-    const renderSearchTerms = () => data.map((item, idx) => <RenderSeachTerm key={item?.text + idx} text={item?.text} />)
+const RenderAllSearchTerms = ({ data, titleText, type }) => {
+    const renderSearchTerms = () => data.map((item, idx) => <RenderSeachTerm key={item?.text + idx} text={item?.text} type={type} />)
     return (
         <div className="w-full bg-slate-800 opacity-90 h-full">
             <RenderSomeHeaderText titleText={titleText} />
@@ -50,9 +51,15 @@ const RenderAllSearchTerms = ({ data, titleText }) => {
     )
 }
 
-const RenderSeachTerm = ({ text }) => {
+const RenderSeachTerm = ({ text, type }) => {
+    const router = useRouter();
+
+    const handleClick = () => {
+        router.push(`/${decideRoutePath(type)}?${makeRoutes(decideWhich(type, text))}`, undefined, { shallow: true })
+    }
+
     return (
-        <button className="bg-blue-400 px-5 py-1 rounded-full">{checkIfProfanityExists(text)}</button>
+        <button onClick={handleClick} className="bg-blue-400 px-5 py-1 rounded-full">{checkIfProfanityExists(text)}</button>
     )
 }
 

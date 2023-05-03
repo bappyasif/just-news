@@ -133,3 +133,25 @@ export const checkIfProfanityExists = (text) => {
 
     return str;
 }
+
+export const decideWhich = (type, text) => {
+    let entries = null
+    if(type === "q") {
+        entries = {q: text}
+    } else if(type === "sources") {
+        entries = {sources: text}
+    }
+
+    return entries;
+}
+
+export const decideRoutePath = (type) => {
+    let path = null
+    if(type === "q") {
+        path = "news"
+    } else if(type === "sources") {
+        path = "headlines"
+    }
+
+    return path;
+}

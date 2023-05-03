@@ -92,15 +92,15 @@ const RenderFiltersInfo = ({ item }) => {
         <div className='w-1/3 px-2 text-2xl bg-slate-600 opacity-90 flex flex-col gap-2 py-2'>
             <div className='flex gap-4 justify-between'>
                 <div>
-                    <h2><span className='bg-zinc-800 text-stone-200 px-2 mr-2'>Filter Name:</span><span className='bg-blue-600 text-slate-950 px-2'>{name}</span></h2>
-                    <h3><span className='bg-zinc-800 text-stone-200 px-2 mr-1'>Filter Type:</span> <span className='bg-blue-400 px-2'>For {type}</span></h3>
+                    <h2><span className='bg-zinc-800 text-stone-200 px-2 mr-2'>Filter Name:</span><span className='bg-stone-700 text-stone-200 px-2'>{name}</span></h2>
+                    <h3><span className='bg-zinc-800 text-stone-200 px-2 mr-1'>Filter Type:</span> <span className='bg-zinc-700 text-stone-200 px-2'>For {type}</span></h3>
                 </div>
                 <DeleteThisSavedFilter filterId={_id} />
             </div>
             {/* <h2><span className='bg-zinc-800 text-stone-200 px-2 mr-2'>Filter Name:</span><span className='bg-blue-600 text-slate-950 px-2'>{name}</span></h2>
             <h3><span className='bg-zinc-800 text-stone-200 px-2 mr-1'>Filter Type:</span> <span className='bg-blue-400 px-2'>For {type}</span></h3> */}
             <RenderFiltersInUse data={user_input} />
-            <button onClick={makeShallowUrl} className='bg-cyan-400 text-gray-950 font-bold p-2 py-1 rounded-lg'>{decideBtnText()}</button>
+            <button onClick={makeShallowUrl} className='bg-stone-500 text-gray-950 font-bold p-2 py-1 rounded-lg'>{decideBtnText()}</button>
         </div>
     )
 }
