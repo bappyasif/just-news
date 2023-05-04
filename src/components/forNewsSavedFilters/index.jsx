@@ -100,7 +100,7 @@ const RenderFiltersInfo = ({ item }) => {
             {/* <h2><span className='bg-zinc-800 text-stone-200 px-2 mr-2'>Filter Name:</span><span className='bg-blue-600 text-slate-950 px-2'>{name}</span></h2>
             <h3><span className='bg-zinc-800 text-stone-200 px-2 mr-1'>Filter Type:</span> <span className='bg-blue-400 px-2'>For {type}</span></h3> */}
             <RenderFiltersInUse data={user_input} />
-            <button onClick={makeShallowUrl} className='bg-stone-500 text-gray-950 font-bold p-2 py-1 rounded-lg'>{decideBtnText()}</button>
+            <button onClick={makeShallowUrl} className='bg-stone-500 text-gray-950 hover:bg-stone-200 hover:text-gray-800 font-bold p-2 py-1 rounded-lg'>{decideBtnText()}</button>
         </div>
     )
 }
@@ -119,7 +119,7 @@ const DeleteThisSavedFilter = ({ filterId }) => {
     return (
         <button 
             onClick={handleDelete}
-            className='bg-rose-950 text-stone-400 font-extrabold text-2xl px-2 w-1/4 m-auto flex flex-col items-center rounded-xl'
+            className='bg-rose-950 text-stone-400 hover:bg-red-900 font-extrabold text-2xl px-2 w-1/4 m-auto flex flex-col items-center rounded-xl'
         >
             <p>Delete?</p>
             <span className='text-3xl text-red-600'><MdDeleteForever /></span>

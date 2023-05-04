@@ -200,7 +200,7 @@ export const NotInThisLanguage = ({ handleEntries, labelText, elemName }) => {
 export const ToogleFilters = ({ fromNewsSource, fromNewsSearch, showFilters, handleHideFilters, handleToggleShowFilters }) => {
     return (
         <div
-            className='text-center text-2xl text-zinc-200'
+            className='text-center text-2xl text-zinc-50 font-extrabold opacity-95'
             style={{ width: "184px" }}
             onClick={handleToggleShowFilters}
         >
@@ -212,7 +212,7 @@ export const ToogleFilters = ({ fromNewsSource, fromNewsSearch, showFilters, han
                 imgSrc={filterIcon}
             />
             <div className='flex gap-2 items-center justify-between' style={{ padding: "0 4px !important" }}>
-                <span className=''> {showFilters ? "Hide" : "Show"} Filters</span>
+                <span className={`animate-bounce`}> {showFilters ? "Hide" : "Show"} Filters</span>
                 {fromNewsSearch ? <MdFilter5 /> : fromNewsSource ? <MdFilter3 /> : <MdFilter7 />}
             </div>
 
@@ -307,5 +307,24 @@ export const ImageComponent = ({ imgSrc, altText }) => {
                 opacity: altText === "For Fill" && ".81"
             }}
         />
+    )
+}
+
+export const FilterToggleAndAnnouncement = ({ showFilters, handleHideFilters, handleToggleShowFilters }) => {
+    return (
+        <div
+            className='flex gap-4 relative opacity-90'
+        >
+            <ToogleFilters
+                fromNewsSource={true}
+                showFilters={showFilters}
+                handleToggleShowFilters={handleToggleShowFilters}
+                handleHideFilters={handleHideFilters}
+            />
+            <p
+                className='text-2xl bg-zinc-400 opacity-90 text-stone-800 
+                           font-bold w-fit px-2'
+            >Choose Your Source Filters and Then Click Search Button From Filters Form</p>
+        </div>
     )
 }

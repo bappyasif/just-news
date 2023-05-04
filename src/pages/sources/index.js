@@ -1,5 +1,5 @@
 import { RenderAllNewsSources } from '@/components/forSources';
-import { ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
+import { FilterToggleAndAnnouncement, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
 import { useAppContext, useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
 import { makeRoutes } from '@/utils';
 import { dehydrate } from '@tanstack/react-query';
@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 
 const NewsSources = () => {
-    const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters} = useMaintainUserInteractions("/forSources", "Sources", "SourcesFilters")
+    const { entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forSources", "Sources", "SourcesFilters")
 
     const router = useRouter();
 
@@ -47,22 +47,23 @@ const NewsSources = () => {
     //         }, 1003)
     //     }
     // }, [router.query])
-    const {routerQuery} = useForShallowQuery(setFetchData)
+    const { routerQuery } = useForShallowQuery(setFetchData)
 
     console.log(router.query, "QUERY!!")
 
     // const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/sources")
     // const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( router.query || entries), setFetchData, "/sources")
-    const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), setFetchData, "/sources")
+    const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), setFetchData, "/sources")
 
     return (
-        <main>
-            <div
+        <main className='min-h-screen'>
+            <FilterToggleAndAnnouncement showFilters={showFilters} handleHideFilters={handleHideFilters} handleToggleShowFilters={handleToggleShowFilters} />
+            {/* <div
                 className='flex gap-4 relative'
             >
                 <ToogleFilters fromNewsSource={true} showFilters={showFilters} handleToggleShowFilters={handleToggleShowFilters} handleHideFilters={handleHideFilters} />
-                <p className='text-2xl bg-zinc-400 opacity-90 text-sky-600 w-fit px-2'>Choose Your Source Filters and Then Click Search Button From Filters Form</p>
-            </div>
+                <p className='text-2xl bg-zinc-400 opacity-90 text-stone-800 font-bold w-fit px-2'>Choose Your Source Filters and Then Click Search Button From Filters Form</p>
+            </div> */}
 
             {
                 showFilters

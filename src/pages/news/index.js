@@ -1,5 +1,5 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
-import { GetUserSearchQuery, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
+import { FilterToggleAndAnnouncement, GetUserSearchQuery, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
 import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
 import { filterArticlesOfDuplicates } from '@/utils';
 import { hydrate } from '@tanstack/react-query';
@@ -20,12 +20,13 @@ const SearchNews = () => {
 
     return (
         <main className='min-h-screen'>
-            <div
+            <FilterToggleAndAnnouncement showFilters={showFilters} handleHideFilters={handleHideFilters} handleToggleShowFilters={handleToggleShowFilters} />
+            {/* <div
                 className='flex gap-4 relative'
             >
                 <ToogleFilters fromNewsSearch={true} showFilters={showFilters} handleToggleShowFilters={handleToggleShowFilters} handleHideFilters={handleHideFilters} />
                 <p className='text-2xl bg-zinc-400 opacity-90 text-sky-600 w-fit px-2'>Choose Your News Filters and Then Click Search Button From Filters Form</p>
-            </div>
+            </div> */}
             {
                 showFilters
                     ? <RelatedUi handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
