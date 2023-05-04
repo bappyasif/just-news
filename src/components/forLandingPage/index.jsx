@@ -39,7 +39,7 @@ const RenderLiveSearchData = ({type, titleText}) => {
 }
 
 const RenderAllSearchTerms = ({ data, titleText, type }) => {
-    const renderSearchTerms = () => data.map((item, idx) => <RenderSeachTerm key={item?.text + idx} text={item?.text} type={type} />)
+    const renderSearchTerms = () => data.map((item, idx) => <RenderSearchTerm key={item?.text + idx} text={item?.text} type={type} />)
     return (
         <div className="w-full bg-slate-800 opacity-90 h-full">
             <RenderSomeHeaderText titleText={titleText} />
@@ -51,7 +51,7 @@ const RenderAllSearchTerms = ({ data, titleText, type }) => {
     )
 }
 
-const RenderSeachTerm = ({ text, type }) => {
+const RenderSearchTerm = ({ text, type }) => {
     const router = useRouter();
 
     const handleClick = () => {
@@ -59,7 +59,7 @@ const RenderSeachTerm = ({ text, type }) => {
     }
 
     return (
-        <button onClick={handleClick} className="bg-blue-400 px-5 py-1 rounded-full">{checkIfProfanityExists(text)}</button>
+        <button onClick={handleClick} className="bg-blue-400 hover:bg-blue-500 hover:text-stone-300 px-5 py-1 rounded-full">{checkIfProfanityExists(text)}</button>
     )
 }
 

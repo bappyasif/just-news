@@ -7,7 +7,7 @@ import { dehydrate } from '@tanstack/react-query';
 import React from 'react'
 
 const LatestHeadlines = () => {
-  const { entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forHeadlines", "Headlines", "HeadlinesFilters")
+  const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forHeadlines", "Headlines", "HeadlinesFilters")
 
   const waitASecond = () => setTimeout(() => true, 1001)
 
@@ -17,7 +17,7 @@ const LatestHeadlines = () => {
 
   console.log(entries, "!!", routerQuery)
 
-  const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), setFetchData, "/latest_headlines")
+  const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), "/latest_headlines", neutralizeVariablesAfterFetch)
 
   // const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/latest_headlines")
 

@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 
 const NewsSources = () => {
-    const { entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forSources", "Sources", "SourcesFilters")
+    const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forSources", "Sources", "SourcesFilters")
 
     const router = useRouter();
 
@@ -53,7 +53,7 @@ const NewsSources = () => {
 
     // const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/sources")
     // const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( router.query || entries), setFetchData, "/sources")
-    const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), setFetchData, "/sources")
+    const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), "/sources", neutralizeVariablesAfterFetch)
 
     return (
         <main className='min-h-screen'>

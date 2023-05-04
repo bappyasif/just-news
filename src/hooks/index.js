@@ -103,7 +103,7 @@ export const useForContentRendering = (sources, filtersInUse, initialTo) => {
     return { sourcesParts, handleBackward, handleForward }
 }
 
-export const useFilteredDataFetching = (fetchData, entries, setFetchData, endpoint) => {
+export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralizeVariablesAfterFetch) => {
     const makeRequest = () => {
         const method = "GET"
         const url = endpoint
@@ -120,9 +120,12 @@ export const useFilteredDataFetching = (fetchData, entries, setFetchData, endpoi
         refetchOnWindowFocus: false,
         onSuccess: (data) => {
             console.log(data, "!!data!!", `${makeKeys(entries)}`, Object.keys(entries).length)
-            setFetchData(false);
+            // setFetchData(false);
+            // setShowFilters(false)
+            neutralizeVariablesAfterFetch()
         },
-        cacheTime: 86400000
+        cacheTime: 86400000,
+        retryDelay: 4000
     })
 
     return { filteredFetchedData }
@@ -175,8 +178,14 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
             } else if(entries.sources) {
                 data = {type: "sources", text: entries.sources}
             }
-            happensAfterHttpRequest(() => setShowFilters(false), {data, url: "/liveSearch", method: "POST"})
-        }
+            // happensAfterHttpRequest(() => setShowFilters(false), {data, url: "/liveSearch", method: "POST"})
+            // happensAfterHttpRequest(() => null, {data, url: "/liveSearch", method: "POST"})
+            happensAfterHttpRequest(() => setEntries({}), {data, url: "/liveSearch", method: "POST"})
+        } 
+        // else {
+        //     setEntries({})
+        //     console.log("REMOVE ENTRIES")
+        // }
     }
 
     const handleHideFilters = () => {
@@ -205,7 +214,7 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
         // sendHttpReuestToInternalApi({url, data, method, headers})
         sendHttpReuestToInternalApi({ url: "/forNews", data, method, params, headers })
             .then(resp => {
-                console.log(resp, "<><><><>")
+                // console.log(resp, "<><><><>")
                 if (resp.status === 200) {
                     handleUpdateSavedFilters(entries, type, defaultName, session?.user?.sub)
                     setShowFilters(false)
@@ -216,10 +225,22 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
             .finally(() => setShowFilters(false))
     }
 
-    const handleToggleShowFilters = () => setShowFilters(prev => !prev);
+    const handleToggleShowFilters = () => {
+        setShowFilters(prev => !prev);
+        setEntries({})
+    }
     const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
+    const neutralizeVariablesAfterFetch = () => {
+        setFetchData(false);
+        setShowFilters(false)
+        setEntries({})
+    }
 
-    return { entries, showFilters, fetchData, setFetchData, handleEntries, handleToggleShowFilters, handleHideFilters, handleSaveSearchedFilters }
+    // useEffect(() => {
+    //     !fetchData && setEntries({})
+    // }, [fetchData, setEntries])
+    
+    return { entries, showFilters, fetchData, setFetchData, handleEntries, handleToggleShowFilters, handleHideFilters, handleSaveSearchedFilters, neutralizeVariablesAfterFetch }
 }
 
 export const useForShallowQuery = (setFetchData) => {

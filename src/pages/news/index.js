@@ -6,13 +6,13 @@ import { hydrate } from '@tanstack/react-query';
 import React from 'react'
 
 const SearchNews = () => {
-    const {entries, fetchData, setFetchData, showFilters, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters} = useMaintainUserInteractions("/forNews", "News", "NewsFilters")
+    const {entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters} = useMaintainUserInteractions("/forNews", "News", "NewsFilters")
 
     const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
 
     const {routerQuery} = useForShallowQuery(setFetchData)
 
-    const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), setFetchData, "/search")
+    const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), "/search", neutralizeVariablesAfterFetch)
 
     // const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/search")
 
