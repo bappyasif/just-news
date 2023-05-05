@@ -10,7 +10,7 @@ export const RenderFiltersInUse = ({ data }) => {
     return (
         <div className='text-xl bg-zinc-400 w-fit px-2 my-6'>
             <h2 className='text-2xl'>Filters In Use</h2>
-            <ul className='flex gap-4 '>
+            <ul className='flex gap-4 flex-wrap xxs:text-md lg:text-xl'>
                 {renderFilters()}
             </ul>
         </div>
@@ -29,7 +29,7 @@ const RenderFilter = ({ item }) => {
     if (name == "from" || name == "page") return null
 
     return (
-        <li>
+        <li className="flex gap-2">
             <span>{name} : </span>
             {
                 vals?.length && typeof vals !== "string"

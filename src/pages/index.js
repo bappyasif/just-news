@@ -10,10 +10,8 @@ export default function Home() {
   console.log(session?.user?.name, session)
   return (
     <main className="min-h-screen text-2xl">
-      {/* <h1 className='text-4xl'>Dear {session?.user?.name || "Reader"}</h1> */}
-      {/* <AppNavigation /> */}
       <AppHeadline />
-      <div className='flex xs:flex-col lg:flex-row gap-4 px-4'>
+      <div className='flex xxs:flex-col lg:flex-row gap-4 px-4'>
         <LandingPageContentRendering />
         <ShowAllLiveSearches />
       </div>

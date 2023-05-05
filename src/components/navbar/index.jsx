@@ -49,12 +49,12 @@ const RenderNav = ({ item }) => {
             ?
             <Link
                 className='flex items-center gap-2 
-                xs:p-2 xl:p-4
+                xxs:p-1 xs:p-2 sm:p-3 xl:p-4 xxl:text-4xl
                 bg-zinc-600 text-zinc-200 rounded-md'
                 href={path}
             >
-                <span className='xs:hidden lg:block lg:text-md xl:text-2xl'>{name}</span>
-                <span className='xs:text-sm sm:text-xl md:4xl'>{icon}</span>
+                <span className='xxs:hidden lg:block lg:text-md xl:text-2xl'>{name}</span>
+                <span className='xs:text-xl sm:text-4xl lg:text-2xl'>{icon}</span>
             </Link>
             : null
     )

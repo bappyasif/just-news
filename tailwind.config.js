@@ -7,11 +7,13 @@ module.exports = {
   ],
   theme: {
     screens: {
-      xs: '310px',
-      sm: '480px',
+      xxs:"315px",
+      xs: '479px',
+      sm: '624px',
       md: '768px',
-      lg: '976px',
-      xl: '1440px',
+      lg: '1062px',
+      xl: '1390px',
+      xxl: '1590px'
     },
     extend: {
       backgroundImage: {

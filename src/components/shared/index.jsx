@@ -300,7 +300,7 @@ export const ImageComponent = ({ imgSrc, altText }) => {
 export const FilterToggleAndAnnouncement = ({ showFilters, handleHideFilters, handleToggleShowFilters }) => {
     return (
         <div
-            className='flex xs:flex-col lg:flex-row xs:gap-1 lg:gap-4 relative opacity-90'
+            className='flex xxs:flex-col lg:flex-row xxs:gap-1 lg:gap-4 relative opacity-90'
         >
             <ToogleFilters
                 fromNewsSource={true}

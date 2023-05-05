@@ -67,7 +67,7 @@ const RenderSpecificTypeFilters = ({ text, data }) => {
             ?
             <section className='w-full'>
                 <div className='flex justify-center'>
-                <h2 className='bg-slate-800 opacity-90 text-stone-400 my-4 px-4 xs:text-3xl sm:text-4xl xs: w-full lg:w-2/4 text-center'>{text}</h2>
+                    <h2 className='bg-slate-800 opacity-90 text-stone-400 my-4 px-4 xs:text-3xl sm:text-4xl xs: w-full lg:w-2/4 text-center'>{text}</h2>
                 </div>
                 <div className='flex justify-evenly gap-4 flex-wrap'>
                     {renderInfo()}
@@ -90,7 +90,7 @@ const RenderFiltersInfo = ({ item }) => {
 
     return (
         <div className='xs:w-full md:w-fit lg:w-1/3 px-2 text-2xl bg-slate-600 opacity-90 flex flex-col gap-2 py-2'>
-            <div className='flex xs:flex-col sm:flex-row xl:flex-row gap-4 justify-between'>
+            <div className='flex xxs:flex-col sm:flex-row md:flex-col xxl:flex-row gap-4 justify-between'>
                 <div className='flex flex-col gap-2'>
                     <h2 className='flex gap-2'><span className='bg-zinc-800 text-stone-200 px-2 mr-2'>Filter Name:</span><span className='bg-stone-700 text-stone-200 px-2'>{name}</span></h2>
                     <h3 className='flex gap-2'><span className='bg-zinc-800 text-stone-200 px-2 mr-1'>Filter Type:</span> <span className='bg-zinc-700 text-stone-200 px-2'>For {type}</span></h3>
@@ -98,27 +98,37 @@ const RenderFiltersInfo = ({ item }) => {
                 <DeleteThisSavedFilter filterId={_id} />
             </div>
             <RenderFiltersInUse data={user_input} />
-            <button onClick={makeShallowUrl} className='xs:text-xl sm:text-2xl bg-stone-500 text-gray-950 hover:bg-stone-200 hover:text-gray-800 font-bold p-2 py-1 rounded-lg'>{decideBtnText()}</button>
+            <button
+                onClick={makeShallowUrl}
+                className='xxs:text-lg sm:text-2xl md:text-lg xl:text-2xl 
+                bg-stone-500 text-gray-950 
+                hover:bg-stone-200 hover:text-gray-800 font-bold p-2 py-1 rounded-lg'
+            >
+                {decideBtnText()}
+            </button>
         </div>
     )
 }
 
 const DeleteThisSavedFilter = ({ filterId }) => {
-    const {handleDeleteSavedFilter} = useAppContext(AppContext)
-    
+    const { handleDeleteSavedFilter } = useAppContext(AppContext)
+
     const dataUpdater = () => handleDeleteSavedFilter(filterId)
-    
+
     const handleDelete = () => {
         const url = "/forNews"
         const method = "DELETE"
         const params = { filter_id: filterId }
-        happensAfterHttpRequest( dataUpdater, { url, method, params })
+        happensAfterHttpRequest(dataUpdater, { url, method, params })
     }
+
     return (
-        <button 
+        <button
             onClick={handleDelete}
-            className='bg-rose-950 text-stone-400 hover:bg-red-900 font-extrabold text-2xl px-2 xs:w-full sm:w-1/3 xl:w-1/4 m-auto flex xs:flex-row lg:flex-col justify-center items-center rounded-xl'
-        >
+            className='bg-rose-950 text-stone-400 hover:bg-red-900  
+            text-2xl px-2 m-auto font-extrabold
+            xxs:w-full sm:w-1/3 md:w-full xxl:w-1/4 flex xxs:flex-row sm:flex-col md:flex-row lg:flex-col
+            justify-center items-center rounded-xl'        >
             <p>Delete?</p>
             <span className='text-3xl text-red-600'><MdDeleteForever /></span>
         </button>

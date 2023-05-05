@@ -21,7 +21,7 @@ export const ShowAllLiveSearches = () => {
     const renderData = () => dataset.map((item, idx) => <RenderLiveSearchData key={item.type} type={item.type} titleText={item.titleText} />);
 
     return (
-        <div className="flex gap-4 xs:w-full lg:w-3/4">
+        <div className="flex gap-4 xxs:w-full lg:w-3/4">
             {renderData()}
         </div>
     )
