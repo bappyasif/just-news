@@ -1,8 +1,8 @@
 import { RenderAllNewsSources } from '@/components/forSources';
 import { FilterToggleAndAnnouncement, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useAppContext, useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
+import { useAppContext, useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
 import { makeRoutes } from '@/utils';
-import { dehydrate } from '@tanstack/react-query';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 
@@ -98,7 +98,15 @@ export const getStaticProps = (context) => {
     // const ctx = useContext()
     console.log("pre-rendeing", params, query)
 
-    const { queryClient } = useSSGPreFetching("sources?topic=business&lang=en&countries=US", ["sources", "us"])
+    // const { queryClient } = useStaticPreFetching("sources?topic=business&lang=en&countries=US", ["sources", "us"])
+
+    const queryClient = new QueryClient();
+
+    queryClient.prefetchQuery({
+        queryKey: ["sources", "us"],
+        queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US`),
+        cacheTime: 86400000
+    })
 
     return {
         props: {

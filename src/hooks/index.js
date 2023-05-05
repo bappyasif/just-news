@@ -146,7 +146,7 @@ export const useForDefaultFetching = (urlStr, keys) => {
     return { defaultFetchedData }
 }
 
-export const useSSGPreFetching = (urlStr, keys) => {
+export const useStaticPreFetching = (urlStr, keys) => {
     const queryClient = new QueryClient();
 
     queryClient.prefetchQuery({

@@ -1,8 +1,8 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { FilterToggleAndAnnouncement, GetUserSearchQuery, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
+import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
 import { filterArticlesOfDuplicates } from '@/utils';
-import { hydrate } from '@tanstack/react-query';
+import { QueryClient, hydrate } from '@tanstack/react-query';
 import React from 'react'
 
 const SearchNews = () => {
@@ -55,7 +55,14 @@ const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters
 }
 
 export const getStaticProps = () => {
-    const { queryClient } = useSSGPreFetching("search?q=Apple&countries=CA", ["news", "ca"])
+    // const { queryClient } = useStaticPreFetching("search?q=Apple&countries=CA", ["news", "ca"])
+    const queryClient = new QueryClient();
+
+    queryClient.prefetchQuery({
+        queryKey: ["news", "ca"],
+        queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/search?q=Apple&countries=CA`),
+        cacheTime: 86400000
+    })
 
     return {
         props: {

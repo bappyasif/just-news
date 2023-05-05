@@ -1,9 +1,9 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { ChooseNewsTimePeriod, FilterToggleAndAnnouncement, GetNewsSourcesInput, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
 // import { ShowAllArticlesData } from '@/components/shared/forDataRendering';
-import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching } from '@/hooks';
+import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
 import { filterArticlesOfDuplicates } from '@/utils';
-import { dehydrate } from '@tanstack/react-query';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
 import React from 'react'
 
 const LatestHeadlines = () => {
@@ -58,7 +58,14 @@ const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters
 }
 
 export const getStaticProps = () => {
-  const { queryClient } = useSSGPreFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
+  // const { queryClient } = useStaticPreFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
+  const queryClient = new QueryClient();
+
+    queryClient.prefetchQuery({
+        queryKey: ["headlines", "us"],
+        queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/latest_headlines?countries=US&lang=en&topic=world&page_size=100`),
+        cacheTime: 86400000
+    })
 
   return {
     props: {
