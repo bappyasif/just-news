@@ -225,22 +225,14 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
         <section
             className='absolute px-2 mt-2 z-20'
             style={{
-                // width: "fit-content",
                 width: width,
                 height: height,
                 background: `url(${'/teamWork.jpg'})`,
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPositionX: "63.2%"
-                // objectFit: "contain"
             }}
         >
-            {/* <ReUsableImageComponent
-                height={height}
-                width={width}
-                altText={"For Fill"}
-                imgSrc={filterBG}
-            /> */}
             <div
                 className='text-xl my-2 flex flex-col gap-2'
             >
@@ -264,12 +256,7 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
                 </button>
 
             </div>
-            {/* <button
-                className='bg-cyan-400 w-full rounded-md mt-4 text-2xl'
-                onClick={handleHideFilters}
-            >
-                Search Now
-            </button> */}
+            
         </section>
     )
 }
@@ -313,7 +300,7 @@ export const ImageComponent = ({ imgSrc, altText }) => {
 export const FilterToggleAndAnnouncement = ({ showFilters, handleHideFilters, handleToggleShowFilters }) => {
     return (
         <div
-            className='flex gap-4 relative opacity-90'
+            className='flex xs:flex-col lg:flex-row xs:gap-1 lg:gap-4 relative opacity-90'
         >
             <ToogleFilters
                 fromNewsSource={true}
@@ -322,7 +309,7 @@ export const FilterToggleAndAnnouncement = ({ showFilters, handleHideFilters, ha
                 handleHideFilters={handleHideFilters}
             />
             <p
-                className='text-2xl bg-zinc-400 opacity-90 text-stone-800 
+                className='xs:text-sm md:text-xl lg:text-2xl bg-zinc-400 opacity-90 text-stone-800 
                            font-bold w-fit px-2'
             >Choose Your Source Filters and Then Click Search Button From Filters Form</p>
         </div>

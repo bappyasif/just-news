@@ -1,7 +1,7 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { FilterToggleAndAnnouncement, GetUserSearchQuery, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
 import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
-import { filterArticlesOfDuplicates } from '@/utils';
+import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, hydrate } from '@tanstack/react-query';
 import React from 'react'
 
@@ -14,19 +14,12 @@ const SearchNews = () => {
 
     const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), "/search", neutralizeVariablesAfterFetch)
 
-    // const { filteredFetchedData } = useFilteredDataFetching(fetchData, entries, setFetchData, "/search")
-
-    console.log(entries, "!!", defaultFetchedData, routerQuery)
+    // console.log(entries, "!!", defaultFetchedData, routerQuery)
 
     return (
         <main className='min-h-screen'>
             <FilterToggleAndAnnouncement showFilters={showFilters} handleHideFilters={handleHideFilters} handleToggleShowFilters={handleToggleShowFilters} />
-            {/* <div
-                className='flex gap-4 relative'
-            >
-                <ToogleFilters fromNewsSearch={true} showFilters={showFilters} handleToggleShowFilters={handleToggleShowFilters} handleHideFilters={handleHideFilters} />
-                <p className='text-2xl bg-zinc-400 opacity-90 text-sky-600 w-fit px-2'>Choose Your News Filters and Then Click Search Button From Filters Form</p>
-            </div> */}
+            
             {
                 showFilters
                     ? <RelatedUi handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
@@ -48,7 +41,6 @@ const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters
     return (
         <ReuseableRelatedUi width={"434px"} height={"499px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
             <GetUserSearchQuery handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
-            {/* <UserInput handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} /> */}
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} />
         </ReuseableRelatedUi>
     )

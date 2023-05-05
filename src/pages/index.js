@@ -13,7 +13,7 @@ export default function Home() {
       {/* <h1 className='text-4xl'>Dear {session?.user?.name || "Reader"}</h1> */}
       {/* <AppNavigation /> */}
       <AppHeadline />
-      <div className='flex gap-4 px-4'>
+      <div className='flex xs:flex-col lg:flex-row gap-4 px-4'>
         <LandingPageContentRendering />
         <ShowAllLiveSearches />
       </div>

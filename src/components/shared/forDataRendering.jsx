@@ -8,7 +8,7 @@ export const RenderFiltersInUse = ({ data }) => {
     const renderFilters = () => dataset?.map((item, idx) => <RenderFilter key={idx} item={item} />)
 
     return (
-        <div className='text-xl bg-zinc-400 w-fit px-2'>
+        <div className='text-xl bg-zinc-400 w-fit px-2 my-6'>
             <h2 className='text-2xl'>Filters In Use</h2>
             <ul className='flex gap-4 '>
                 {renderFilters()}

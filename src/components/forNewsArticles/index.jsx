@@ -3,11 +3,9 @@ import { PaginationsButtons, RenderArticle, RenderFiltersInUse } from '../shared
 import { useForContentRendering } from '@/hooks'
 
 export const ShowAllArticlesData = ({list, filtersUsed}) => {
-    console.log(list, filtersUsed)
     filtersUsed.size = list?.length
   return (
     <main>
-      <div>ShowAllArticlesData</div>
       <RenderFiltersInUse data={filtersUsed} />
       <RenderNewsArticles data={list} />
     </main>
@@ -21,11 +19,7 @@ const RenderNewsArticles = ({ data }) => {
 
   return (
       <section>
-          {/* <ReUseableContentRendering sources={data} initialDatasetCounts={{from: 0, to: 20}}>
-
-          </ReUseableContentRendering> */}
-          <h2>News Snippets</h2>
-          <div className="columns-3 px-2 gap-3 mb-6">
+          <div className="xs:columns-1 md:columns-2 lg:columns-3 px-2 gap-3 mb-6">
               {renderArticles()}
           </div>
           <PaginationsButtons handleForward={handleForward} handleBackward={handleBackward} />

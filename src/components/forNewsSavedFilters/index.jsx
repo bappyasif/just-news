@@ -31,7 +31,7 @@ export const ShowAllSavedFilters = ({ data }) => {
 
     return (
         <div>
-            <div className='bg-slate-400 opacity-80 mb-4 w-full px-4 text-6xl text-center'>Showing All Saved Filters When There Is Any</div>
+            <div className='bg-slate-400 opacity-80 mb-4 w-full px-4 xs:text-lg sm:text-2xl md:text-3xl lg:text-6xl text-center'>Showing All Saved Filters When There Is Any</div>
             {
                 data?.length
                     ? renderAllFiltersData()
@@ -67,7 +67,7 @@ const RenderSpecificTypeFilters = ({ text, data }) => {
             ?
             <section className='w-full'>
                 <div className='flex justify-center'>
-                <h2 className='bg-slate-800 opacity-90 text-stone-400 my-4 px-4 text-4xl w-2/4 text-center'>{text}</h2>
+                <h2 className='bg-slate-800 opacity-90 text-stone-400 my-4 px-4 xs:text-3xl sm:text-4xl xs: w-full lg:w-2/4 text-center'>{text}</h2>
                 </div>
                 <div className='flex justify-evenly gap-4 flex-wrap'>
                     {renderInfo()}
@@ -89,18 +89,16 @@ const RenderFiltersInfo = ({ item }) => {
     const decideBtnText = () => `See ${type === "News" ? "News" : type === "Headlines" ? "Headlines" : type === "Sources" ? "Sources" : null} Based On These Filters`
 
     return (
-        <div className='w-1/3 px-2 text-2xl bg-slate-600 opacity-90 flex flex-col gap-2 py-2'>
-            <div className='flex gap-4 justify-between'>
-                <div>
-                    <h2><span className='bg-zinc-800 text-stone-200 px-2 mr-2'>Filter Name:</span><span className='bg-stone-700 text-stone-200 px-2'>{name}</span></h2>
-                    <h3><span className='bg-zinc-800 text-stone-200 px-2 mr-1'>Filter Type:</span> <span className='bg-zinc-700 text-stone-200 px-2'>For {type}</span></h3>
+        <div className='xs:w-full md:w-fit lg:w-1/3 px-2 text-2xl bg-slate-600 opacity-90 flex flex-col gap-2 py-2'>
+            <div className='flex xs:flex-col sm:flex-row xl:flex-row gap-4 justify-between'>
+                <div className='flex flex-col gap-2'>
+                    <h2 className='flex gap-2'><span className='bg-zinc-800 text-stone-200 px-2 mr-2'>Filter Name:</span><span className='bg-stone-700 text-stone-200 px-2'>{name}</span></h2>
+                    <h3 className='flex gap-2'><span className='bg-zinc-800 text-stone-200 px-2 mr-1'>Filter Type:</span> <span className='bg-zinc-700 text-stone-200 px-2'>For {type}</span></h3>
                 </div>
                 <DeleteThisSavedFilter filterId={_id} />
             </div>
-            {/* <h2><span className='bg-zinc-800 text-stone-200 px-2 mr-2'>Filter Name:</span><span className='bg-blue-600 text-slate-950 px-2'>{name}</span></h2>
-            <h3><span className='bg-zinc-800 text-stone-200 px-2 mr-1'>Filter Type:</span> <span className='bg-blue-400 px-2'>For {type}</span></h3> */}
             <RenderFiltersInUse data={user_input} />
-            <button onClick={makeShallowUrl} className='bg-stone-500 text-gray-950 hover:bg-stone-200 hover:text-gray-800 font-bold p-2 py-1 rounded-lg'>{decideBtnText()}</button>
+            <button onClick={makeShallowUrl} className='xs:text-xl sm:text-2xl bg-stone-500 text-gray-950 hover:bg-stone-200 hover:text-gray-800 font-bold p-2 py-1 rounded-lg'>{decideBtnText()}</button>
         </div>
     )
 }
@@ -119,7 +117,7 @@ const DeleteThisSavedFilter = ({ filterId }) => {
     return (
         <button 
             onClick={handleDelete}
-            className='bg-rose-950 text-stone-400 hover:bg-red-900 font-extrabold text-2xl px-2 w-1/4 m-auto flex flex-col items-center rounded-xl'
+            className='bg-rose-950 text-stone-400 hover:bg-red-900 font-extrabold text-2xl px-2 xs:w-full sm:w-1/3 xl:w-1/4 m-auto flex xs:flex-row lg:flex-col justify-center items-center rounded-xl'
         >
             <p>Delete?</p>
             <span className='text-3xl text-red-600'><MdDeleteForever /></span>

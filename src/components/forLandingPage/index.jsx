@@ -1,4 +1,3 @@
-import { swearWords } from "@/data"
 import { useForLiveSearches } from "@/hooks"
 import { checkIfProfanityExists, decideRoutePath, decideWhich, makeRoutes } from "@/utils"
 import { useRouter } from "next/router"
@@ -22,7 +21,7 @@ export const ShowAllLiveSearches = () => {
     const renderData = () => dataset.map((item, idx) => <RenderLiveSearchData key={item.type} type={item.type} titleText={item.titleText} />);
 
     return (
-        <div className="flex gap-4 w-3/4">
+        <div className="flex gap-4 xs:w-full lg:w-3/4">
             {renderData()}
         </div>
     )
@@ -46,7 +45,6 @@ const RenderAllSearchTerms = ({ data, titleText, type }) => {
             <div className="flex gap-2 flex-wrap mt-2">
                 {renderSearchTerms()}
             </div>
-            {/* <RenderTexts titleText={"Popular search goes here"} descTexts={} /> */}
         </div>
     )
 }
@@ -70,12 +68,6 @@ const RenderSomeHeaderText = ({ titleText }) => {
 }
 
 export const LandingPageContentRendering = () => {
-    // const headlineTexts = [
-    //     // `<h1>Want To Look Into News Snippet From All Over This Planet?</h1>`
-    //     `You are in a good place, you will find them all in here and more, enjoy :)`
-    //     // ":&lt;h2&gt;test&lt;/h2&gt;"
-    // ];
-
     const introTexts = [
         "You will find a wide range of topics, including politics, business, technology, entertainment, sports, and more",
         "Whether you're looking for breaking news, in-depth analysis, or thought-provoking features, you will find it from 'Search News' and 'News Headlines'",
@@ -95,7 +87,6 @@ export const LandingPageContentRendering = () => {
 
     return (
         <section className="w-full">
-            {/* <RenderTexts titleText={"Want To Look Into News Snippet From All Over This Planet?"} descTexts={headlineTexts} /> */}
             <RenderTexts titleText={"Just News App In-A-Nutshell"} descTexts={introTexts} />
             <RenderTexts titleText={"Just News App Call-To-Action"} descTexts={ctaTexts} />
         </section>
@@ -108,10 +99,6 @@ const RenderTexts = ({ titleText, descTexts }) => {
     return (
         <div className="bg-slate-800 opacity-90 mb-2">
             <RenderSomeHeaderText titleText={titleText} />
-            {/* <h2 className="bg-slate-600 text-slate-950 font-extrabold px-2">{titleText}</h2> */}
-            {/* <ul>
-                {renderTexts()}
-            </ul> */}
             <div className="flex flex-col gap-2">
                 {renderTexts()}
             </div>

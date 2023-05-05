@@ -6,8 +6,6 @@ export const AppContext = createContext(initialState);
 export const AppContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(justNewsSiteReducer, initialState)
 
-    // const {data: session} = useSession()
-
     const updateNewsSources = (sources, filtersUsed) => {
         const newEntry = { sources, filtersUsed }
         const updatedList = state.sources.concat(newEntry);
@@ -20,31 +18,20 @@ export const AppContextProvider = ({ children }) => {
 
     const handleUpdateSavedFilters = (filtersUsed, type, defaultName, userId) => {
         const found = state?.savedFilters.find(item => {
-            console.log(item, item?.type, type, item?.type === type)
             if (item?.type === type) {
-                // console.log(Object.entries(filtersUsed) === Object.entries(item?.user_input))
-                console.log(JSON.stringify(filtersUsed) === JSON.stringify(item?.user_input))
-                // return Object.entries(filtersUsed) === Object.entries(item?.user_input) && item
                 return JSON.stringify(filtersUsed) === JSON.stringify(item?.user_input)
             }
         })
 
         let newList = []
 
-        // const filtersEntries = { user_input: filtersUsed, type, name: defaultName + (state?.savedFilters?.length || 0) }
         const filtersEntries = { user_input: filtersUsed, type, name: defaultName + (state?.savedFilters?.length || 0), user_id: userId }
 
-        // !found ? newList.push(...initialState.savedFilters, filtersEntries) : newList.push(...initialState.savedFilters)
-        // !found ? newList.push(...state?.savedFilters, filtersEntries) : newList.push(state?.savedFilters)
         newList = !found ? newList.concat(...state?.savedFilters, filtersEntries) : state?.savedFilters
-
-        console.log(found, "found!!", newList)
-        // console.log(found, filtersEntries, filtersUsed, initialState.savedFilters, newList, state.savedFilters)
 
         dispatch({
             type: ACTIONS.UPDATE_FILTERS,
             payload: {savedFilters: newList}
-            // payload: !found ? initialState.savedFilters.push(filtersEntries) : initialState.savedFilters
         })
     }
 
@@ -52,7 +39,6 @@ export const AppContextProvider = ({ children }) => {
         dispatch({
             type: ACTIONS.UPDATE_FILTERS,
             payload: {savedFilters: data}
-            // payload: !found ? initialState.savedFilters.push(filtersEntries) : initialState.savedFilters
         })
     }
 
@@ -71,7 +57,6 @@ export const AppContextProvider = ({ children }) => {
         handleInitialFiltersSavedByUser: initialUpdateForFiltersSavedByUser,
         handleDeleteSavedFilter: deleteThisSavedFilter,
         savedFilters: state.savedFilters
-        // savedFilters: initialState.savedFilters
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

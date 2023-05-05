@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }) {
         <Hydrate state={pageProps.dehydratedState}>
           <SessionProvider session={pageProps.session}>
             <BackgroundImage />
-            <div className='flex flex-col' style={{ minHeight: "100vh" }}>
+            <div className='flex flex-col w-fit' style={{ minHeight: "100vh" }}>
               <AppNavigations />
               <Component {...pageProps} />
               <FooterElement />
