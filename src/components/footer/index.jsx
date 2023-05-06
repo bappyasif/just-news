@@ -4,16 +4,12 @@ import { ImageComponent } from '../shared'
 import { footerProfileLinks, stacksUsed } from '@/data'
 import Link from 'next/link'
 import { TbTrademark } from 'react-icons/tb'
-// import footerImg from "../../../public/footerPic.jpg"
-// import footerImg from "../../../public/newspapersPile.jpg"
 
 export const FooterElement = () => {
     return (
         <footer
-            // className='absolute bottom-0'
-            className='relative'
+            className='relative mt-2'
         >
-            {/* <div className='w-full text-center'>FooterElement</div> */}
             <FooterContents />
             <div
                 style={{
@@ -57,7 +53,7 @@ const ShowStacksUsedInfo = () => {
     const renderInfo = () => stacksUsed.map(item => <RenderInfo key={item.name} item={item} />)
 
     return (
-        <div className='text-blue-600 w-3/4 flex-wrap'>
+        <div className='text-blue-600 flex-wrap'>
             <h2>Stacks Used</h2>
             <ul className='flex gap-2 justify-start'>
                 {renderInfo()}
@@ -72,7 +68,7 @@ const RenderInfo = ({ item }) => {
     return (
         <li>
             <Link href={url} target='_blank' className='flex gap-2 items-baseline text-lg font-bold text-slate-950'>
-                <span>{name}</span>
+                <span className='xxs:hidden xl:block'>{name}</span>
                 <span>{icon}</span>
             </Link>
         </li>
@@ -83,8 +79,8 @@ const GetInTouchInfo = () => {
     const renderLinks = () => footerProfileLinks.map(item => <RenderLink key={item.url} item={item} />)
 
     return (
-        <div className='text-2xl'>
-            <h2>To Get In Touch</h2>
+        <div className='xxs:text-sm xl:text-2xl'>
+            <h2 className=''>To Get In Touch</h2>
             <nav className='flex gap-2 justify-end'>
                 {renderLinks()}
             </nav>
@@ -97,7 +93,7 @@ const RenderLink = ({ item }) => {
 
     return (
         <Link href={url} target='_blank'>
-            <span className='text-slate-600 text-2xl'>{icon}</span>
+            <span className='text-slate-600 xxs:text-sm xl:text-2xl'>{icon}</span>
         </Link>
     )
 }

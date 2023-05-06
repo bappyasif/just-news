@@ -45,7 +45,7 @@ export const filterArticlesOfDuplicates = (arr) => {
     articles = arr?.filter((val, idx, self) => {
         return idx === self.findIndex(t => (t.title === val.title && t.author.toLowerCase() === val.author.toLowerCase()))
     })
-    console.log(articles, "HERE")
+    // console.log(articles, "HERE")
     // return articles
     return removeArticlesContainingSummary(articles)
 }
@@ -84,7 +84,7 @@ export const convertUserInputsDataFromServer = (dataset) => {
     let data = [];
     dataset?.forEach(item => {
         item.user_input = item.user_input[0]
-        console.log(item.user_input[0])
+        // console.log(item.user_input[0])
         data.push(item)
     })
 
@@ -99,7 +99,7 @@ export const happensAfterHttpRequest = (dataUpdater, options) => {
             } else if (resp.status >= 400) {
                 console.log("oops something is wrong!!")
             }
-            console.log(resp)
+            // console.log(resp)
             return resp
         }).catch(err => {
             copnsole.log("error occured", err)
