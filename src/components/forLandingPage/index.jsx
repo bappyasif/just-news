@@ -97,7 +97,7 @@ const RenderTexts = ({ titleText, descTexts }) => {
     const renderTexts = () => descTexts.map(text => <p key={text} className="px-2 text-slate-400 flex gap-2 items-center"><span className="text-2xl"><MdDoubleArrow /></span> <span>{text}</span></p>)
 
     return (
-        <div className="bg-slate-800 opacity-90 mb-2">
+        <div className="bg-slate-800 opacity-90">
             <RenderSomeHeaderText titleText={titleText} />
             <div className="flex flex-col gap-2">
                 {renderTexts()}

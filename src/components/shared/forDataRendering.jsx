@@ -22,7 +22,7 @@ const RenderFilter = ({ item }) => {
 
     // console.log(item, "item!!")
 
-    console.log(vals)
+    // console.log(vals)
 
     if (vals == null || vals?.length == 0) return null
 
@@ -46,11 +46,7 @@ export const RenderNewsArticles = ({ data }) => {
     const renderArticles = () => sourcesParts?.map((item, idx) => item?.media && <RenderArticle key={item._id} item={item} />)
 
     return (
-        <section>
-            {/* <ReUseableContentRendering sources={data} initialDatasetCounts={{from: 0, to: 20}}>
-
-            </ReUseableContentRendering> */}
-            <h2>News Snippets</h2>
+        <section>            
             <div className="columns-3 px-2 gap-3 mb-6">
                 {renderArticles()}
             </div>
@@ -67,10 +63,6 @@ export const RenderArticle = ({ item }) => {
             <Link className="" href={link} target="_blank">
                 <h2 className="text-2xl p-2 font-bold bg-gray-950 opacity-90">{title}</h2>
             </Link>
-            {/* <RenderArticleMetaData item={item} />
-            <RenderContent text={excerpt} label={"Excerpt"} ftype={true} />
-            <img className="w-fit" src={media} alt={excerpt} />
-            <RenderContent text={summary} label={"Summary"} ftype={true} /> */}
             <div className="bg-gray-800 opacity-90 px-2">
                 <RenderArticleMetaData item={item} />
             </div>
