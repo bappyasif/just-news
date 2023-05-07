@@ -143,8 +143,6 @@ export const useForDefaultFetching = (urlStr, keys) => {
         refetchOnWindowFocus: false
     })
 
-    console.log(defaultFetchedData, "default fetxhed data from news api")
-
     return { defaultFetchedData }
 }
 

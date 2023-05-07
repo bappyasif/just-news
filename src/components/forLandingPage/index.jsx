@@ -1,6 +1,9 @@
+import { navLinks } from "@/data"
 import { useForLiveSearches } from "@/hooks"
 import { checkIfProfanityExists, decideRoutePath, decideWhich, makeRoutes } from "@/utils"
+import Link from "next/link"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import { MdDoubleArrow } from "react-icons/md"
 
 export const AppHeadline = () => {
@@ -21,14 +24,14 @@ export const ShowAllLiveSearches = () => {
     const renderData = () => dataset.map((item, idx) => <RenderLiveSearchData key={item.type} type={item.type} titleText={item.titleText} />);
 
     return (
-        <div className="flex gap-4 xxs:w-full lg:w-3/4">
+        <div className="flex gap-4 xxs:w-full lg:w-3/4 mb-2">
             {renderData()}
         </div>
     )
 }
 
-const RenderLiveSearchData = ({type, titleText}) => {
-    const demoData = {q: [{ text: "world" }, { text: "political" }, {text: "standpoints"}], sources: [{ text: "wsj.com" }, { text: "wire.com" }]}
+const RenderLiveSearchData = ({ type, titleText }) => {
+    const demoData = { q: [{ text: "world" }, { text: "political" }, { text: "standpoints" }], sources: [{ text: "wsj.com" }, { text: "wire.com" }] }
     const { results } = useForLiveSearches(type)
     return (
         <div className="w-full">
@@ -63,7 +66,7 @@ const RenderSearchTerm = ({ text, type }) => {
 
 const RenderSomeHeaderText = ({ titleText }) => {
     return (
-        <h2 className="bg-slate-600 text-slate-950 font-extrabold px-2">{titleText}</h2>
+        <h2 className="bg-slate-600 text-slate-950 font-extrabold px-2 text-center">{titleText}</h2>
     )
 }
 
@@ -97,11 +100,51 @@ const RenderTexts = ({ titleText, descTexts }) => {
     const renderTexts = () => descTexts.map(text => <p key={text} className="px-2 text-slate-400 flex gap-2 items-center"><span className="text-2xl"><MdDoubleArrow /></span> <span>{text}</span></p>)
 
     return (
-        <div className="bg-slate-800 opacity-90">
+        <div className="bg-slate-800 opacity-90 mb-2">
             <RenderSomeHeaderText titleText={titleText} />
             <div className="flex flex-col gap-2">
                 {renderTexts()}
             </div>
+            <VisitNewsRelatedRoutes />
+        </div>
+    )
+}
+
+const VisitNewsRelatedRoutes = ({ }) => {
+    const renderLinks = () => navLinks.map(item => <RenderLink key={item.name} item={item} />)
+
+    return (
+        <div className="flex items-center justify-center gap-4 py-2 px-2">
+            <p className="text-cyan-600">Quick Access:</p>
+            <div className="flex gap-2">
+                {renderLinks()}
+            </div>
+        </div>
+    )
+}
+
+const RenderLink = ({ item }) => {
+    const { name, path, icon } = item;
+    const [showTip, setShowTip] = useState(false);
+
+    const handleShow = () => setShowTip(true)
+
+    const handleHide = () => setShowTip(false)
+
+    return (
+        <div className="relative">
+            <Link 
+                onMouseEnter={handleShow} onMouseLeave={handleHide} 
+                href={path} 
+                className="flex gap-2 bg-slate-950 p-2 rounded-full"
+            >
+                <span className="text-slate-400">{icon}</span>
+            </Link>
+            {
+                showTip ?
+                    <p className="absolute bg-white bottom-10 min-w-max px-2 z-50">{name}</p>
+                    : null
+            }
         </div>
     )
 }

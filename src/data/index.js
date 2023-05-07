@@ -63,6 +63,29 @@ export const navs = [
     },
 ];
 
+export const navLinks = [
+    {
+        name: "News Sources",
+        path: "/sources",
+        icon: <MdSource />
+    },
+    {
+        name: "Search News",
+        path: "/news",
+        icon: <MdWebStories />
+    },
+    {
+        name: "News Headlines",
+        path: "/headlines",
+        icon: <MdSatelliteAlt />
+    },
+    {
+        name: "Saved Filters",
+        path: "/saved-filters",
+        icon: <MdDashboard />
+    }
+];
+
 export const swearWords = [
     "Arse", "Bloody", "Bugger", "Crap", "Damn", "Goddam", "Minger", "Sod-off",
     "Arsehole", "Balls", "Bint", "Bitch", "Bollocks", "Bullshit", "Feck", "Munter",
