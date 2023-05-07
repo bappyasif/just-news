@@ -45,7 +45,10 @@ export const navs = [
         name: "News Headlines",
         path: "/headlines",
         icon: <MdSatelliteAlt />
-    },
+    }
+];
+
+export const settingsLinks = [
     {
         name: "Saved Filters",
         path: "/saved-filters",
@@ -61,7 +64,7 @@ export const navs = [
         path: "/api/auth/signout",
         icon: <MdLogout />
     },
-];
+]
 
 export const navLinks = [
     {
