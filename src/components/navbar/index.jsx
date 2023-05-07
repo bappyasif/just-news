@@ -44,7 +44,7 @@ const AppSettings = () => {
 
     return (
         <div className='relative'>
-            <span
+            <button
                 onMouseEnter={handleShowTip}
                 onMouseLeave={handleHideTip}
                 onClick={handleToggleDD}
@@ -54,7 +54,7 @@ const AppSettings = () => {
             >
                 <span className='xs:text-xl sm:text-4xl lg:text-2xl'><MdOutlineAppSettingsAlt /></span>
                 <span className='xxs:hidden lg:block xxs:text-xl sm:text-4xl lg:text-sm xl:text-2xl'>Settings</span>
-            </span>
+            </button>
 
             {
                 showTip
@@ -99,13 +99,15 @@ const RenderOption = ({ item, hideDD }) => {
             (name !== "Saved Filters" && name !== "Sign Out" && !session?.user?.name)
             ?
             <div
-                className='flex gap-2 text-slate-400 bg-slate-900 min-w-max items-center 
-                m-1 px-2 hover:outline hover:outline-slate-400 hover:outline-x-2'
+                className='text-slate-400 bg-slate-900 min-w-max m-1 px-2
+                hover:outline hover:outline-slate-400 hover:outline-x-2'
                 value={name}
                 onClick={handleHide}
             >
-                <span>{icon}</span>
-                <span>{name}</span>
+                <button className='flex gap-2 items-center'>
+                    <span>{icon}</span>
+                    <span>{name}</span>
+                </button>
             </div>
             : null
     )

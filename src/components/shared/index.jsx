@@ -6,6 +6,7 @@ import filterIcon from "../../../public/newspapersPile.jpg"
 import { MdFilter3, MdFilter5, MdFilter7 } from 'react-icons/md';
 import filterBG from "../../../public/teamWork.jpg"
 import Image from "next/image"
+import { useSession } from "next-auth/react"
 
 export const RenderAllAvailableLanguages = ({ handleChange, elemName }) => {
     const renderList = () => languageCodes?.map(item => <RenderListItem key={item.name} item={item} />)
@@ -201,16 +202,15 @@ export const ToogleFilters = ({ fromNewsSource, fromNewsSearch, showFilters, han
     return (
         <div
             className='text-center text-2xl text-zinc-50 font-extrabold opacity-95'
-            style={{ width: "184px" }}
+            style={{
+                width: "184px",
+                background: `url(${'/newspapersPile.jpg'})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPositionX: "63.2%"
+            }}
             onClick={handleToggleShowFilters}
         >
-            <ReUsableImageComponent
-                height={"31px"}
-                width={"184px"}
-                // altText={"team work picture from unsplash used here as a background"}
-                altText={"For Fill"}
-                imgSrc={filterIcon}
-            />
             <div className='flex gap-2 items-center justify-between' style={{ padding: "0 4px !important" }}>
                 <span className={`animate-bounce`}> {showFilters ? "Hide" : "Show"} Filters</span>
                 {fromNewsSearch ? <MdFilter5 /> : fromNewsSource ? <MdFilter3 /> : <MdFilter7 />}
@@ -221,6 +221,7 @@ export const ToogleFilters = ({ fromNewsSource, fromNewsSearch, showFilters, han
 }
 
 export const ReuseableRelatedUi = ({ height, width, children, handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
+    const { data: session } = useSession()
     return (
         <section
             className='absolute px-2 mt-2 z-20'
@@ -242,8 +243,9 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
             </div>
             <div className="flex w-full gap-2 mt-4 ">
                 <button
-                    className='bg-cyan-400 w-full rounded-md text-2xl'
+                    className={`${session?.user ? "bg-cyan-400" : "bg-cyan-600"} w-full rounded-md text-2xl`}
                     onClick={handleSaveSearchedFilters}
+                    disabled={session?.user ? false : true}
                 >
                     Save Search
                 </button>
@@ -256,7 +258,8 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
                 </button>
 
             </div>
-            
+            {session?.user ? null : <p className="text-2xl bg-slate-400 opacity-90 mt-1 text-center">You need to be logged to save filters</p>}
+
         </section>
     )
 }
