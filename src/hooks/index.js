@@ -275,6 +275,7 @@ export const useForLiveSearches = (type) => {
         queryFn: () => happensAfterHttpRequest(handleUpdate, {url, method, params:{type}}),
         enabled: router.pathname === "/" ? true : false,
         refetchInterval: 240000
+        // refetchInterval: 2000
     })
 
     return {results}
