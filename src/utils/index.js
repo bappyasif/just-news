@@ -103,7 +103,7 @@ export const happensAfterHttpRequest = (dataUpdater, options) => {
             // console.log(resp)
             return resp
         }).catch(err => {
-            copnsole.log("error occured", err)
+            console.log("error occured", err)
         })
 }
 
