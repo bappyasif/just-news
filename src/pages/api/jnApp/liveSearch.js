@@ -17,6 +17,8 @@ const handler = async (req, res) => {
         return res.status(402).json({ msg: "access un-authorized" })
     }
 
+    console.log(process.env.DB_URL, "from API")
+
     // connectMongoDB()
     dbConnect().then(async () => {
         console.log("begin process")

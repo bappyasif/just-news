@@ -6,6 +6,7 @@ const conn = {
 
 export async function dbConnect() {
   if (conn.isConected) return;
+  console.log(process.env.DB_URL, "process.env.DB_URL")
    
   const db = await connect(process.env.DB_URL);
 
@@ -16,9 +17,9 @@ export async function dbConnect() {
 }
 
 connection.on("connected", () => {
-  console.log("Mongodb connected to db");
+  console.log("Mongodb is now connected");
 });
 
 connection.on("error", (err) => {
-  console.error("Mongodb connected to", err.message);
+  console.error("Mongodb connection failed due to: ", err.message);
 });
