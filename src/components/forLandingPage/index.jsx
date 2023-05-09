@@ -1,10 +1,13 @@
 import { categories, navLinks } from "@/data"
 import { useForLiveSearches } from "@/hooks"
 import { checkIfProfanityExists, decideRoutePath, decideWhich, makeRoutes } from "@/utils"
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useState } from "react"
-import { MdDoubleArrow } from "react-icons/md"
+import { Children, useState } from "react"
+import { MdDoubleArrow, MdForward } from "react-icons/md"
+import demo from "../../../public/newspapersPile.jpg"
+import { FaBackward, FaForward } from "react-icons/fa"
 
 export const AppHeadline = () => {
     return (
@@ -16,23 +19,53 @@ export const AppHeadline = () => {
 }
 
 export const NewsCategories = () => {
-    const renderCategories = () => categories.map(item => <RenderCategory key={item.name} item={item} />)
     return (
         <section className="w-3/4 m-auto bg-slate-900 px-4 opacity-80 pb-1">
             <h2 className="text-5xl text-slate-400 mb-2">See Latest News From These Categories</h2>
-            <div className="flex gap-4 flex-wrap justify-between mb-4">
-                {renderCategories()}
-            </div>
+            <SoloCategory />
+            <RenderThumbnails />
         </section>
     )
 }
 
-const RenderCategory = ({ item }) => {
+const SoloCategory = () => {
+    return (
+        <CarouselView>
+            <Image 
+                src={demo}
+                height={290}
+                width={360}
+                alt="what up!!"
+            />
+        </CarouselView>
+    )
+}
+
+const CarouselView = ({children}) => {
+    return (
+        <div className="flex justify-between my-4">
+            <button className="text-slate-200 flex gap-2 justify-center items-center">{<FaBackward />}Prev</button>
+            {children}
+            <button className="text-slate-200 flex gap-2 justify-center items-center">Next {<FaForward />}</button>
+        </div>
+    )
+}
+
+const RenderThumbnails = () => {
+    const renderCategories = () => categories.map(item => <RenderCategory key={item.name} item={item} forThumbnails={true} />)
+    return (
+        <div className="flex gap-4 flex-wrap justify-center mb-4">
+            {renderCategories()}
+        </div>
+    )
+}
+
+const RenderCategory = ({ item, forThumbnails }) => {
     const { name, picture } = item;
 
     return (
         <div
-            className="w-60 h-36 flex items-center justify-center rounded-lg outline-4 outline-rose-950 outline"
+            className={`${forThumbnails ? "w-16 h-14" : "w-60 h-36"} flex items-center justify-center rounded-lg outline-4 outline-rose-950 outline`}
             style={{
                 background: `url(${'/teamWork.jpg'})`,
                 backgroundSize: "cover",
@@ -40,7 +73,7 @@ const RenderCategory = ({ item }) => {
                 backgroundPositionX: "63.2%"
             }}
         >
-            <span className="text-3xl text-gray-200">{name}</span>
+            <span className={`${forThumbnails ? "text-xs" : "text-3xl"} font-extrabold text-gray-200`}>{name}</span>
         </div>
     )
 }
