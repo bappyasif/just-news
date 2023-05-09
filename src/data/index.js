@@ -95,7 +95,7 @@ export const swearWords = [
     "Pissed off", "Shit", "Son of a bitch", "Tits", "Bastard", "Beef curtains",
     "Bellend", "Bloodclaat", "Clunge", "Cock", "Dick", "Dickhead", "Fanny", 
     "Flaps", "Gash", "Knob", "Minge", "Prick", "Punani", "Pussy", "Twat", "Cunt", 
-    "Fuck", "Motherfucker"
+    "Fuck", "Motherfucker", "sex", "tities"
 ]
 
 export const footerProfileLinks = [
@@ -114,4 +114,59 @@ export const stacksUsed = [
     {icon: <MdSecurity />, name: "Next Auth", url: "https://next-auth.js.org/"},
     {icon: <FaDatabase />, name: "Mongoose", url: "https://mongoosejs.com/docs/guide.html"},
     {icon: <TbIcons />, name: "React Icons", url: "https://react-icons.github.io/react-icons"}
+]
+
+export const categories = [
+    {
+        name: "News",
+        picture: null
+    },
+    {
+        name: "Tech",
+        picture: null
+    },
+    {
+        name: "Business",
+        picture: null
+    },
+    {
+        name: "Science",
+        picture: null
+    },
+    {
+        name: "Finance",
+        picture: null
+    },
+    {
+        name: "Food",
+        picture: null
+    },
+    {
+        name: "Politics",
+        picture: null
+    },
+    {
+        name: "Economics",
+        picture: null
+    },
+    {
+        name: "Travel",
+        picture: null
+    },
+    {
+        name: "Entertainment",
+        picture: null
+    },
+    {
+        name: "Music",
+        picture: null
+    },
+    {
+        name: "Sport",
+        picture: null
+    },
+    {
+        name: "World",
+        picture: null
+    }
 ]

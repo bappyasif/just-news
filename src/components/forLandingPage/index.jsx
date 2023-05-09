@@ -1,4 +1,4 @@
-import { navLinks } from "@/data"
+import { categories, navLinks } from "@/data"
 import { useForLiveSearches } from "@/hooks"
 import { checkIfProfanityExists, decideRoutePath, decideWhich, makeRoutes } from "@/utils"
 import Link from "next/link"
@@ -11,6 +11,36 @@ export const AppHeadline = () => {
         <div className="text-4xl text-center mb-3 bg-slate-400 text-zinc-950 font-extrabold opacity-80">
             <h1 className="bg-blue-950 text-stone-200">Want To Look Into News Snippet From All Over This Planet?</h1>
             <h2>You are in a good place, you will find them all in here and more, enjoy :)</h2>
+        </div>
+    )
+}
+
+export const NewsCategories = () => {
+    const renderCategories = () => categories.map(item => <RenderCategory key={item.name} item={item} />)
+    return (
+        <section className="w-3/4 m-auto bg-slate-900 px-4 opacity-80 pb-1">
+            <h2 className="text-5xl text-slate-400 mb-2">See Latest News From These Categories</h2>
+            <div className="flex gap-4 flex-wrap justify-between mb-4">
+                {renderCategories()}
+            </div>
+        </section>
+    )
+}
+
+const RenderCategory = ({ item }) => {
+    const { name, picture } = item;
+
+    return (
+        <div
+            className="w-60 h-36 flex items-center justify-center rounded-lg outline-4 outline-rose-950 outline"
+            style={{
+                background: `url(${'/teamWork.jpg'})`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPositionX: "63.2%"
+            }}
+        >
+            <span className="text-3xl text-gray-200">{name}</span>
         </div>
     )
 }
@@ -133,9 +163,9 @@ const RenderLink = ({ item }) => {
 
     return (
         <div className="relative">
-            <Link 
-                onMouseEnter={handleShow} onMouseLeave={handleHide} 
-                href={path} 
+            <Link
+                onMouseEnter={handleShow} onMouseLeave={handleHide}
+                href={path}
                 className="flex gap-2 bg-slate-950 p-2 rounded-full"
             >
                 <span className="text-slate-400">{icon}</span>
