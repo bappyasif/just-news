@@ -4,7 +4,7 @@ import { checkIfProfanityExists, decideRoutePath, decideWhich, makeRoutes } from
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { Children, useState } from "react"
+import { Children, useEffect, useState } from "react"
 import { MdDoubleArrow, MdForward } from "react-icons/md"
 import demo from "../../../public/newspapersPile.jpg"
 import { FaBackward, FaForward } from "react-icons/fa"
@@ -19,20 +19,62 @@ export const AppHeadline = () => {
 }
 
 export const NewsCategories = () => {
+    const [dataset, setDataset] = useState([]);
+    const [categoryInfo, setCategoryInfo] = useState({})
+    
+    const handleCategoryInfo = data => setCategoryInfo(data)
+
+    const findIdx = (name) => dataset.findIndex(item => item.name === name)
+
+    const handleNext = (data) => {
+        const idx = findIdx(categoryInfo?.name);
+        console.log("next!!", idx)
+
+        if(idx < dataset?.length - 1 && idx >= 0) {
+            handleCategoryInfo(dataset[idx + 1])
+        } else if (idx === -1) {
+            handleCategoryInfo(dataset[dataset.length - 1])
+        }
+        // handleCategoryInfo(data)
+    }
+
+    const handlePrev = () => {
+        const idx = findIdx(categoryInfo?.name);
+        console.log("prev!!", idx)
+
+        if(idx > 0 && idx < dataset.length) {
+            handleCategoryInfo(dataset[idx - 1])
+        }
+        
+        // handleCategoryInfo(data)
+    }
+
+    const handleCarousel = {
+        next: handleNext,
+        prev: handlePrev
+    }
+
+    useEffect(() => {
+        setDataset(categories)
+        handleCategoryInfo(categories[0])
+    }, [])
+
+    console.log(categoryInfo, "categoryInfo!!")
+
     return (
         <section className="w-3/4 m-auto bg-slate-900 px-4 opacity-80 pb-1">
             <h2 className="text-5xl text-slate-400 mb-2">See Latest News From These Categories</h2>
-            <SoloCategory />
-            <RenderThumbnails />
+            <SoloCategory handleCarousel={handleCarousel} name={categoryInfo?.name}  />
+            <RenderThumbnails categories={dataset} categoryInfo={categoryInfo} />
         </section>
     )
 }
 
-const SoloCategory = () => {
+const SoloCategory = ({handleCarousel, name}) => {
     return (
-        <CarouselView>
+        <CarouselView handleCarousel={handleCarousel}>
             <Image 
-                src={demo}
+                src={`/${name}.jpg`}
                 height={290}
                 width={360}
                 alt="what up!!"
@@ -41,18 +83,18 @@ const SoloCategory = () => {
     )
 }
 
-const CarouselView = ({children}) => {
+const CarouselView = ({children, handleCarousel}) => {
     return (
         <div className="flex justify-between my-4">
-            <button className="text-slate-200 flex gap-2 justify-center items-center">{<FaBackward />}Prev</button>
+            <button onClick={handleCarousel.prev} className="text-slate-200 flex gap-2 justify-center items-center">{<FaBackward />}Prev</button>
             {children}
-            <button className="text-slate-200 flex gap-2 justify-center items-center">Next {<FaForward />}</button>
+            <button onClick={handleCarousel.next} className="text-slate-200 flex gap-2 justify-center items-center">Next {<FaForward />}</button>
         </div>
     )
 }
 
-const RenderThumbnails = () => {
-    const renderCategories = () => categories.map(item => <RenderCategory key={item.name} item={item} forThumbnails={true} />)
+const RenderThumbnails = ({categoryInfo, categories}) => {
+    const renderCategories = () => categories.map(item => <RenderCategory key={item.name} item={item} forThumbnails={true} categoryInfo={categoryInfo} />)
     return (
         <div className="flex gap-4 flex-wrap justify-center mb-4">
             {renderCategories()}
@@ -60,17 +102,18 @@ const RenderThumbnails = () => {
     )
 }
 
-const RenderCategory = ({ item, forThumbnails }) => {
+const RenderCategory = ({ item, forThumbnails, categoryInfo }) => {
     const { name, picture } = item;
 
     return (
         <div
-            className={`${forThumbnails ? "w-16 h-14" : "w-60 h-36"} flex items-center justify-center rounded-lg outline-4 outline-rose-950 outline`}
+            className={`${forThumbnails ? "w-16 h-14" : "w-60 h-36"} flex items-center justify-center rounded-lg outline-4 ${categoryInfo?.name === name ? "outline-rose-600" : "outline-rose-950"} outline`}
             style={{
-                background: `url(${'/teamWork.jpg'})`,
+                // background: `url(${'/teamWork.jpg'})`,
+                background: `url(/${name}.jpg)`,
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
-                backgroundPositionX: "63.2%"
+                // backgroundPositionX: "63.2%"
             }}
         >
             <span className={`${forThumbnails ? "text-xs" : "text-3xl"} font-extrabold text-gray-200`}>{name}</span>
