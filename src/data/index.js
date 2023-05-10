@@ -95,7 +95,7 @@ export const swearWords = [
     "Pissed off", "Shit", "Son of a bitch", "Tits", "Bastard", "Beef curtains",
     "Bellend", "Bloodclaat", "Clunge", "Cock", "Dick", "Dickhead", "Fanny", 
     "Flaps", "Gash", "Knob", "Minge", "Prick", "Punani", "Pussy", "Twat", "Cunt", 
-    "Fuck", "Motherfucker", "sex", "tities"
+    "Fuck", "Motherfucker", "sex", "tities", "sexy", "busty"
 ]
 
 export const footerProfileLinks = [
@@ -119,54 +119,67 @@ export const stacksUsed = [
 export const categories = [
     {
         name: "News",
-        picture: null
+        picture: null,
+        text: "See Only News Headlines"
     },
     {
         name: "Tech",
-        picture: null
+        picture: null,
+        text: "See Only Tech News"
     },
     {
         name: "Business",
-        picture: null
+        picture: null,
+        text: "See Only Business News"
     },
     {
         name: "Science",
-        picture: null
+        picture: null,
+        text: "See Only Science News"
     },
     {
         name: "Finance",
-        picture: null
+        picture: null,
+        text: "See Only Finance News"
     },
     {
         name: "Food",
-        picture: null
+        picture: null,
+        text: "See Only Food News"
     },
     {
         name: "Politics",
-        picture: null
+        picture: null,
+        text: "See Only Politics News"
     },
     {
         name: "Economics",
-        picture: null
+        picture: null,
+        text: "See Only Economics News"
     },
     {
         name: "Travel",
-        picture: null
+        picture: null,
+        text: "See Only Travel News"
     },
     {
         name: "Entertainment",
-        picture: null
+        picture: null,
+        text: "See Only Entertainment News"
     },
     {
         name: "Music",
-        picture: null
+        picture: null,
+        text: "See Only Music News"
     },
     {
         name: "Sport",
-        picture: null
+        picture: null,
+        text: "See Only Sport News"
     },
     {
         name: "World",
-        picture: null
+        picture: null,
+        text: "See Only World News"
     }
 ]

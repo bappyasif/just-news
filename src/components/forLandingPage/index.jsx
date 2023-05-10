@@ -21,7 +21,7 @@ export const AppHeadline = () => {
 export const NewsCategories = () => {
     const [dataset, setDataset] = useState([]);
     const [categoryInfo, setCategoryInfo] = useState({})
-    
+
     const handleCategoryInfo = data => setCategoryInfo(data)
 
     const findIdx = (name) => dataset.findIndex(item => item.name === name)
@@ -30,7 +30,7 @@ export const NewsCategories = () => {
         const idx = findIdx(categoryInfo?.name);
         console.log("next!!", idx)
 
-        if(idx < dataset?.length - 1 && idx >= 0) {
+        if (idx < dataset?.length - 1 && idx >= 0) {
             handleCategoryInfo(dataset[idx + 1])
         } else if (idx === -1) {
             handleCategoryInfo(dataset[dataset.length - 1])
@@ -42,10 +42,10 @@ export const NewsCategories = () => {
         const idx = findIdx(categoryInfo?.name);
         console.log("prev!!", idx)
 
-        if(idx > 0 && idx < dataset.length) {
+        if (idx > 0 && idx < dataset.length) {
             handleCategoryInfo(dataset[idx - 1])
         }
-        
+
         // handleCategoryInfo(data)
     }
 
@@ -63,42 +63,56 @@ export const NewsCategories = () => {
 
     return (
         <section className="w-3/4 m-auto bg-slate-900 px-4 opacity-80 pb-1">
-            <h2 className="text-5xl text-slate-400 mb-2">See Latest News From These Categories</h2>
-            <SoloCategory handleCarousel={handleCarousel} name={categoryInfo?.name}  />
+            <h2 className="text-5xl text-slate-400 mb-2">News Categories</h2>
+            <SoloCategory handleCarousel={handleCarousel} categoryInfo={categoryInfo} />
             <RenderThumbnails categories={dataset} categoryInfo={categoryInfo} />
         </section>
     )
 }
 
-const SoloCategory = ({handleCarousel, name}) => {
-    console.log(name, "NAME!!")
+const SoloCategory = ({ handleCarousel, categoryInfo }) => {
+    const { name, text } = categoryInfo;
+    const handleHref = () => name === "News" ? "/headlines" : `/news?q=${name}`
+    const router = useRouter();
+    const handleRouter = () => router.push(handleHref())
     return (
         <CarouselView handleCarousel={handleCarousel}>
             <Image
-                className="w-full" 
+                onClick={handleRouter}
+                className="w-full hover:cursor-pointer"
                 src={`/${name}.jpg`}
-                height={290}
-                width={690}
+                height={330}
+                width={290}
                 alt="what up!!"
             />
+            <div className="absolute top-2 w-3/4 left-32 bg-slate-900 text-slate-200 px-4 py-2">
+                {/* <p className="w-full text-center text-4xl">{name}</p> */}
+                <Link href={handleHref()}>
+                    <p className="w-full text-center text-4xl">{name}</p>
+                    {/* <p>{text}</p> */}
+                </Link>
+            </div>
         </CarouselView>
     )
 }
 
-const CarouselView = ({children, handleCarousel}) => {
+const CarouselView = ({ children, handleCarousel }) => {
     return (
-        <div className="flex justify-between my-4 h-60 gap-20">
-            <button 
-                onClick={handleCarousel.prev} 
+        <div className="flex justify-between my-4 h-60 gap-20 relative">
+            <button
+                onClick={handleCarousel.prev}
                 className="text-slate-200 bg-slate-700 hover:bg-slate-950 flex gap-2 justify-center items-center px-2"
             >{<FaBackward />}Prev</button>
             {children}
+            {/* <Link href={"/headlines"}>
+                {children}
+            </Link> */}
             <button onClick={handleCarousel.next} className="text-slate-200 bg-slate-700 hover:bg-slate-950 px-2 flex gap-2 justify-center items-center">Next {<FaForward />}</button>
         </div>
     )
 }
 
-const RenderThumbnails = ({categoryInfo, categories}) => {
+const RenderThumbnails = ({ categoryInfo, categories }) => {
     const renderCategories = () => categories.map(item => <RenderCategory key={item.name} item={item} forThumbnails={true} categoryInfo={categoryInfo} />)
     return (
         <div className="flex gap-4 flex-wrap justify-center mb-4">
