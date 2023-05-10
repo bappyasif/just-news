@@ -6,7 +6,7 @@ import filterIcon from "../../../public/newspapersPile.jpg"
 import { MdFilter3, MdFilter5, MdFilter7 } from 'react-icons/md';
 import filterBG from "../../../public/teamWork.jpg"
 import Image from "next/image"
-import { useSession } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 
 export const RenderAllAvailableLanguages = ({ handleChange, elemName }) => {
     const renderList = () => languageCodes?.map(item => <RenderListItem key={item.name} item={item} />)
@@ -258,7 +258,7 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
                 </button>
 
             </div>
-            {session?.user ? null : <p className="text-2xl bg-slate-400 opacity-90 mt-1 text-center">You need to be logged to save filters</p>}
+            {session?.user ? null : <p className="text-2xl bg-slate-400 opacity-90 mt-1 text-center">Please <button className="bg-blue-400 px-2 rounded-lg" onClick={signIn}>Log In</button> First To Save Filters</p>}
 
         </section>
     )

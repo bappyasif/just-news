@@ -12,7 +12,7 @@ import { FaBackward, FaForward } from "react-icons/fa"
 export const AppHeadline = () => {
     return (
         <div className="text-4xl text-center mb-3 bg-slate-400 text-zinc-950 font-extrabold opacity-80">
-            <h1 className="bg-blue-950 text-stone-200">Want To Look Into News Snippet From All Over This Planet?</h1>
+            <h1 className="bg-blue-950 text-stone-200">Want To Look Into News Snippets From All Over This Planet?</h1>
             <h2>You are in a good place, you will find them all in here and more, enjoy :)</h2>
         </div>
     )
@@ -28,30 +28,31 @@ export const NewsCategories = () => {
 
     const handleNext = (data) => {
         const idx = findIdx(categoryInfo?.name);
-        console.log("next!!", idx)
 
         if (idx < dataset?.length - 1 && idx >= 0) {
             handleCategoryInfo(dataset[idx + 1])
         } else if (idx === -1) {
             handleCategoryInfo(dataset[dataset.length - 1])
         }
-        // handleCategoryInfo(data)
     }
 
     const handlePrev = () => {
         const idx = findIdx(categoryInfo?.name);
-        console.log("prev!!", idx)
 
         if (idx > 0 && idx < dataset.length) {
             handleCategoryInfo(dataset[idx - 1])
         }
+    }
 
-        // handleCategoryInfo(data)
+    const handleThumbnailClick = (name) => {
+        const findItem = dataset.find(item => item.name === name);
+        handleCategoryInfo(findItem)
     }
 
     const handleCarousel = {
         next: handleNext,
-        prev: handlePrev
+        prev: handlePrev,
+        thumb: handleThumbnailClick
     }
 
     useEffect(() => {
@@ -59,13 +60,13 @@ export const NewsCategories = () => {
         handleCategoryInfo(categories[0])
     }, [])
 
-    console.log(categoryInfo, "categoryInfo!!")
+    // console.log(categoryInfo, "categoryInfo!!")
 
     return (
-        <section className="w-3/4 m-auto bg-slate-900 px-4 opacity-80 pb-1">
-            <h2 className="text-5xl text-slate-400 mb-2">News Categories</h2>
+        <section className="xxs:w-full lg:w-3/4 m-auto bg-slate-900 px-4 opacity-80 pb-1">
+            <h2 className="xxs:text-2xl xl:text-5xl text-slate-400 mb-2">News Categories</h2>
             <SoloCategory handleCarousel={handleCarousel} categoryInfo={categoryInfo} />
-            <RenderThumbnails categories={dataset} categoryInfo={categoryInfo} />
+            <RenderThumbnails handleCarousel={handleCarousel} categories={dataset} categoryInfo={categoryInfo} />
         </section>
     )
 }
@@ -79,16 +80,15 @@ const SoloCategory = ({ handleCarousel, categoryInfo }) => {
         <CarouselView handleCarousel={handleCarousel}>
             <Image
                 onClick={handleRouter}
-                className="w-full hover:cursor-pointer"
+                className="xxs:w-60 sm:w-80 lg:w-full hover:cursor-pointer"
                 src={`/${name}.jpg`}
                 height={330}
                 width={290}
                 alt="what up!!"
             />
-            <div className="absolute top-2 w-3/4 left-32 bg-slate-900 text-slate-200 px-4 py-2">
-                {/* <p className="w-full text-center text-4xl">{name}</p> */}
+            <div className="absolute top-2 xxs:w-40 sm:w-96 lg:w-3/4 xxs:left-32 lg:left-32 bg-slate-900 text-slate-200 px-4 py-2">
                 <Link href={handleHref()}>
-                    <p className="w-full text-center text-4xl">{name}</p>
+                    <p className="w-full text-center xxs:text-2xl lg:text-4xl">{name}</p>
                     {/* <p>{text}</p> */}
                 </Link>
             </div>
@@ -98,22 +98,22 @@ const SoloCategory = ({ handleCarousel, categoryInfo }) => {
 
 const CarouselView = ({ children, handleCarousel }) => {
     return (
-        <div className="flex justify-between my-4 h-60 gap-20 relative">
+        <div className="flex justify-between my-4 h-60 xxs:gap-2 lg:gap-20 relative xxs:text-xl md:2xl">
             <button
                 onClick={handleCarousel.prev}
-                className="text-slate-200 bg-slate-700 hover:bg-slate-950 flex gap-2 justify-center items-center px-2"
+                className="text-slate-200 bg-slate-950 hover:bg-slate-800 flex gap-2 justify-center items-center px-2"
             >{<FaBackward />}Prev</button>
             {children}
-            {/* <Link href={"/headlines"}>
-                {children}
-            </Link> */}
-            <button onClick={handleCarousel.next} className="text-slate-200 bg-slate-700 hover:bg-slate-950 px-2 flex gap-2 justify-center items-center">Next {<FaForward />}</button>
+            <button
+                onClick={handleCarousel.next}
+                className="text-slate-200 bg-slate-950 hover:bg-slate-800 px-2 flex gap-2 justify-center items-center"
+            >Next {<FaForward />}</button>
         </div>
     )
 }
 
-const RenderThumbnails = ({ categoryInfo, categories }) => {
-    const renderCategories = () => categories.map(item => <RenderCategory key={item.name} item={item} forThumbnails={true} categoryInfo={categoryInfo} />)
+const RenderThumbnails = ({ categoryInfo, categories, handleCarousel }) => {
+    const renderCategories = () => categories.map(item => <RenderCategory key={item.name} item={item} categoryInfo={categoryInfo} handleCarousel={handleCarousel} />)
     return (
         <div className="flex gap-4 flex-wrap justify-center mb-4">
             {renderCategories()}
@@ -121,21 +121,26 @@ const RenderThumbnails = ({ categoryInfo, categories }) => {
     )
 }
 
-const RenderCategory = ({ item, forThumbnails, categoryInfo }) => {
+const RenderCategory = ({ item, categoryInfo, handleCarousel }) => {
     const { name, picture } = item;
 
     return (
         <div
-            className={`${forThumbnails ? "w-24 h-14" : "w-60 h-36"} flex items-center justify-center rounded-lg outline-4 ${categoryInfo?.name === name ? "outline-rose-600" : "outline-rose-950"} outline`}
-            style={{
-                // background: `url(${'/teamWork.jpg'})`,
-                background: `url(/${name}.jpg)`,
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                // backgroundPositionX: "63.2%"
-            }}
+            onClick={() => handleCarousel?.thumb(name)}
+            className={`relative w-24 h-14 flex flex-col items-center justify-center rounded-lg outline-4 ${categoryInfo?.name === name ? "outline-rose-600" : "outline-rose-950"} outline hover:cursor-pointer`}
+            // style={{
+            //     background: `url(/${name}.jpg)`,
+            //     backgroundSize: "cover",
+            //     backgroundRepeat: "no-repeat",
+            // }}
         >
-            <span className={`${forThumbnails ? "text-xs" : "text-3xl"} font-extrabold text-gray-200`}>{name}</span>
+            <Image 
+                className="w-full h-full"
+                src={`/${name}.jpg`}
+                height={92}
+                width={92}
+            />
+            <span className={`absolute text-xs font-extrabold text-gray-200 bg-slate-600 px-2 rounded-lg`}>{name}</span>
         </div>
     )
 }
