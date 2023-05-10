@@ -71,12 +71,14 @@ export const NewsCategories = () => {
 }
 
 const SoloCategory = ({handleCarousel, name}) => {
+    console.log(name, "NAME!!")
     return (
         <CarouselView handleCarousel={handleCarousel}>
-            <Image 
+            <Image
+                className="w-full" 
                 src={`/${name}.jpg`}
                 height={290}
-                width={360}
+                width={690}
                 alt="what up!!"
             />
         </CarouselView>
@@ -85,10 +87,13 @@ const SoloCategory = ({handleCarousel, name}) => {
 
 const CarouselView = ({children, handleCarousel}) => {
     return (
-        <div className="flex justify-between my-4">
-            <button onClick={handleCarousel.prev} className="text-slate-200 flex gap-2 justify-center items-center">{<FaBackward />}Prev</button>
+        <div className="flex justify-between my-4 h-60 gap-20">
+            <button 
+                onClick={handleCarousel.prev} 
+                className="text-slate-200 bg-slate-700 hover:bg-slate-950 flex gap-2 justify-center items-center px-2"
+            >{<FaBackward />}Prev</button>
             {children}
-            <button onClick={handleCarousel.next} className="text-slate-200 flex gap-2 justify-center items-center">Next {<FaForward />}</button>
+            <button onClick={handleCarousel.next} className="text-slate-200 bg-slate-700 hover:bg-slate-950 px-2 flex gap-2 justify-center items-center">Next {<FaForward />}</button>
         </div>
     )
 }
@@ -107,7 +112,7 @@ const RenderCategory = ({ item, forThumbnails, categoryInfo }) => {
 
     return (
         <div
-            className={`${forThumbnails ? "w-16 h-14" : "w-60 h-36"} flex items-center justify-center rounded-lg outline-4 ${categoryInfo?.name === name ? "outline-rose-600" : "outline-rose-950"} outline`}
+            className={`${forThumbnails ? "w-24 h-14" : "w-60 h-36"} flex items-center justify-center rounded-lg outline-4 ${categoryInfo?.name === name ? "outline-rose-600" : "outline-rose-950"} outline`}
             style={{
                 // background: `url(${'/teamWork.jpg'})`,
                 background: `url(/${name}.jpg)`,
