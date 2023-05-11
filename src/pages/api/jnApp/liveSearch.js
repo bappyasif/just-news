@@ -13,17 +13,13 @@ const handler = async (req, res) => {
     const session = await getServerSession(req, res, authOptions)
 
     if (!session) {
-        // console.log("SESSION!!")
         return res.status(402).json({ msg: "access un-authorized" })
     }
 
-    console.log(process.env.DB_URL, "from API")
-
-    // connectMongoDB()
     dbConnect().then(async () => {
         console.log("begin process")
         if (method === "GET") {
-            const firstTwenty = await liveSearch.find({ type: query.type }).sort([['_id', 1]]).limit(20)
+            const firstTwenty = await liveSearch.find({ type: query.type }).sort([['_id', -1]]).limit(20)
             // console.log("firstTwenty", firstTwenty?.length, query)
             return res.status(200).json({ msg: "a successfull get request", data: firstTwenty })
         } else if (method === "POST") {
@@ -40,67 +36,6 @@ const handler = async (req, res) => {
     }).catch(err => {
         return res.status(501).json({msg: "mongodb connection error occured", err})
     })
-
-    // if (method === "GET") {
-    //     const firstTwenty = await liveSearch.find({ type: query.type }).sort([['_id', 1]]).limit(20)
-    //     // console.log("firstTwenty", firstTwenty?.length, query)
-    //     return res.status(200).json({ msg: "a successfull get request", data: firstTwenty })
-    // } else if (method === "POST") {
-    //     // console.log(body, "POST")
-    //     const newEntry = new liveSearch(body);
-    //     newEntry.save().then(() => {
-    //         return res.status(200).json({ msg: "a successfull post request" })
-    //     }).catch(err => {
-    //         return res.status(200).json({ msg: "error occure while saving", err: err })
-    //     })
-    // } else if (method === "DELETE") {
-    //     return res.status(200).json({ msg: "a successfull delete request" })
-    // }
 }
 
 export default handler
-
-/**
- * 
- * 
- const handler = async (req, res) => {
-    const body = req.body
-    const query = req.query
-    const method = req.method
-
-    const session = await getServerSession(req, res, authOptions)
-
-    if (!session) {
-        // console.log("SESSION!!")
-        return res.status(402).json({ msg: "access un-authorized" })
-    }
-
-    // connectMongoDB()
-    
-    // let client = null
-    
-    try {
-        const client = await clientPromise;
-        if (method === "GET") {
-            const t20 = client.db("nextjsJustNews").collection("liveSearches").find({ type: query.type }).sort({'_id': 1}).limit(20)
-            console.log(t20, "!>!>!>!")
-            return res.status(200).json({ msg: "a successfull get request", data: t20 })
-            // const firstTwenty = await liveSearch.find({ type: query.type }).sort([['_id', 1]]).limit(20)
-            // console.log("firstTwenty", firstTwenty?.length, query)
-            // return res.status(200).json({ msg: "a successfull get request", data: firstTwenty })
-        } else if (method === "POST") {
-            // console.log(body, "POST")
-            const newEntry = new liveSearch(body);
-            newEntry.save().then(() => {
-                return res.status(200).json({ msg: "a successfull post request" })
-            }).catch(err => {
-                return res.status(200).json({ msg: "error occure while saving", err: err })
-            })
-        } else if (method === "DELETE") {
-            return res.status(200).json({ msg: "a successfull delete request" })
-        }
-    } catch (err) {
-        console.log(err, "mongodb error!!")
-    }
-}
- */

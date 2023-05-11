@@ -88,11 +88,10 @@ const SoloCategory = ({ handleCarousel, categoryInfo }) => {
                 alt="what up!!"
             />
             <div
-                className="absolute top-2 bg-slate-900 text-slate-200 px-4 py-2 w-full"
+                className="absolute top-2 xxs:w-40 md:w-48 text-center left-3 bg-slate-900 text-slate-200 px-4 py-2"
             >
                 <Link href={handleHref()}>
-                    <p className="w-fit text-center xxs:text-2xl lg:text-4xl">{name}</p>
-                    {/* <p>{text}</p> */}
+                    <p className="w-full text-center xxs:text-lg md:text-xl lg:text-2xl">{name}</p>
                 </Link>
             </div>
         </CarouselView>
@@ -105,14 +104,20 @@ const CarouselView = ({ children, handleCarousel }) => {
             <button
                 onClick={handleCarousel.prev}
                 className="text-slate-200 bg-slate-950 hover:bg-slate-800 flex gap-2 justify-center items-center px-2"
-            >{<FaBackward />}Prev</button>
+            >
+                {<FaBackward />}
+                <span className="xxs:hidden md:block">Prev</span>
+            </button>
             <div className="flex flex-col mb-4 relative grow">
                 {children}
             </div>
             <button
                 onClick={handleCarousel.next}
                 className="text-slate-200 bg-slate-950 hover:bg-slate-800 px-2 flex gap-2 justify-center items-center"
-            >Next {<FaForward />}</button>
+            >
+                <span className="xxs:hidden md:block">Next</span> 
+                {<FaForward />}
+                </button>
         </div>
     )
 }
@@ -263,7 +268,7 @@ const RenderLink = ({ item }) => {
 
     const {data: session} = useSession()
 
-    if(session?.user && name === "Sign in") {
+    if(session?.user && name === "Sign In") {
         return null
     }
 
