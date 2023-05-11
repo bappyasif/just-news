@@ -44,7 +44,7 @@ const TrademarkInfo = () => {
     return (
         <div className='flex gap-2 justify-start text-lg text-slate-950 font-medium'>
             <span className='text-2xl'><TbTrademark /></span>
-            <span>Devloped By: a b</span>
+            <span><span className='xxs:hidden md:block'>Devloped By: </span>a b</span>
         </div>
     )
 }
@@ -69,7 +69,7 @@ const RenderInfo = ({ item }) => {
         <li>
             <Link href={url} target='_blank' className='flex gap-2 items-baseline text-lg font-bold text-slate-950'>
                 <span className='xxs:hidden xl:block'>{name}</span>
-                <span>{icon}</span>
+                <span className='xxs:text-sm md:text-lg'>{icon}</span>
             </Link>
         </li>
     )

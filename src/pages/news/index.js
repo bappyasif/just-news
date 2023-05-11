@@ -40,7 +40,7 @@ const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters
 
     return (
         <ReuseableRelatedUi width={"434px"} height={"499px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
-            <GetUserSearchQuery handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
+            <GetUserSearchQuery required={true} handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} />
         </ReuseableRelatedUi>
     )

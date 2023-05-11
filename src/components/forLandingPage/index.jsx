@@ -27,7 +27,7 @@ export const NewsCategories = () => {
 
     const findIdx = (name) => dataset.findIndex(item => item.name === name)
 
-    const handleNext = (data) => {
+    const handleNext = () => {
         const idx = findIdx(categoryInfo?.name);
 
         if (idx < dataset?.length - 1 && idx >= 0) {
@@ -61,10 +61,10 @@ export const NewsCategories = () => {
         handleCategoryInfo(categories[0])
     }, [])
 
-    // console.log(categoryInfo, "categoryInfo!!")
-
     return (
-        <section className="xxs:w-full lg:w-3/4 m-auto bg-slate-900 px-4 opacity-80 pb-1">
+        <section 
+            className="xxs:w-full lg:w-3/4 m-auto bg-slate-900 px-4 opacity-80 pb-1"
+        >
             <h2 className="xxs:text-2xl xl:text-5xl text-slate-400 mb-2">News Categories</h2>
             <SoloCategory handleCarousel={handleCarousel} categoryInfo={categoryInfo} />
             <RenderThumbnails handleCarousel={handleCarousel} categories={dataset} categoryInfo={categoryInfo} />
@@ -85,7 +85,9 @@ const SoloCategory = ({ handleCarousel, categoryInfo }) => {
                 src={`/${name}.jpg`}
                 height={330}
                 width={290}
-                alt="what up!!"
+                alt={`carousel view for ${name}`}
+                placeholder="blur"
+                blurDataURL={`/${name}.jpg`}
             />
             <div
                 className="absolute top-2 xxs:w-40 md:w-48 text-center left-3 bg-slate-900 text-slate-200 px-4 py-2"
@@ -144,6 +146,9 @@ const RenderCategory = ({ item, categoryInfo, handleCarousel }) => {
                 src={`/${name}.jpg`}
                 height={92}
                 width={92}
+                alt={`a picture about ${name}`}
+                placeholder="blur"
+                blurDataURL={`/${name}.jpg`}
             />
             <span className={`absolute text-xs font-extrabold text-gray-200 bg-slate-600 px-2 rounded-lg`}>{name}</span>
         </div>
@@ -159,7 +164,7 @@ export const ShowAllLiveSearches = () => {
     const renderData = () => dataset.map((item, idx) => <RenderLiveSearchData key={item.type} type={item.type} titleText={item.titleText} />);
 
     return (
-        <div className="flex gap-4 xxs:w-full lg:w-3/4 mb-2">
+        <div className="flex xxs:flex-col md:flex-row gap-4 xxs:w-full lg:w-3/4 mb-2">
             {renderData()}
         </div>
     )

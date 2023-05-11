@@ -14,13 +14,13 @@ export const AppNavigations = () => {
             <ReUsableImageComponent
                 height={"101px"}
                 width={"100%"}
-                altText={"abstract image as a header background"}
+                altText={"For Header"}
                 imgSrc={headerImg}
             />
             <div className='flex gap-4 px-0 pr-6'>
                 <ReUsableImageComponent
                     height={"101px"}
-                    width={"184px"}
+                    width={"155px"}
                     altText={"For Fill"}
                     imgSrc={logoImg}
                 />

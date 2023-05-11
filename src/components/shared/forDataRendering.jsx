@@ -69,7 +69,7 @@ export const RenderArticle = ({ item }) => {
             <div className="bg-gray-800 opacity-90 px-2 text-xl font-bold">
                 <RenderContent text={excerpt} label={"Excerpt"} ftype={true} />
             </div>
-            <img className="w-full" src={media} alt={excerpt} />
+            <img className="h-48" src={media} alt={excerpt} />
             <div className="bg-gray-800 opacity-90 px-2 text-xl font-semibold">
                 <RenderContent text={summary} label={"Summary"} ftype={true} />
             </div>

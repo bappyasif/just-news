@@ -66,7 +66,7 @@ export const MultipleCountriesHandleInputs = ({ handleChanges }) => {
     )
 }
 
-export const UserInput = ({ handleValueChanges, labelText, placeholderText }) => {
+export const UserInput = ({ handleValueChanges, labelText, placeholderText, required }) => {
     return (
         <label className="w-full">
             <p className='text-cyan-200 font-bold'>{labelText}</p>
@@ -75,6 +75,7 @@ export const UserInput = ({ handleValueChanges, labelText, placeholderText }) =>
                 type="text"
                 onChange={handleValueChanges}
                 placeholder={placeholderText}
+                required={required ? required : false}
             />
         </label>
     )
@@ -134,7 +135,7 @@ const AdvancedNewsQueryExamples = () => {
     )
 }
 
-export const GetUserSearchQuery = ({ handleValueChanges, labelText, placeholderText }) => {
+export const GetUserSearchQuery = ({ handleValueChanges, labelText, placeholderText, required }) => {
     return (
         <div className="flex flex-col items-baseline w-full">
             <AdvancedNewsQueryExamples />
@@ -142,6 +143,7 @@ export const GetUserSearchQuery = ({ handleValueChanges, labelText, placeholderT
                 labelText={labelText}
                 placeholderText={placeholderText}
                 handleValueChanges={handleValueChanges}
+                required={required}
             />
         </div>
     )
@@ -292,7 +294,7 @@ export const ImageComponent = ({ imgSrc, altText }) => {
             placeholder="blur"
             quality={100}
             style={{
-                objectFit: altText === "For Fill" ? "fill" : altText === "For Logo" ? "contain" : "cover",
+                objectFit: altText === "For Fill" ? "fill" : altText === "For Logo" ? "contain" : altText === "For Header" ? "none" : "cover",
                 height: altText === "For Fill" && "inherit",
                 opacity: altText === "For Fill" && ".81"
             }}
