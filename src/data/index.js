@@ -86,6 +86,11 @@ export const navLinks = [
         name: "Saved Filters",
         path: "/saved-filters",
         icon: <MdDashboard />
+    },
+    {
+        name: "Sign In",
+        path: "/api/auth/signin",
+        icon: <MdLogin />
     }
 ];
 

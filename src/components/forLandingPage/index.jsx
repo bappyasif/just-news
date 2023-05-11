@@ -8,6 +8,7 @@ import { Children, useEffect, useState } from "react"
 import { MdDoubleArrow, MdForward } from "react-icons/md"
 import demo from "../../../public/newspapersPile.jpg"
 import { FaBackward, FaForward } from "react-icons/fa"
+import { useSession } from "next-auth/react"
 
 export const AppHeadline = () => {
     return (
@@ -80,15 +81,17 @@ const SoloCategory = ({ handleCarousel, categoryInfo }) => {
         <CarouselView handleCarousel={handleCarousel}>
             <Image
                 onClick={handleRouter}
-                className="xxs:w-60 sm:w-80 lg:w-full hover:cursor-pointer"
+                className="w-full hover:cursor-pointer h-40"
                 src={`/${name}.jpg`}
                 height={330}
                 width={290}
                 alt="what up!!"
             />
-            <div className="absolute top-2 xxs:w-40 sm:w-96 lg:w-3/4 xxs:left-32 lg:left-32 bg-slate-900 text-slate-200 px-4 py-2">
+            <div
+                className="absolute top-2 bg-slate-900 text-slate-200 px-4 py-2 w-full"
+            >
                 <Link href={handleHref()}>
-                    <p className="w-full text-center xxs:text-2xl lg:text-4xl">{name}</p>
+                    <p className="w-fit text-center xxs:text-2xl lg:text-4xl">{name}</p>
                     {/* <p>{text}</p> */}
                 </Link>
             </div>
@@ -98,12 +101,14 @@ const SoloCategory = ({ handleCarousel, categoryInfo }) => {
 
 const CarouselView = ({ children, handleCarousel }) => {
     return (
-        <div className="flex justify-between my-4 h-60 xxs:gap-2 lg:gap-20 relative xxs:text-xl md:2xl">
+        <div className="flex justify-between my-4 h-40 gap-4 relative xxs:text-xl md:2xl">
             <button
                 onClick={handleCarousel.prev}
                 className="text-slate-200 bg-slate-950 hover:bg-slate-800 flex gap-2 justify-center items-center px-2"
             >{<FaBackward />}Prev</button>
-            {children}
+            <div className="flex flex-col mb-4 relative grow">
+                {children}
+            </div>
             <button
                 onClick={handleCarousel.next}
                 className="text-slate-200 bg-slate-950 hover:bg-slate-800 px-2 flex gap-2 justify-center items-center"
@@ -128,13 +133,8 @@ const RenderCategory = ({ item, categoryInfo, handleCarousel }) => {
         <div
             onClick={() => handleCarousel?.thumb(name)}
             className={`relative w-24 h-14 flex flex-col items-center justify-center rounded-lg outline-4 ${categoryInfo?.name === name ? "outline-rose-600" : "outline-rose-950"} outline hover:cursor-pointer`}
-            // style={{
-            //     background: `url(/${name}.jpg)`,
-            //     backgroundSize: "cover",
-            //     backgroundRepeat: "no-repeat",
-            // }}
         >
-            <Image 
+            <Image
                 className="w-full h-full"
                 src={`/${name}.jpg`}
                 height={92}
@@ -260,6 +260,12 @@ const RenderLink = ({ item }) => {
     const handleShow = () => setShowTip(true)
 
     const handleHide = () => setShowTip(false)
+
+    const {data: session} = useSession()
+
+    if(session?.user && name === "Sign in") {
+        return null
+    }
 
     return (
         <div className="relative">
