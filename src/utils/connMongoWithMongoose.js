@@ -6,7 +6,6 @@ const conn = {
 
 export async function dbConnect() {
   if (conn.isConected) return;
-  console.log(process.env.DB_URL, "process.env.DB_URL")
    
   const db = await connect(process.env.DB_URL);
 

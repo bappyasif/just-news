@@ -1,11 +1,11 @@
 import credUser from "@/models/credUser";
-import connectMongoDB from "./connectMongo";
+import { dbConnect } from "./connMongoWithMongoose";
 
 export const authorizeUser = async (credentials) => {
     const {username, email, password} = credentials;
     let user = {name: username, email, password}
 
-    connectMongoDB();
+    dbConnect().then(() => console.log("begin process")).catch(err => console.log("mongo error!!"))
 
     const checkIfUserEmailExistAlready = await credUser.findOne({email: email})
     const userFound = await credUser.findOne({email, name: username, password})

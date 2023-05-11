@@ -1,5 +1,4 @@
 import newsFilters from "@/models/news"
-import connectMongoDB from "@/utils/connectMongo"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../auth/[...nextauth]"
 import { dbConnect } from "@/utils/connMongoWithMongoose"

@@ -70,8 +70,6 @@ export const newsApiRequestInterceptor = ({ ...options }) => {
 export const sendHttpReuestToInternalApi = options => internalApiRequestInterceptor(options)
 
 const internalApiRequestInterceptor = ({ ...options }) => {
-    // const client = axios.create({baseURL: "http://localhost:3000/api/saveFilters"})
-    // const client = axios.create({ baseURL: `${process.env.NODE_ENV === "production" ? "https://just-news-mu.vercel.app" : "http://localhost" }:3000/api/jnApp`})
     const client = axios.create({ baseURL: `${process.env.NODE_ENV === "production" ? "https://just-news-eta.vercel.app" : "http://localhost:3000" }/api/jnApp`})
 
     const onSuccess = resp => resp
