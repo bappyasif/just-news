@@ -2,16 +2,12 @@ import languageCodes from "@/data/languageCodes.json"
 import countryCodes from "@/data/countryCodes.json"
 import { useState } from "react"
 import { types } from "@/data"
-import filterIcon from "../../../public/newspapersPile.jpg"
 import { MdFilter3, MdFilter5, MdFilter7 } from 'react-icons/md';
-import filterBG from "../../../public/teamWork.jpg"
 import Image from "next/image"
 import { signIn, useSession } from "next-auth/react"
 
 export const RenderAllAvailableLanguages = ({ handleChange, elemName, langPref }) => {
     const renderList = () => languageCodes?.map(item => <RenderListItem key={item.name} item={item} langPref={langPref} elemName={elemName} />)
-
-    console.log(langPref, elemName)
 
     return (
         <select
@@ -28,10 +24,8 @@ const RenderListItem = ({ item, elemName, langPref }) => {
     const { name, code } = item
 
     if(elemName === "lang" && langPref === code) {
-        console.log(langPref, name, elemName)
         return null
     } else if(elemName === "not_lang" && langPref === code) {
-        console.log(langPref, name, elemName)
         return null
     }
 
@@ -147,7 +141,6 @@ const AdvancedNewsQueryExamples = () => {
 
 export const GetUserSearchQuery = ({ handleValueChanges, labelText, placeholderText, required }) => {
     return (
-        // make sure exclude lang and choolse langugae dont show up on each other
         <div className="flex flex-col items-baseline w-full">
             <AdvancedNewsQueryExamples />
             <UserInput
@@ -299,7 +292,6 @@ export const ReUsableImageComponent = ({ height, width, imgSrc, altText }) => {
 export const ImageComponent = ({ imgSrc, altText }) => {
     return (
         <Image
-            // className='fixed'
             src={imgSrc}
             alt={altText}
             placeholder="blur"

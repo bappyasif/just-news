@@ -20,10 +20,6 @@ export const RenderFiltersInUse = ({ data }) => {
 const RenderFilter = ({ item }) => {
     const { name, vals } = item;
 
-    // console.log(item, "item!!")
-
-    // console.log(vals)
-
     if (vals == null || vals?.length == 0) return null
 
     if (name == "from" || name == "page") return null

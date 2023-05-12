@@ -119,7 +119,12 @@ const DeleteThisSavedFilter = ({ filterId }) => {
         const url = "/forNews"
         const method = "DELETE"
         const params = { filter_id: filterId }
-        happensAfterHttpRequest(dataUpdater, { url, method, params })
+
+        const prompt = window.prompt("Are you sure? Press Y/y to continue", "N/n");
+        
+        if (prompt === "Y" || prompt === "y") {
+            happensAfterHttpRequest(dataUpdater, { url, method, params })
+        }
     }
 
     return (
