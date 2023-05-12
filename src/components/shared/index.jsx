@@ -8,8 +8,10 @@ import filterBG from "../../../public/teamWork.jpg"
 import Image from "next/image"
 import { signIn, useSession } from "next-auth/react"
 
-export const RenderAllAvailableLanguages = ({ handleChange, elemName }) => {
-    const renderList = () => languageCodes?.map(item => <RenderListItem key={item.name} item={item} />)
+export const RenderAllAvailableLanguages = ({ handleChange, elemName, langPref }) => {
+    const renderList = () => languageCodes?.map(item => <RenderListItem key={item.name} item={item} langPref={langPref} elemName={elemName} />)
+
+    console.log(langPref, elemName)
 
     return (
         <select
@@ -22,8 +24,16 @@ export const RenderAllAvailableLanguages = ({ handleChange, elemName }) => {
     )
 }
 
-const RenderListItem = ({ item }) => {
+const RenderListItem = ({ item, elemName, langPref }) => {
     const { name, code } = item
+
+    if(elemName === "lang" && langPref === code) {
+        console.log(langPref, name, elemName)
+        return null
+    } else if(elemName === "not_lang" && langPref === code) {
+        console.log(langPref, name, elemName)
+        return null
+    }
 
     return (
         <option value={code}>{name}</option>
@@ -137,6 +147,7 @@ const AdvancedNewsQueryExamples = () => {
 
 export const GetUserSearchQuery = ({ handleValueChanges, labelText, placeholderText, required }) => {
     return (
+        // make sure exclude lang and choolse langugae dont show up on each other
         <div className="flex flex-col items-baseline w-full">
             <AdvancedNewsQueryExamples />
             <UserInput
@@ -170,14 +181,14 @@ export const GetNewsSourcesInput = ({ handleSources }) => {
     )
 }
 
-export const ReUseableJustUi = ({ handleEntries }) => {
+export const ReUseableJustUi = ({ handleEntries, langPref }) => {
     const [multiple, setMultiple] = useState("Single")
     const handleIfMultiples = evt => setMultiple(evt.target.value)
 
     return (
         <section className="flex flex-col gap-2">
             <ShowTopics handleTopics={handleEntries} />
-            <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"lang"} />
+            <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"lang"} langPref={langPref} />
             <label htmlFor="ifMult">
                 <p className="text-cyan-200 font-bold">If News From Single Country</p>
                 <ChooseIfMultipleCountries handleChange={handleIfMultiples} />
@@ -191,11 +202,11 @@ export const ReUseableJustUi = ({ handleEntries }) => {
     )
 }
 
-export const NotInThisLanguage = ({ handleEntries, labelText, elemName }) => {
+export const NotInThisLanguage = ({ handleEntries, labelText, elemName, langPref }) => {
     return (
         <div>
             <p className="text-cyan-200 font-bold">{labelText}: </p>
-            <RenderAllAvailableLanguages handleChange={handleEntries} elemName={elemName} />
+            <RenderAllAvailableLanguages handleChange={handleEntries} elemName={elemName} langPref={langPref} />
         </div>
     )
 }
@@ -222,7 +233,7 @@ export const ToogleFilters = ({ fromNewsSource, fromNewsSearch, showFilters, han
     )
 }
 
-export const ReuseableRelatedUi = ({ height, width, children, handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
+export const ReuseableRelatedUi = ({ height, width, children, handleEntries, handleHideFilters, handleSaveSearchedFilters, langPref }) => {
     const { data: session } = useSession()
     return (
         <section
@@ -241,7 +252,7 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
             >
                 <p className='text-cyan-400 font-extrabold text-center'>Select Your Filters Here</p>
                 {children}
-                <ReUseableJustUi handleEntries={handleEntries} />
+                <ReUseableJustUi handleEntries={handleEntries} langPref={langPref} />
             </div>
             <div className="flex w-full gap-2 mt-4 ">
                 <button

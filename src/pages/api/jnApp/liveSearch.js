@@ -17,7 +17,7 @@ const handler = async (req, res) => {
     dbConnect().then(async () => {
         console.log("begin process")
         if (method === "GET") {
-            const firstTwenty = await liveSearch.find({ type: query.type }).sort([['_id', -1]]).limit(20)
+            const firstTwenty = await liveSearch.find({ type: query.type }).sort([['_id', -1]]).limit(query?.type === "q" ? 33 : 20)
             return res.status(200).json({ msg: "a successfull get request", data: firstTwenty })
         } else if (method === "POST") {
             const newEntry = new liveSearch(body);

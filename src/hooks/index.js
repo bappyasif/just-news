@@ -87,8 +87,6 @@ export const useForContentRendering = (sources, filtersInUse, initialTo) => {
         const from = arrParts?.from
         const to = arrParts?.to
 
-        // console.log(from, to, sources?.filter((v, i) => i >= from && i < to && v))
-
         setSourcesParts(sources?.filter((v, i) => i >= from && i < to && v))
     }
 
@@ -119,9 +117,6 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
         enabled: fetchData && Object.values(entries).length ? true : false,
         refetchOnWindowFocus: false,
         onSuccess: (data) => {
-            // console.log(data, "!!data!!", `${makeKeys(entries)}`, Object.keys(entries).length)
-            // setFetchData(false);
-            // setShowFilters(false)
             neutralizeVariablesAfterFetch()
         },
         cacheTime: 86400000,
@@ -169,22 +164,26 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
     const router = useRouter()
 
     const handleHttpRequestWhenSourceOrSearchQueryExists = () => {
-        if(entries?.q || entries.sources) {
+        if (entries?.q || entries.sources) {
             let data;
-            if(entries.q) {
-                data = {type: "q", text: entries.q}
-            } else if(entries.sources) {
-                data = {type: "sources", text: entries.sources}
+            if (entries.q) {
+                data = { type: "q", text: entries.q }
+            } else if (entries.sources) {
+                data = { type: "sources", text: entries.sources }
             }
 
-            happensAfterHttpRequest(() => setEntries({}), {data, url: "/liveSearch", method: "POST"})
-        } 
+            happensAfterHttpRequest(() => setEntries({}), { data, url: "/liveSearch", method: "POST" })
+        }
     }
 
     const handleHideFilters = () => {
         setFetchData(true);
-        handleHttpRequestWhenSourceOrSearchQueryExists();
-        router.push(`/${type.toLowerCase()}?${makeRoutes(entries)}`, undefined, { shallow: true })
+        if (router.pathname === "/news" && !entries?.q) {
+            alert("search term needs to be there")
+        } else {
+            handleHttpRequestWhenSourceOrSearchQueryExists();
+            router.push(`/${type.toLowerCase()}?${makeRoutes(entries)}`, undefined, { shallow: true })
+        }
     }
 
     const handleSaveSearchedFilters = () => {
@@ -193,6 +192,7 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
         const params = { user_id: session?.user?.sub, type }
         const method = "POST"
         const headers = { "Content-Type": "application/json" }
+        
         sendHttpReuestToInternalApi({ url: "/forNews", data, method, params, headers })
             .then(resp => {
                 if (resp.status === 200) {
@@ -209,13 +209,15 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
         setShowFilters(prev => !prev);
         setEntries({})
     }
+    
     const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
+
     const neutralizeVariablesAfterFetch = () => {
         setFetchData(false);
         setShowFilters(false)
         setEntries({})
     }
-    
+
     return { entries, showFilters, fetchData, setFetchData, handleEntries, handleToggleShowFilters, handleHideFilters, handleSaveSearchedFilters, neutralizeVariablesAfterFetch }
 }
 
@@ -272,11 +274,11 @@ export const useForLiveSearches = (type) => {
 
     useQuery({
         queryKey: ["live search", `${type}`],
-        queryFn: () => happensAfterHttpRequest(handleUpdate, {url, method, params:{type}}),
+        queryFn: () => happensAfterHttpRequest(handleUpdate, { url, method, params: { type } }),
         enabled: router.pathname === "/" ? true : false,
         refetchInterval: 240000
         // refetchInterval: 2000
     })
 
-    return {results}
+    return { results }
 }

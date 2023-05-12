@@ -20,7 +20,7 @@ const LatestHeadlines = () => {
       
       {
         showFilters
-          ? <RelatedUi handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
+          ? <RelatedUi entries={entries} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
           : null
       }
 
@@ -33,12 +33,12 @@ const LatestHeadlines = () => {
   )
 }
 
-const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
+const RelatedUi = ({ entries, handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
   return (
-    <ReuseableRelatedUi width={"434px"} height={"562px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries}>
+    <ReuseableRelatedUi width={"434px"} height={"562px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
       <ChooseNewsTimePeriod handleTime={handleEntries} />
       <GetNewsSourcesInput handleSources={handleEntries} />
-      <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} />
+      <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} langPref={entries?.lang} />
     </ReuseableRelatedUi>
   )
 }
