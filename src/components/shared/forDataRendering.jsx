@@ -1,6 +1,7 @@
 import { useForContentRendering } from "@/hooks"
 import { restructureAllUsedFilters } from "@/utils"
 import Link from "next/link"
+import { useRef } from "react"
 
 export const RenderFiltersInUse = ({ data }) => {
     const dataset = restructureAllUsedFilters(data)
@@ -52,14 +53,21 @@ export const RenderNewsArticles = ({ data }) => {
 }
 
 export const RenderArticle = ({ item }) => {
-    const { excerpt, link, media, summary, title } = item
+    // const { excerpt, link, media, summary, title } = item
+    const { content, description, image_url, link, title } = item
+
+    const ref = useRef()
+
+    const handleOnError = () => ref.current.src = `https://source.unsplash.com/random/200?${news}`
 
     return (
         <div className="mb-6 text-justify text-slate-400 flex flex-col gap-0 outline-2 outline-double outline-blue-600 rounded-lg">
             <Link className="" href={link} target="_blank">
                 <h2 className="text-2xl p-2 font-bold bg-gray-950 opacity-90">{title}</h2>
             </Link>
-            <div className="bg-gray-800 opacity-90 px-2">
+            <img ref={ref} className="h-48" src={image_url} alt={title} onError={handleOnError} />
+
+            {/* <div className="bg-gray-800 opacity-90 px-2">
                 <RenderArticleMetaData item={item} />
             </div>
             <div className="bg-gray-800 opacity-90 px-2 text-xl font-bold">
@@ -68,7 +76,7 @@ export const RenderArticle = ({ item }) => {
             <img className="h-48" src={media} alt={excerpt} />
             <div className="bg-gray-800 opacity-90 px-2 text-xl font-semibold">
                 <RenderContent text={summary} label={"Summary"} ftype={true} />
-            </div>
+            </div> */}
         </div>
     )
 }

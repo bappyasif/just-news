@@ -16,21 +16,29 @@ const SearchNews = () => {
 
     // console.log(entries, "!!", defaultFetchedData, routerQuery)
 
+    console.log(filteredFetchedData?.data?.articles?.length || defaultFetchedData?.articles?.length, "!!!!!!!!!!whtwhwtw!!!!!!!!!", filteredFetchedData, defaultFetchedData)
+
     return (
         <main className='min-h-screen'>
             <FilterToggleAndAnnouncement showFilters={showFilters} handleHideFilters={handleHideFilters} handleToggleShowFilters={handleToggleShowFilters} />
-            
+            <h2 className="text-red-800 font-extrabold text-4xl bg-blue-600">App Is Going Through Refactoring Using New Api Source For News Data. Please wait till it gets back up in full prospect!!</h2>
             {
                 showFilters
                     ? <RelatedUi entries={entries} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
                     : null
             }
 
-            {
+{
+                filteredFetchedData?.results?.length || defaultFetchedData?.results?.length
+                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
+                    : null
+            }
+
+            {/* {
                 filteredFetchedData?.data?.articles?.length || defaultFetchedData?.articles?.length
                     ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || defaultFetchedData?.articles)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
                     : null
-            }
+            } */}
         </main>
     )
 }
@@ -52,7 +60,9 @@ export const getStaticProps = () => {
 
     queryClient.prefetchQuery({
         queryKey: ["news", "ca"],
-        queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/search?q=Apple&countries=CA`),
+        // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/search?q=Apple&countries=CA`),
+        
+        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza`),
         cacheTime: 86400000
     })
 

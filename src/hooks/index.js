@@ -106,7 +106,9 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
         const method = "GET"
         const url = endpoint
         const params = { ...entries }
-        const headers = { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY }
+        // const headers = { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY }
+        const headers = { 'X-RapidAPI-Key': '16ecb1e169msh1f719a2c940b075p117e09jsn47e729518524',
+        'X-RapidAPI-Host': 'news-api14.p.rapidapi.com' }
         // console.log(url, params, headers)
         return fetchSourcesOnRequests({ method, url, params, headers })
     }
@@ -130,7 +132,8 @@ export const useForDefaultFetching = (urlStr, keys) => {
     // console.log(urlStr, keys, "wtf!!")
     const { data: defaultFetchedData } = useQuery({
         queryKey: keys,
-        queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/${urlStr}`),
+        // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/${urlStr}`),
+        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza`),
         // enabled: false
         onSuccess: (data) => {
             // console.log(data, "!! default data!!")

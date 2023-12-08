@@ -43,22 +43,28 @@ const removeArticlesContainingSummary = (arr) => {
 export const filterArticlesOfDuplicates = (arr) => {
     let articles = [];
     articles = arr?.filter((val, idx, self) => {
-        return idx === self.findIndex(t => (t.title === val.title && t.author.toLowerCase() === val.author.toLowerCase()))
+        return idx === self.findIndex(t => (t.title === val.title && t?.author?.toLowerCase() === val?.author?.toLowerCase()))
     })
     // console.log(articles, "HERE")
     // return articles
     return removeArticlesContainingSummary(articles)
 }
 
+// export const fetchSourcesForDefault = (url) => fetch(
+//     url,
+//     { headers: { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY } })
+//     .then(resp => resp.json()).then(d => d)
+
 export const fetchSourcesForDefault = (url) => fetch(
     url,
-    { headers: { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY } })
+    )
     .then(resp => resp.json()).then(d => d)
 
 export const fetchSourcesOnRequests = (options) => newsApiRequestInterceptor(options).then(data => data)
 
-export const newsApiRequestInterceptor = ({ ...options }) => {
-    const client = axios.create({ baseURL: "https://api.newscatcherapi.com/v2" })
+export const newsApiRequestInterceptor = async ({ ...options }) => {
+    // const client = axios.create({ baseURL: "https://news-api14.p.rapidapi.com" })
+    const client = axios.create({ baseURL: "https://newsi-api.p.rapidapi.com/api" })
 
     const onSuccess = resp => resp
 
@@ -66,6 +72,16 @@ export const newsApiRequestInterceptor = ({ ...options }) => {
 
     return client(options).then(onSuccess).catch(onError)
 }
+
+// export const newsApiRequestInterceptor = async ({ ...options }) => {
+//     const client = axios.create({ baseURL: "https://api.newscatcherapi.com/v2" })
+
+//     const onSuccess = resp => resp
+
+//     const onError = err => err
+
+//     return client(options).then(onSuccess).catch(onError)
+// }
 
 export const sendHttpReuestToInternalApi = options => internalApiRequestInterceptor(options)
 

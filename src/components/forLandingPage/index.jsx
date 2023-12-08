@@ -15,6 +15,9 @@ export const AppHeadline = () => {
         <div className="text-4xl text-center mb-3 bg-slate-400 text-zinc-950 font-extrabold opacity-80">
             <h1 className="bg-blue-950 text-stone-200">Want To Look Into News Snippets From All Over This Planet?</h1>
             <h2>You are in a good place, you will find them all in here and more, enjoy :)</h2>
+
+            <hr />
+            <h2 className="text-red-800 font-extrabold">App Is Going Through Refactoring Using New Api Source For News Data. Please wait till it gets back up in full prospect!!</h2>
         </div>
     )
 }
