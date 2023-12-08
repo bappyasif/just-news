@@ -12,7 +12,8 @@ const LatestHeadlines = () => {
 
   const { routerQuery } = useForShallowQuery(setFetchData)
 
-  const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), "/latest_headlines", neutralizeVariablesAfterFetch)
+  // const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), "/latest_headlines", neutralizeVariablesAfterFetch)
+  const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), "/top-headlines", neutralizeVariablesAfterFetch)
 
   return (
     <main className='min-h-screen'>

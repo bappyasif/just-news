@@ -16,6 +16,10 @@ const SearchNews = () => {
 
     // console.log(entries, "!!", defaultFetchedData, routerQuery)
 
+    console.log(filteredFetchedData?.data?.articles?.length || defaultFetchedData?.articles?.length, "!!!!!!!!!!whtwhwtw!!!!!!!!!", filteredFetchedData, defaultFetchedData)
+
+    // https://newsdata.io/api/1/news?apikey=pub_188961d2328b1d5ed0e8bcf81e654ea7cdc6e&q=YOUR-QUERY&page=XXXPPPXXXXXXXXXX
+
     return (
         <main className='min-h-screen'>
             <FilterToggleAndAnnouncement showFilters={showFilters} handleHideFilters={handleHideFilters} handleToggleShowFilters={handleToggleShowFilters} />
@@ -26,11 +30,17 @@ const SearchNews = () => {
                     : null
             }
 
-            {
+{
+                filteredFetchedData?.results?.length || defaultFetchedData?.results?.length
+                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
+                    : null
+            }
+
+            {/* {
                 filteredFetchedData?.data?.articles?.length || defaultFetchedData?.articles?.length
                     ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || defaultFetchedData?.articles)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
                     : null
-            }
+            } */}
         </main>
     )
 }
@@ -52,7 +62,9 @@ export const getStaticProps = () => {
 
     queryClient.prefetchQuery({
         queryKey: ["news", "ca"],
-        queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/search?q=Apple&countries=CA`),
+        // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/search?q=Apple&countries=CA`),
+        // queryFn: () => fetchSourcesForDefault(`https://news-api14.p.rapidapi.com/search?q=Apple&countries=CA`),
+        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza`),
         cacheTime: 86400000
     })
 
