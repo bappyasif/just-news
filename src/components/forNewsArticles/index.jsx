@@ -2,8 +2,9 @@ import React from 'react'
 import { PaginationsButtons, RenderArticle, RenderFiltersInUse } from '../shared/forDataRendering'
 import { useForContentRendering } from '@/hooks'
 
-export const ShowAllArticlesData = ({list, filtersUsed}) => {
-    // filtersUsed?.size = list?.length
+export const 
+ShowAllArticlesData = ({list, filtersUsed}) => {
+    // filtersUsed.size = list?.length || []
   return (
     <main>
       <RenderFiltersInUse data={filtersUsed} />

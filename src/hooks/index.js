@@ -133,7 +133,8 @@ export const useForDefaultFetching = (urlStr, keys) => {
     const { data: defaultFetchedData } = useQuery({
         queryKey: keys,
         // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/${urlStr}`),
-        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza`),
+        // queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza`),
+        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&${urlStr}`),
         // enabled: false
         onSuccess: (data) => {
             // console.log(data, "!! default data!!")

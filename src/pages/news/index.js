@@ -8,7 +8,8 @@ import React from 'react'
 const SearchNews = () => {
     const {entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters} = useMaintainUserInteractions("/forNews", "News", "NewsFilters")
 
-    const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
+    // const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
+    const { defaultFetchedData } = useForDefaultFetching("q=Apple&country=us", ["news", "ca"])
 
     const {routerQuery} = useForShallowQuery(setFetchData)
 

@@ -67,41 +67,42 @@ export const RenderArticle = ({ item }) => {
             </Link>
             <img ref={ref} className="h-48" src={image_url} alt={title} onError={handleOnError} />
 
-            {/* <div className="bg-gray-800 opacity-90 px-2">
+            <div className="bg-gray-800 opacity-90 px-2">
                 <RenderArticleMetaData item={item} />
             </div>
             <div className="bg-gray-800 opacity-90 px-2 text-xl font-bold">
-                <RenderContent text={excerpt} label={"Excerpt"} ftype={true} />
+                <RenderContent text={description} label={"Excerpt"} ftype={true} />
             </div>
-            <img className="h-48" src={media} alt={excerpt} />
+            {/* <img className="h-48" src={media} alt={excerpt} /> */}
             <div className="bg-gray-800 opacity-90 px-2 text-xl font-semibold">
-                <RenderContent text={summary} label={"Summary"} ftype={true} />
-            </div> */}
+                <RenderContent text={content} label={"Story"} ftype={true} />
+            </div>
         </div>
     )
 }
 
 const RenderArticleMetaData = ({ item }) => {
     const {
-        author, country, language, published_date,
-        rank, topic, twitter_account, rights, clean_url
+        creator, country, language, pubDate,
+        category, source_id, link, source_priority
     } = item
 
     return (
         <div className="bg-gray-900 opacity-90 text-stone-400 font-light">
             <ReUsableContentRenderer>
-                <RenderContent text={author} label={"By"} />
-                <RenderContent text={topic.toUpperCase()} label={"Topic"} />
-                <RenderContent text={rank} label={"Rank"} />
+                <RenderContent text={creator ? creator[0] : "N/A"} label={"By"} />
+                <RenderContent text={category ? category[0] : "unknown".toUpperCase()} label={"Category"} />
+                <RenderContent text={source_priority} label={"Rank"} />
             </ReUsableContentRenderer>
             <ReUsableContentRenderer>
-                <RenderContent text={country.toUpperCase()} label={"Country"} />
+                <RenderContent text={country ? country[0] : "Bangladesh".toUpperCase()} label={"Country"} />
                 <RenderContent text={(language || "en").toUpperCase()} label={"Langugae"} />
-                <RenderContent text={twitter_account} label={"Twitter"} />
+                {/* <RenderContent text={twitter_account} label={"Twitter"} /> */}
             </ReUsableContentRenderer>
             <ReUsableContentRenderer>
-                <RenderContent text={rights || clean_url} label={"Rights"} />
-                <RenderContent text={new Date(published_date).toLocaleDateString()} label={"Published On"} />
+                <RenderContent text={source_id} label={"Rights"} />
+                <RenderContent text={new Date(pubDate).toLocaleDateString()} label={"Published On"} />
+                <RenderContent text={link} label={"Link"} />
             </ReUsableContentRenderer>
         </div>
     )
