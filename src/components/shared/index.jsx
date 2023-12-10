@@ -11,7 +11,7 @@ export const RenderAllAvailableLanguages = ({ handleChange, elemName, langPref }
 
     return (
         <select
-            className="w-full"
+            className="w-full bg-slate-400 text-slate-800 font-bold"
             onChange={e => handleChange(e, elemName)}
         >
             <option value="-1">Click To Select Language</option>
@@ -41,7 +41,7 @@ export const RenderAllPublishingCountries = ({ handleCountries }) => {
         <label htmlFor="newsPublished">
             <p className="text-cyan-200 font-bold">Where News Published In</p>
             <select
-                className="w-full"
+                className="w-full bg-slate-400 text-slate-800 font-bold"
                 onChange={e => handleCountries(e, "countries")}
             >
                 <option value="-1">Publishing Country</option>
@@ -75,7 +75,7 @@ export const UserInput = ({ handleValueChanges, labelText, placeholderText, requ
         <label className="w-full">
             <p className='text-cyan-200 font-bold'>{labelText}</p>
             <input
-                className="w-full"
+                className="w-full bg-slate-400 text-slate-800 font-bold placeholder:text-slate-200 px-2"
                 type="text"
                 onChange={handleValueChanges}
                 placeholder={placeholderText}
@@ -104,7 +104,7 @@ const RenderList = ({ labelText, items, defaultText, listName, handleChange }) =
         <label htmlFor={listName}>
             <p className="text-cyan-200 font-bold">{labelText}</p>
             <select
-                className="w-full"
+                className="w-full bg-slate-400 text-slate-800 font-bold"
                 onChange={evt => handleChange(evt, listName)}
                 name={listName}
                 id={listName}
@@ -130,7 +130,7 @@ const AdvancedNewsQueryExamples = () => {
 
     return (
         <div className="w-full">
-            <select className="w-full" onChange={e => handleTypes(e)}>
+            <select className="w-full bg-slate-400 text-slate-800 font-bold" onChange={e => handleTypes(e)}>
                 <option value="-1">Query Examples</option>
                 {renderList()}
             </select>
@@ -230,16 +230,20 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
     const { data: session } = useSession()
     return (
         <section
-            className='absolute px-2 mt-2 z-20'
+            className='absolute px-2 mt-2 z-20 left-1'
             style={{
                 width: width,
                 height: height,
                 background: `url(${'/teamWork.jpg'})`,
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
-                backgroundPositionX: "63.2%"
+                backgroundPositionX: "63.2%",
+                // backgroundBlendMode: "darken"
             }}
         >
+            {/* presentational layer */}
+            <p className="absolute bg-black opacity-40 h-full w-full -z-20 left-0"></p>
+
             <div
                 className='text-xl my-2 flex flex-col gap-2'
             >
@@ -264,7 +268,7 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
                 </button>
 
             </div>
-            {session?.user ? null : <p className="text-2xl bg-slate-400 opacity-90 mt-1 text-center">Please <button className="bg-blue-400 px-2 rounded-lg" onClick={signIn}>Log In</button> First To Save Filters</p>}
+            {session?.user ? null : <p className="text-2xl bg-slate-400 opacity-90 mt-2 text-center">Please <button className="bg-blue-400 px-2 rounded-lg" onClick={signIn}>Log In</button> First To Save Filters</p>}
 
         </section>
     )
