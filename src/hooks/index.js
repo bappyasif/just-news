@@ -103,14 +103,17 @@ export const useForContentRendering = (sources, filtersInUse, initialTo) => {
 
 export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralizeVariablesAfterFetch) => {
     const makeRequest = () => {
-        const method = "GET"
+        // const method = "GET"
         const url = endpoint
-        const params = { ...entries }
-        // const headers = { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY }
-        const headers = { 'X-RapidAPI-Key': '16ecb1e169msh1f719a2c940b075p117e09jsn47e729518524',
-        'X-RapidAPI-Host': 'news-api14.p.rapidapi.com' }
+        const params = { language:"en", ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
+        // const headers = { 'apikey': process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
+        // const headers = { 'apikey': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY }
+        // const headers = { 'X-RapidAPI-Key': '16ecb1e169msh1f719a2c940b075p117e09jsn47e729518524',
+        // 'X-RapidAPI-Host': 'news-api14.p.rapidapi.com' }
         // console.log(url, params, headers)
-        return fetchSourcesOnRequests({ method, url, params, headers })
+        // return fetchSourcesOnRequests({ method, url, params, headers })
+        console.log(url, params, "is it?!?!?!?")
+        return fetchSourcesOnRequests({ url, params })
     }
 
     const { data: filteredFetchedData } = useQuery({
@@ -120,10 +123,16 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
         refetchOnWindowFocus: false,
         onSuccess: (data) => {
             neutralizeVariablesAfterFetch()
+            console.log(data, "filterd|!!")
+        },
+        onError: (err) => {
+            console.log(err, "ERRYERRR")
         },
         cacheTime: 86400000,
         retryDelay: 4000
     })
+
+    // console.log(filteredFetchedData, "filterd OUTSIDE!!")
 
     return { filteredFetchedData }
 }
@@ -219,7 +228,7 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
     const neutralizeVariablesAfterFetch = () => {
         setFetchData(false);
         setShowFilters(false)
-        setEntries({})
+        // setEntries({})
     }
 
     return { entries, showFilters, fetchData, setFetchData, handleEntries, handleToggleShowFilters, handleHideFilters, handleSaveSearchedFilters, neutralizeVariablesAfterFetch }

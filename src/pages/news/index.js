@@ -3,21 +3,46 @@ import { FilterToggleAndAnnouncement, GetUserSearchQuery, NotInThisLanguage, Reu
 import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
 import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, hydrate } from '@tanstack/react-query';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const SearchNews = () => {
-    const {entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters} = useMaintainUserInteractions("/forNews", "News", "NewsFilters")
+    const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forNews", "News", "NewsFilters")
 
     // const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
     const { defaultFetchedData } = useForDefaultFetching("q=Apple&country=us", ["news", "ca"])
 
-    const {routerQuery} = useForShallowQuery(setFetchData)
+    const { routerQuery } = useForShallowQuery(setFetchData)
 
-    const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), "/search", neutralizeVariablesAfterFetch)
+    // console.log(entries, "entries!!")
+
+    // const { filteredFetchedData } = useFilteredDataFetching(fetchData, (entries || routerQuery), "/news", () => null)
+
+    const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), "/news", neutralizeVariablesAfterFetch)
+
+    // const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), "/search", neutralizeVariablesAfterFetch)
 
     // console.log(entries, "!!", defaultFetchedData, routerQuery)
 
-    console.log(filteredFetchedData?.data?.articles?.length || defaultFetchedData?.articles?.length, "!!!!!!!!!!whtwhwtw!!!!!!!!!", filteredFetchedData, defaultFetchedData)
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        if (filteredFetchedData?.data?.results?.length) {
+            setData(filteredFetchedData?.data?.results)
+            console.log("filterd fetched!!")
+        }
+        // else {
+        //     setData(defaultFetchedData.results)
+        //     console.log(defaultFetchedData, "default fetched")
+        // }
+        else if (defaultFetchedData?.results?.length && !filteredFetchedData?.data?.results?.length) {
+            console.log(defaultFetchedData, "default fetched")
+            setData(defaultFetchedData.results)
+        }
+    }, [filteredFetchedData, defaultFetchedData])
+
+    console.log(data, "DATA!!!!", filteredFetchedData?.data)
+
+    // console.log(filteredFetchedData?.data?.results?.length || defaultFetchedData?.articles?.length, "!!!!!!!!!!whtwhwtw!!!!!!!!!", filteredFetchedData, defaultFetchedData, filteredFetchedData?.data?.results)
 
     return (
         <main className='min-h-screen'>
@@ -29,11 +54,18 @@ const SearchNews = () => {
                     : null
             }
 
-{
-                filteredFetchedData?.results?.length || defaultFetchedData?.results?.length
-                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
+            {
+                data?.length
+                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(data)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
                     : null
             }
+
+            {/* {
+                filteredFetchedData?.data?.results?.length 
+                // || defaultFetchedData?.results?.length
+                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.results || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
+                    : null
+            } */}
 
             {/* {
                 filteredFetchedData?.data?.articles?.length || defaultFetchedData?.articles?.length
@@ -62,7 +94,7 @@ export const getStaticProps = () => {
     queryClient.prefetchQuery({
         queryKey: ["news", "ca"],
         // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/search?q=Apple&countries=CA`),
-        
+
         queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza`),
         cacheTime: 86400000
     })

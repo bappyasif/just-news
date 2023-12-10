@@ -64,7 +64,10 @@ export const fetchSourcesOnRequests = (options) => newsApiRequestInterceptor(opt
 
 export const newsApiRequestInterceptor = async ({ ...options }) => {
     // const client = axios.create({ baseURL: "https://news-api14.p.rapidapi.com" })
-    const client = axios.create({ baseURL: "https://newsi-api.p.rapidapi.com/api" })
+
+    console.log(options, "newsapireqIntrceptor")
+    const client = axios.create({ baseURL: "https://www.newsdata.io/api/1" })
+    // const client = axios.create({ baseURL: "https://newsdata.io/api/1" })
 
     const onSuccess = resp => resp
 
@@ -85,7 +88,7 @@ export const newsApiRequestInterceptor = async ({ ...options }) => {
 
 export const sendHttpReuestToInternalApi = options => internalApiRequestInterceptor(options)
 
-const internalApiRequestInterceptor = ({ ...options }) => {
+const internalApiRequestInterceptor = async ({ ...options }) => {
     const client = axios.create({ baseURL: `${process.env.NODE_ENV === "production" ? "https://just-news-eta.vercel.app" : "http://localhost:3000" }/api/jnApp`})
 
     const onSuccess = resp => resp
@@ -106,7 +109,7 @@ export const convertUserInputsDataFromServer = (dataset) => {
     return data
 }
 
-export const happensAfterHttpRequest = (dataUpdater, options) => {
+export const happensAfterHttpRequest = async (dataUpdater, options) => {
     return sendHttpReuestToInternalApi(options)
         .then(resp => {
             if (resp.status === 200) {
