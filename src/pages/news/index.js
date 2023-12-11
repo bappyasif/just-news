@@ -9,11 +9,11 @@ const SearchNews = () => {
     const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forNews", "News", "NewsFilters")
 
     // const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
-    const { defaultFetchedData } = useForDefaultFetching("q=Apple&country=us", ["news", "ca"])
+    const { defaultFetchedData } = useForDefaultFetching("q=Apple&country=us&image=1&full_content=1&language=en", ["news", "ca"])
 
     const { routerQuery } = useForShallowQuery(setFetchData)
 
-    // console.log(entries, "entries!!")
+    console.log(entries, "entries!!")
 
     // const { filteredFetchedData } = useFilteredDataFetching(fetchData, (entries || routerQuery), "/news", () => null)
 
@@ -95,7 +95,7 @@ export const getStaticProps = () => {
         queryKey: ["news", "ca"],
         // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/search?q=Apple&countries=CA`),
 
-        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza`),
+        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza&image=1&full_content=1&language=en`),
         cacheTime: 86400000
     })
 

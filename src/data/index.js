@@ -4,25 +4,33 @@ import {TbBrandGithub, TbBrandMongodb, TbBrandNextjs, TbBrandReact, TbBrandTailw
 
 export const types = [
     {
+        name: "SINGLE KEYWORD",
+        text: 'q=nasa'
+    },
+    {
+        name: "EXACT PHRASE",
+        text: 'q="Elon"'
+    },
+    {
         name: "AND",
-        text: "q=Microsoft AND Tesla, q=Microsoft && Tesla"
+        text: "q=Microsoft AND Tesla"
     },
     {
         name: "OR",
-        text: "q=Apple OR Microsoft, q=Apple || Microsoft"
+        text: "q=Apple OR Microsoft"
     },
     {
         name: "GROUPING",
-        text: "q=(Apple AND Cook) OR (Microsoft AND Gates), q=(Apple && Cook) || (Microsoft && Gates)"
+        text: "q=(Apple AND Cook) OR (Microsoft AND Gates)"
     },
     {
-        name: "MUST HAVE",
-        text: "q=+Elon"
+        name: "NOT",
+        text: "q=(Apple OR Microsoft) NOT media"
     },
-    {
-        name: "MUST NOT",
-        text: "q=-Grimes"
-    }
+    // {
+    //     name: "MUST NOT",
+    //     text: "q=-Grimes"
+    // }
 ]
 
 export const navs = [

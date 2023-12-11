@@ -42,7 +42,7 @@ export const RenderAllPublishingCountries = ({ handleCountries }) => {
             <p className="text-cyan-200 font-bold">Where News Published In</p>
             <select
                 className="w-full bg-slate-400 text-slate-800 font-bold"
-                onChange={e => handleCountries(e, "countries")}
+                onChange={e => handleCountries(e, "country")}
             >
                 <option value="-1">Publishing Country</option>
                 {renderList()}
@@ -59,7 +59,7 @@ export const ChooseIfMultipleCountries = ({ handleChange }) => {
 
 export const MultipleCountriesHandleInputs = ({ handleChanges }) => {
     const handleValues = evt => {
-        handleChanges(evt, "countries")
+        handleChanges(evt, "country")
     }
 
     return (
@@ -92,9 +92,9 @@ const ShowValidCountryCodesAsExample = () => {
 }
 
 export const ShowTopics = ({ handleTopics }) => {
-    const list = ['tech', 'news', 'business', 'science', 'finance', 'food', 'politics', 'economics', 'travel', 'entertainment', 'music', 'sport', 'world']
+    const list = ['business', 'science', 'food', 'politics', 'crime', 'domestic', 'education', 'environment', 'other', 'health', 'entertainment', 'sports', 'world', 'technology', 'tourism', 'top']
 
-    return <RenderList labelText={"Choose From News Topics"} handleChange={handleTopics} items={list} defaultText={"Select Topic"} listName={"topic"} />
+    return <RenderList labelText={"Choose From News Topics"} handleChange={handleTopics} items={list} defaultText={"Select Topic"} listName={"category"} />
 }
 
 const RenderList = ({ labelText, items, defaultText, listName, handleChange }) => {
@@ -181,7 +181,7 @@ export const ReUseableJustUi = ({ handleEntries, langPref }) => {
     return (
         <section className="flex flex-col gap-2">
             <ShowTopics handleTopics={handleEntries} />
-            <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"lang"} langPref={langPref} />
+            <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} langPref={langPref} />
             <label htmlFor="ifMult">
                 <p className="text-cyan-200 font-bold">If News From Single Country</p>
                 <ChooseIfMultipleCountries handleChange={handleIfMultiples} />

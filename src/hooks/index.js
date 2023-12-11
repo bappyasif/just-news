@@ -104,16 +104,19 @@ export const useForContentRendering = (sources, filtersInUse, initialTo) => {
 export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralizeVariablesAfterFetch) => {
     const makeRequest = () => {
         // const method = "GET"
-        const url = endpoint
-        const params = { language:"en", ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
+        const url = endpoint;
+        const image = 1;
+        const full_content = 1;
+        const params = { ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY  }
+        // const params = { language:"en", ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
         // const headers = { 'apikey': process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
         // const headers = { 'apikey': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY }
         // const headers = { 'X-RapidAPI-Key': '16ecb1e169msh1f719a2c940b075p117e09jsn47e729518524',
         // 'X-RapidAPI-Host': 'news-api14.p.rapidapi.com' }
         // console.log(url, params, headers)
         // return fetchSourcesOnRequests({ method, url, params, headers })
-        console.log(url, params, "is it?!?!?!?")
-        return fetchSourcesOnRequests({ url, params })
+        // console.log(url, params, "is it?!?!?!?")
+        return fetchSourcesOnRequests({ url, params, image, full_content })
     }
 
     const { data: filteredFetchedData } = useQuery({
