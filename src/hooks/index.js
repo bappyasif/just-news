@@ -140,6 +140,13 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
     return { filteredFetchedData }
 }
 
+export const useForTruthToggle = () => {
+    const [isTrue, setIsTrue] = useState(false);
+    const makeFalsy = () => setIsTrue(false)
+    const makeTruthy = () => setIsTrue(true)
+    return {isTrue, makeFalsy, makeTruthy}
+}
+
 export const useForDefaultFetching = (urlStr, keys) => {
     // console.log(urlStr, keys, "wtf!!")
     const { data: defaultFetchedData } = useQuery({
@@ -149,7 +156,7 @@ export const useForDefaultFetching = (urlStr, keys) => {
         queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&${urlStr}`),
         // enabled: false
         onSuccess: (data) => {
-            // console.log(data, "!! default data!!")
+            console.log(data, "!! default data!!")
         },
         refetchOnWindowFocus: false
     })

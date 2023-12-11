@@ -1,6 +1,6 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { FilterToggleAndAnnouncement, GetUserSearchQuery, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
+import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useForTruthToggle, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
 import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, hydrate } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
@@ -23,12 +23,24 @@ const SearchNews = () => {
 
     // console.log(entries, "!!", defaultFetchedData, routerQuery)
 
+    const {isTrue, makeFalsy, makeTruthy} =  useForTruthToggle()
+
+    const [filtersUsed, setFiltersUsed] = useState({})
+
+    useEffect(() => {
+        Object.keys(entries).length && setFiltersUsed(entries)
+        Object.keys(entries).length && makeFalsy()
+    }, [entries])
+
     const [data, setData] = useState([])
+
+    console.log(entries, isTrue, filtersUsed)
 
     useEffect(() => {
         if (filteredFetchedData?.data?.results?.length) {
             setData(filteredFetchedData?.data?.results)
             console.log("filterd fetched!!")
+            makeTruthy();
         }
         // else {
         //     setData(defaultFetchedData.results)
@@ -56,7 +68,7 @@ const SearchNews = () => {
 
             {
                 data?.length
-                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(data)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
+                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(data)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input || (isTrue ? filtersUsed : {})} />
                     : null
             }
 

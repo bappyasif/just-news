@@ -8,7 +8,11 @@ import React from 'react'
 const LatestHeadlines = () => {
   const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forHeadlines", "Headlines", "HeadlinesFilters")
 
-  const { defaultFetchedData } = useForDefaultFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
+  const { defaultFetchedData } = useForDefaultFetching("country=us&language=en&category=world&timeframe=12&image=1&full_content=1", ["headlines", "us"])
+
+  console.log(defaultFetchedData, "de")
+
+  // const { defaultFetchedData } = useForDefaultFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
 
   const { routerQuery } = useForShallowQuery(setFetchData)
 
@@ -28,8 +32,8 @@ const LatestHeadlines = () => {
       }
 
       {
-        filteredFetchedData?.data?.articles?.length || defaultFetchedData?.articles?.length
-          ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || defaultFetchedData?.articles)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
+        filteredFetchedData?.data?.articles?.length || defaultFetchedData?.results?.length
+          ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.articles || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
           : null
       }
     </main>
@@ -52,7 +56,8 @@ export const getStaticProps = () => {
 
     queryClient.prefetchQuery({
         queryKey: ["headlines", "us"],
-        queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/latest_headlines?countries=US&lang=en&topic=world&page_size=100`),
+        // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/latest_headlines?countries=US&lang=en&topic=world&page_size=100`),
+        queryFn: () => useForDefaultFetching("country=us&language=en&category=world&timeframe=12&prioritydomain=top&image=1&full_content=1", ["headlines", "us"]),
         cacheTime: 86400000
     })
 
