@@ -1,6 +1,6 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { FilterToggleAndAnnouncement, GetUserSearchQuery, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useForTruthToggle, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
+import { useFilteredDataFetching, useForDefaultFetching, useForSafetyKeepingOfFilters, useForShallowQuery, useForTruthToggle, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
 import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, hydrate } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
@@ -23,14 +23,16 @@ const SearchNews = () => {
 
     // console.log(entries, "!!", defaultFetchedData, routerQuery)
 
-    const {isTrue, makeFalsy, makeTruthy} =  useForTruthToggle()
+    // const {isTrue, makeFalsy, makeTruthy} =  useForTruthToggle()
 
-    const [filtersUsed, setFiltersUsed] = useState({})
+    // const [filtersUsed, setFiltersUsed] = useState({})
 
-    useEffect(() => {
-        Object.keys(entries).length && setFiltersUsed(entries)
-        Object.keys(entries).length && makeFalsy()
-    }, [entries])
+    // useEffect(() => {
+    //     Object.keys(entries).length && setFiltersUsed(entries)
+    //     Object.keys(entries).length && makeFalsy()
+    // }, [entries])
+
+    const {filtersUsed, isTrue, makeTruthy} = useForSafetyKeepingOfFilters(entries)
 
     const [data, setData] = useState([])
 
@@ -94,7 +96,7 @@ const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters
     return (
         <ReuseableRelatedUi width={"434px"} height={"539px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
             <GetUserSearchQuery required={true} handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
-            <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} langPref={entries?.lang} />
+            {/* <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} langPref={entries?.lang} /> */}
         </ReuseableRelatedUi>
     )
 }

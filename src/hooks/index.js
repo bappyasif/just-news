@@ -101,13 +101,26 @@ export const useForContentRendering = (sources, filtersInUse, initialTo) => {
     return { sourcesParts, handleBackward, handleForward }
 }
 
+export const useForSafetyKeepingOfFilters = (entries) => {
+    const {isTrue, makeFalsy, makeTruthy} =  useForTruthToggle()
+
+    const [filtersUsed, setFiltersUsed] = useState({})
+
+    useEffect(() => {
+        Object.keys(entries).length && setFiltersUsed(entries)
+        Object.keys(entries).length && makeFalsy()
+    }, [entries])
+
+    return {isTrue, makeFalsy, makeTruthy, filtersUsed}
+}
+
 export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralizeVariablesAfterFetch) => {
     const makeRequest = () => {
         // const method = "GET"
         const url = endpoint;
-        const image = 1;
-        const full_content = 1;
-        const params = { ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY  }
+        // const image = 1;
+        // const full_content = 1;
+        const params = { ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY, image: 1, full_content: 1  }
         // const params = { language:"en", ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
         // const headers = { 'apikey': process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
         // const headers = { 'apikey': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY }
@@ -116,7 +129,7 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
         // console.log(url, params, headers)
         // return fetchSourcesOnRequests({ method, url, params, headers })
         // console.log(url, params, "is it?!?!?!?")
-        return fetchSourcesOnRequests({ url, params, image, full_content })
+        return fetchSourcesOnRequests({ url, params })
     }
 
     const { data: filteredFetchedData } = useQuery({

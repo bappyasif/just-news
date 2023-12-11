@@ -58,7 +58,7 @@ export const RenderArticle = ({ item }) => {
 
     const ref = useRef()
 
-    const handleOnError = () => ref.current.src = `https://source.unsplash.com/random/200?news`
+    const handleOnError = () => ref.current.src = `https://source.unsplash.com/random/200?news?sig${title}`
 
     return (
         <div className="mb-6 text-justify text-slate-400 flex flex-col gap-0 outline-2 outline-double outline-blue-600 rounded-lg">

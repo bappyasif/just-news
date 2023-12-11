@@ -87,7 +87,7 @@ export const UserInput = ({ handleValueChanges, labelText, placeholderText, requ
 
 const ShowValidCountryCodesAsExample = () => {
     return (
-        <p className="absolute text-sm text-blue-400 font-bold">use comma in bvetween: us,uk,bd,gb,jp,br</p>
+        <p className="absolute text-sm text-blue-400 font-bold">use comma in bvetween: us,gb,bd,jp,br</p>
     )
 }
 
@@ -95,6 +95,12 @@ export const ShowTopics = ({ handleTopics }) => {
     const list = ['business', 'science', 'food', 'politics', 'crime', 'domestic', 'education', 'environment', 'other', 'health', 'entertainment', 'sports', 'world', 'technology', 'tourism', 'top']
 
     return <RenderList labelText={"Choose From News Topics"} handleChange={handleTopics} items={list} defaultText={"Select Topic"} listName={"category"} />
+}
+
+export const DomainsPriority = ({ handleTopics }) => {
+    const list = ['top', 'medium', 'low']
+
+    return <RenderList labelText={"Choose Top Outlets Priority"} handleChange={handleTopics} items={list} defaultText={"Select Priority"} listName={"prioritydomain"} />
 }
 
 const RenderList = ({ labelText, items, defaultText, listName, handleChange }) => {
@@ -160,16 +166,31 @@ export const ChooseNewsTimePeriod = ({ handleTime }) => {
 }
 
 export const GetNewsSourcesInput = ({ handleSources }) => {
-    const handleChange = evt => handleSources(evt, "sources")
+    const handleChange = evt => handleSources(evt, "domainurl")
 
     return (
         <div className="">
             <UserInput
-                labelText={"Sources: "}
-                placeholderText={"Give sources proper url"}
+                labelText={"Domains: "}
+                placeholderText={"Give domains proper url"}
                 handleValueChanges={handleChange}
             />
             <p className="text-sm text-yellow-400 font-bold">examples: nytimes.com,theguardian.com</p>
+        </div>
+    )
+}
+
+export const HeadlinesTimeframe = ({ handleSources }) => {
+    const handleChange = evt => handleSources(evt, "timeframe")
+
+    return (
+        <div className="">
+            <UserInput
+                labelText={"Timeframe: "}
+                placeholderText={"Set an HOUR timeframe of 1 to 48"}
+                handleValueChanges={handleChange}
+            />
+            <p className="text-sm text-yellow-400 font-bold">examples: 1 to 48</p>
         </div>
     )
 }
@@ -180,6 +201,7 @@ export const ReUseableJustUi = ({ handleEntries, langPref }) => {
 
     return (
         <section className="flex flex-col gap-2">
+            <DomainsPriority handleTopics={handleEntries} />
             <ShowTopics handleTopics={handleEntries} />
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} langPref={langPref} />
             <label htmlFor="ifMult">
@@ -189,7 +211,8 @@ export const ReUseableJustUi = ({ handleEntries, langPref }) => {
             {
                 multiple === "Multiple"
                     ? <MultipleCountriesHandleInputs handleChanges={handleEntries} />
-                    : <RenderAllPublishingCountries handleCountries={handleEntries} />
+                    : null
+                    // : <RenderAllPublishingCountries handleCountries={handleEntries} />
             }
         </section>
     )
