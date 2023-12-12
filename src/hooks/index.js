@@ -16,93 +16,169 @@ export const useAppContext = () => {
     return ctx;
 }
 
-export const useForContentRendering = (sources, filtersInUse, initialTo) => {
-    const [arrParts, setArrParts] = useState({});
+export const fetchNextBunchOfNewsArticles = async (nextPageRef, filtersUsed) => {
+    const params = {
+        page: nextPageRef,
+        apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY, 
+        image: 1, 
+        full_content: 1,
+        language: "en",
+        ...filtersUsed
+    }
 
-    const [sourcesParts, setSourcesParts] = useState();
+    const response = await fetchSourcesOnRequests({ url: "/news", params })
+
+    console.log(response, "!!response!!")
+
+    return response
+}
+
+export const useForContentRendering = (sources, filtersInUse, initialTo, nextPageRef, filtersUsed) => {
+    const [arrParts, setArrParts] = useState([]);
+
+    const [pageNum, setPageNum] = useState(0);
+
+    const fetchNextPageNews = async () => {
+        const response = await fetchNextBunchOfNewsArticles(arrParts[arrParts.length -1]?.nextPage, filtersUsed)
+
+        if(response?.data) {
+            setArrParts(prev => ([
+                ...prev,
+                {pageNum: pageNum+1, data: response.data.results, nextPageRef: response.data.nextPage}
+            ]))
+        }
+    }
 
     const handleForward = () => {
-        if (arrParts?.to <= sources?.length && arrParts?.to >= 0) {
-            if (sources.length - arrParts?.to >= initialTo) {
-                setArrParts(prev => {
-                    return {
-                        from: prev?.to,
-                        to: prev.to + initialTo
-                    }
-                })
-            } else {
-                setArrParts(prev => {
-                    const nextTo = prev.to + (sources.length - prev.to)
-                    if (nextTo > prev.to) {
-                        return {
-                            from: prev.to,
-                            to: prev.to + (sources.length - prev.to)
-                        }
-                    } else {
-                        return {
-                            from: prev.from,
-                            to: prev.to
-                        }
-                    }
-                })
+        setPageNum(prev => {
+            console.log(pageNum, arrParts[arrParts.length -1]?.pageNum, "matches!!", arrParts[arrParts.length-1]?.nextPage, nextPageRef, filtersUsed, arrParts[arrParts.length-1])
+            
+            // pageNum === arrParts[arrParts.length -1]?.pageNum ? fetchNextBunchOfNewsArticles(arrParts[arrParts.length -1]?.nextPage, filtersUsed) : null
+
+            if(pageNum === arrParts[arrParts.length -1]?.pageNum) {
+                fetchNextPageNews()
             }
-        }
+
+
+
+            // setArrParts([{ pageNum: pageNum, data: sources, nextPage: nextPageRef }])
+            return prev + 1
+        })
     }
 
     const handleBackward = () => {
-        if (arrParts?.to <= sources?.length && arrParts?.to >= 0) {
-            if (sources.length - arrParts?.from >= initialTo && arrParts?.from > 0) {
-                setArrParts(prev => {
-                    return {
-                        from: prev.from - initialTo,
-                        to: prev.from
-                    }
-                })
-            } else {
-                setArrParts(prev => {
-                    const nextFrom = prev.from - (sources.length - prev.from)
-                    if (prev.to === sources?.length) {
-                        return {
-                            from: sources.length - (sources.length % initialTo) - initialTo,
-                            to: sources.length - (sources.length % initialTo)
-                        }
-                    }
-                    if (nextFrom < prev.from && nextFrom > 0) {
-                        return {
-                            from: nextFrom,
-                            to: prev.to - (sources.length - prev.to)
-                        }
-                    } else {
-                        return {
-                            from: prev.from,
-                            to: prev.to
-                        }
-                    }
-                })
+        setPageNum(prev => {
+            if (prev > 1) {
+                // const prevPaginationData = arrParts.find(item => item.pageNum === prev - 1)
+                // setArrParts()
+                return prev - 1
             }
+
+            return prev
+        })
+    }
+
+    useEffect(() => {
+        if (sources?.length, nextPageRef) {
+            setPageNum(1)
+            setArrParts([{ pageNum: 1, data: sources, nextPage: nextPageRef }]) 
         }
-    }
+    }, [sources, nextPageRef])
 
-    const handleSourcesParts = () => {
-        const from = arrParts?.from
-        const to = arrParts?.to
+    console.log(arrParts, pageNum, arrParts[pageNum-1]?.data, nextPageRef)
 
-        setSourcesParts(sources?.filter((v, i) => i >= from && i < to && v))
-    }
+    // const paginationData = arrParts?.find(item => item.pageNum === pageNum)
 
-    useEffect(() => {
-        setArrParts({ from: 0, to: initialTo || 100 })
-    }, [])
-
-    useEffect(() => {
-        handleSourcesParts()
-    }, [arrParts, sources])
-
-    return { sourcesParts, handleBackward, handleForward }
+    return { sourcesParts: arrParts[pageNum-1]?.data || [], handleBackward, handleForward }
 }
 
+// export const useForContentRendering = (sources, filtersInUse, initialTo) => {
+//     const [arrParts, setArrParts] = useState({});
+
+//     const [sourcesParts, setSourcesParts] = useState();
+
+//     const handleForward = () => {
+//         if (arrParts?.to <= sources?.length && arrParts?.to >= 0) {
+//             if (sources.length - arrParts?.to >= initialTo) {
+//                 setArrParts(prev => {
+//                     return {
+//                         from: prev?.to,
+//                         to: prev.to + initialTo
+//                     }
+//                 })
+//             } else {
+//                 setArrParts(prev => {
+//                     const nextTo = prev.to + (sources.length - prev.to)
+//                     if (nextTo > prev.to) {
+//                         return {
+//                             from: prev.to,
+//                             to: prev.to + (sources.length - prev.to)
+//                         }
+//                     } else {
+//                         return {
+//                             from: prev.from,
+//                             to: prev.to
+//                         }
+//                     }
+//                 })
+//             }
+//         }
+//     }
+
+//     const handleBackward = () => {
+//         if (arrParts?.to <= sources?.length && arrParts?.to >= 0) {
+//             if (sources.length - arrParts?.from >= initialTo && arrParts?.from > 0) {
+//                 setArrParts(prev => {
+//                     return {
+//                         from: prev.from - initialTo,
+//                         to: prev.from
+//                     }
+//                 })
+//             } else {
+//                 setArrParts(prev => {
+//                     const nextFrom = prev.from - (sources.length - prev.from)
+//                     if (prev.to === sources?.length) {
+//                         return {
+//                             from: sources.length - (sources.length % initialTo) - initialTo,
+//                             to: sources.length - (sources.length % initialTo)
+//                         }
+//                     }
+//                     if (nextFrom < prev.from && nextFrom > 0) {
+//                         return {
+//                             from: nextFrom,
+//                             to: prev.to - (sources.length - prev.to)
+//                         }
+//                     } else {
+//                         return {
+//                             from: prev.from,
+//                             to: prev.to
+//                         }
+//                     }
+//                 })
+//             }
+//         }
+//     }
+
+//     const handleSourcesParts = () => {
+//         const from = arrParts?.from
+//         const to = arrParts?.to
+
+//         setSourcesParts(sources?.filter((v, i) => i >= from && i < to && v))
+//     }
+
+//     useEffect(() => {
+//         setArrParts({ from: 0, to: initialTo || 100 })
+//     }, [])
+
+//     useEffect(() => {
+//         handleSourcesParts()
+//     }, [arrParts, sources])
+
+//     return { sourcesParts, handleBackward, handleForward }
+// }
+
 export const useForSafetyKeepingOfFilters = (entries) => {
-    const {isTrue, makeFalsy, makeTruthy} =  useForTruthToggle()
+    const { isTrue, makeFalsy, makeTruthy } = useForTruthToggle()
 
     const [filtersUsed, setFiltersUsed] = useState({})
 
@@ -111,7 +187,7 @@ export const useForSafetyKeepingOfFilters = (entries) => {
         Object.keys(entries).length && makeFalsy()
     }, [entries])
 
-    return {isTrue, makeFalsy, makeTruthy, filtersUsed}
+    return { isTrue, makeFalsy, makeTruthy, filtersUsed }
 }
 
 export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralizeVariablesAfterFetch) => {
@@ -120,7 +196,7 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
         const url = endpoint;
         // const image = 1;
         // const full_content = 1;
-        const params = { ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY, image: 1, full_content: 1  }
+        const params = { ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY, image: 1, full_content: 1 }
         // const params = { language:"en", ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
         // const headers = { 'apikey': process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
         // const headers = { 'apikey': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY }
@@ -157,7 +233,7 @@ export const useForTruthToggle = () => {
     const [isTrue, setIsTrue] = useState(false);
     const makeFalsy = () => setIsTrue(false)
     const makeTruthy = () => setIsTrue(true)
-    return {isTrue, makeFalsy, makeTruthy}
+    return { isTrue, makeFalsy, makeTruthy }
 }
 
 export const useForDefaultFetching = (urlStr, keys) => {
@@ -228,7 +304,7 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
         const params = { user_id: session?.user?.sub, type }
         const method = "POST"
         const headers = { "Content-Type": "application/json" }
-        
+
         sendHttpReuestToInternalApi({ url: "/forNews", data, method, params, headers })
             .then(resp => {
                 if (resp.status === 200) {
@@ -245,7 +321,7 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
         setShowFilters(prev => !prev);
         setEntries({})
     }
-    
+
     const handleEntries = (evt, elem) => setEntries(prev => ({ ...prev, [elem]: evt.target.value }))
 
     const neutralizeVariablesAfterFetch = () => {

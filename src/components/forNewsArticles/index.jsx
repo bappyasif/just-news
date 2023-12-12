@@ -3,20 +3,20 @@ import { PaginationsButtons, RenderArticle, RenderFiltersInUse } from '../shared
 import { useForContentRendering } from '@/hooks'
 
 export const 
-ShowAllArticlesData = ({list, filtersUsed}) => {
+ShowAllArticlesData = ({list, filtersUsed, nextPageRef}) => {
     // filtersUsed.size = list?.length || []
   return (
     <main>
       <RenderFiltersInUse data={filtersUsed} />
-      <RenderNewsArticles data={list} />
+      <RenderNewsArticles data={list} nextPageRef={nextPageRef} filtersUsed={filtersUsed} />
     </main>
   )
 }
 
-const RenderNewsArticles = ({ data }) => {
-  const {sourcesParts, handleBackward, handleForward} = useForContentRendering(data, null, 5)
+const RenderNewsArticles = ({ data, nextPageRef, filtersUsed }) => {
+  const {sourcesParts, handleBackward, handleForward} = useForContentRendering(data, null, 5, nextPageRef, filtersUsed)
 
-  // console.log(sourcesParts, "sources parts!!")
+  console.log(sourcesParts, "sources parts!!")
 
   // const renderArticles = () => sourcesParts?.map((item) => item?.author && item?.media && <RenderArticle key={item._id} item={item} />)
 

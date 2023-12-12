@@ -39,7 +39,7 @@ const LatestHeadlines = () => {
 
       {
         filteredFetchedData?.data?.results?.length || defaultFetchedData?.results?.length
-          ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.results || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || (isTrue ? filtersUsed : {})} />
+          ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.results || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || (isTrue ? filtersUsed : {})} nextPageRef={ filteredFetchedData?.data?.nextPage || defaultFetchedData?.nextPage} />
           : null
       }
 

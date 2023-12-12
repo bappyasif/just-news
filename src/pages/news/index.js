@@ -13,7 +13,7 @@ const SearchNews = () => {
 
     const { routerQuery } = useForShallowQuery(setFetchData)
 
-    console.log(entries, "entries!!")
+    // console.log(entries, "entries!!")
 
     // const { filteredFetchedData } = useFilteredDataFetching(fetchData, (entries || routerQuery), "/news", () => null)
 
@@ -41,7 +41,7 @@ const SearchNews = () => {
     useEffect(() => {
         if (filteredFetchedData?.data?.results?.length) {
             setData(filteredFetchedData?.data?.results)
-            console.log("filterd fetched!!")
+            // console.log("filterd fetched!!")
             makeTruthy();
         }
         // else {
@@ -49,12 +49,12 @@ const SearchNews = () => {
         //     console.log(defaultFetchedData, "default fetched")
         // }
         else if (defaultFetchedData?.results?.length && !filteredFetchedData?.data?.results?.length) {
-            console.log(defaultFetchedData, "default fetched")
+            // console.log(defaultFetchedData, "default fetched")
             setData(defaultFetchedData.results)
         }
     }, [filteredFetchedData, defaultFetchedData])
 
-    // console.log(data, "DATA!!!!", filteredFetchedData?.data)
+    console.log(data, "DATA!!!!", filteredFetchedData?.data)
 
     // console.log(filteredFetchedData?.data?.results?.length || defaultFetchedData?.articles?.length, "!!!!!!!!!!whtwhwtw!!!!!!!!!", filteredFetchedData, defaultFetchedData, filteredFetchedData?.data?.results)
 
@@ -70,7 +70,7 @@ const SearchNews = () => {
 
             {
                 data?.length
-                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(data)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input || (isTrue ? filtersUsed : {})} />
+                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(data)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input || (isTrue ? filtersUsed : {})} nextPageRef={ filteredFetchedData?.data?.nextPage || defaultFetchedData?.nextPage} />
                     : null
             }
 
