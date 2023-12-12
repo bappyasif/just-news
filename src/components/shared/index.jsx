@@ -63,7 +63,7 @@ export const MultipleCountriesHandleInputs = ({ handleChanges }) => {
     }
 
     return (
-        <div className="relative">
+        <div className="relative mb-3">
             <UserInput handleValueChanges={handleValues} labelText={"Countries "} placeholderText={"Type In Country Codes"} />
             <ShowValidCountryCodesAsExample />
         </div>
@@ -87,7 +87,7 @@ export const UserInput = ({ handleValueChanges, labelText, placeholderText, requ
 
 const ShowValidCountryCodesAsExample = () => {
     return (
-        <p className="absolute text-sm text-blue-400 font-bold">use comma in bvetween: us,gb,bd,jp,br</p>
+        <p className="absolute text-sm text-yellow-400 font-bold">use comma in bvetween: us,gb,bd,jp,br</p>
     )
 }
 
@@ -147,7 +147,7 @@ const AdvancedNewsQueryExamples = () => {
 
 export const GetUserSearchQuery = ({ handleValueChanges, labelText, placeholderText, required }) => {
     return (
-        <div className="flex flex-col items-baseline w-full">
+        <div className="flex flex-col items-baseline w-full gap-y-2">
             <AdvancedNewsQueryExamples />
             <UserInput
                 labelText={labelText}
@@ -268,7 +268,7 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
             <p className="absolute bg-black opacity-40 h-full w-full -z-20 left-0"></p>
 
             <div
-                className='text-xl my-2 flex flex-col gap-2'
+                className='text-xl flex flex-col gap-2'
             >
                 <p className='text-cyan-400 font-extrabold text-center'>Select Your Filters Here</p>
                 {children}
@@ -291,7 +291,7 @@ export const ReuseableRelatedUi = ({ height, width, children, handleEntries, han
                 </button>
 
             </div>
-            {session?.user ? null : <p className="text-2xl bg-slate-400 opacity-90 mt-2 text-center">Please <button className="bg-blue-400 px-2 rounded-lg" onClick={signIn}>Log In</button> First To Save Filters</p>}
+            {session?.user ? null : <p className="text-2xl bg-slate-400 opacity-90 mt-4 text-center">Please <button className="bg-blue-400 px-2 rounded-lg" onClick={signIn}>Log In</button> First To Save Filters</p>}
 
         </section>
     )

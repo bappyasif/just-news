@@ -23,8 +23,11 @@ const RenderNewsArticles = ({ data, nextPageRef, filtersUsed }) => {
   const renderArticles = () => sourcesParts?.map((item) => item?.source_id && <RenderArticle key={item.article_id} item={item} />)
 
   return (
-      <section>
-          <div className="xs:columns-1 md:columns-2 xl:columns-3 px-2 gap-3 mb-6">
+      <section className=''>
+          <div 
+            className="columns-1 md:columns-2 xl:columns-3 px-2 gap-4"
+            // className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xxl:grid-cols-4 gap-4'
+            >
               {renderArticles()}
           </div>
           <PaginationsButtons handleForward={handleForward} handleBackward={handleBackward} />

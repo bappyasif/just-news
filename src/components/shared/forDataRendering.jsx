@@ -65,14 +65,18 @@ export const RenderArticle = ({ item }) => {
             <Link className="" href={link} target="_blank">
                 <h2 className="text-2xl p-2 font-bold bg-gray-950 opacity-90">{title}</h2>
             </Link>
-            <img ref={ref} className="h-48" src={image_url} alt={title} onError={handleOnError} />
+            {/* <img ref={ref} className="h-48 w-full" src={image_url} alt={title} onError={handleOnError} /> */}
 
             <div className="bg-gray-800 opacity-90 px-2">
                 <RenderArticleMetaData item={item} />
             </div>
+            
             <div className="bg-gray-800 opacity-90 px-2 text-xl font-bold">
                 <RenderContent text={description} label={"Excerpt"} ftype={true} />
             </div>
+
+            <img ref={ref} className="min-h-60 w-full" src={image_url} alt={title} onError={handleOnError} />
+
             {/* <img className="h-48" src={media} alt={excerpt} /> */}
             <div className="bg-gray-800 opacity-90 px-2 text-xl font-semibold">
                 <RenderContent text={content} label={"Story"} ftype={true} />
@@ -102,8 +106,11 @@ const RenderArticleMetaData = ({ item }) => {
             <ReUsableContentRenderer>
                 <RenderContent text={source_id} label={"Rights"} />
                 <RenderContent text={new Date(pubDate).toLocaleDateString()} label={"Published On"} />
-                <RenderContent text={link} label={"Link"} />
             </ReUsableContentRenderer>
+            {/* <ReUsableContentRenderer>
+                <RenderContent text={link} label={"Link"} />
+                <Link className="" href={link} target="_blank"></Link>
+            </ReUsableContentRenderer> */}
         </div>
     )
 }
