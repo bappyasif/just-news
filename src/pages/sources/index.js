@@ -38,6 +38,12 @@ const NewsSources = () => {
         }
     }, [filteredFetchedSourcesData])
 
+    // useEffect(() => {
+    //     Object.keys(routerQuery).length && makeTruthy()
+    // }, [routerQuery])
+
+    console.log(routerQuery, Object.keys(routerQuery).length, "whtss wht!!",)
+
     return (
         <main className='min-h-screen'>
             <h2 className="text-red-800 font-extrabold text-4xl bg-blue-600">App Is Going Through Refactoring Using New Api Source For News Data. Please wait till it gets back up in full prospect!!</h2>
@@ -47,7 +53,7 @@ const NewsSources = () => {
                 showFilters
                     ? <ReuseableRelatedUi
                         width={"434px"}
-                        height={"386px"}
+                        height={"414px"}
                         handleEntries={handleEntries}
                         handleHideFilters={handleShallowRoutes}
                         handleSaveSearchedFilters={handleSaveSearchedFilters}
@@ -57,7 +63,7 @@ const NewsSources = () => {
 
             {
                 filteredFetchedSourcesData?.data?.results?.length || defaultFetchedData?.results?.length
-                    ? <RenderAllNewsSources sources={filteredFetchedSourcesData?.data?.results || defaultFetchedData?.results} filtersInUse={filteredFetchedSourcesData?.data?.user_input || defaultFetchedData?.user_input || (isTrue ? filtersUsed : {})} />
+                    ? <RenderAllNewsSources sources={filteredFetchedSourcesData?.data?.results || defaultFetchedData?.results} filtersInUse={filteredFetchedSourcesData?.data?.user_input || defaultFetchedData?.user_input || (Object.keys(routerQuery).length ? routerQuery : isTrue ? filtersUsed :  {})} />
                     : null
             }
 

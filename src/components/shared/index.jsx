@@ -87,7 +87,7 @@ export const UserInput = ({ handleValueChanges, labelText, placeholderText, requ
 
 const ShowValidCountryCodesAsExample = () => {
     return (
-        <p className="absolute text-sm text-yellow-400 font-bold">use comma in bvetween: us,gb,bd,jp,br</p>
+        <p className="absolute text-sm text-yellow-400 font-bold">use comma in between: us,gb,bd,jp,br</p>
     )
 }
 
@@ -208,12 +208,13 @@ export const ReUseableJustUi = ({ handleEntries, langPref }) => {
                 <p className="text-cyan-200 font-bold">If News From Single Country</p>
                 <ChooseIfMultipleCountries handleChange={handleIfMultiples} />
             </label>
-            {
+            <MultipleCountriesHandleInputs handleChanges={handleEntries} />
+            {/* {
                 multiple === "Multiple"
                     ? <MultipleCountriesHandleInputs handleChanges={handleEntries} />
                     : null
                     // : <RenderAllPublishingCountries handleCountries={handleEntries} />
-            }
+            } */}
         </section>
     )
 }

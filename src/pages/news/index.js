@@ -71,7 +71,7 @@ const SearchNews = () => {
 
             {
                 data?.length
-                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(data)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input || (isTrue ? filtersUsed : {})} nextPageRef={ filteredFetchedData?.data?.nextPage || defaultFetchedData?.nextPage} />
+                    ? <ShowAllArticlesData list={filterArticlesOfDuplicates(data)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input || (Object.keys(routerQuery).length ? routerQuery : isTrue ? filtersUsed :  {})} nextPageRef={ filteredFetchedData?.data?.nextPage || defaultFetchedData?.nextPage} />
                     : null
             }
 
@@ -95,7 +95,7 @@ const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters
     const handleSearchText = e => handleEntries(e, "q")
 
     return (
-        <ReuseableRelatedUi width={"434px"} height={"479px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
+        <ReuseableRelatedUi width={"434px"} height={"535px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
             <GetUserSearchQuery required={true} handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
             {/* <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} langPref={entries?.lang} /> */}
         </ReuseableRelatedUi>

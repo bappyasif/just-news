@@ -41,7 +41,7 @@ const LatestHeadlines = () => {
 
       {
         filteredFetchedData?.data?.results?.length || defaultFetchedData?.results?.length
-          ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.results || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || (isTrue ? filtersUsed : {})} nextPageRef={ filteredFetchedData?.data?.nextPage || defaultFetchedData?.nextPage} />
+          ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.results || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || (Object.keys(routerQuery).length ? routerQuery : isTrue ? filtersUsed :  null)} nextPageRef={ filteredFetchedData?.data?.nextPage || defaultFetchedData?.nextPage} />
           : null
       }
 
@@ -56,7 +56,7 @@ const LatestHeadlines = () => {
 
 const RelatedUi = ({ entries, handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
   return (
-    <ReuseableRelatedUi width={"434px"} height={"562px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
+    <ReuseableRelatedUi width={"434px"} height={"630px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
       {/* <ChooseNewsTimePeriod handleTime={handleEntries} /> */}
       <HeadlinesTimeframe handleSources={handleEntries} />
       <GetNewsSourcesInput handleSources={handleEntries} />
