@@ -1,6 +1,6 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { FilterToggleAndAnnouncement, GetUserSearchQuery, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useFilteredDataFetching, useForDefaultFetching, useForSafetyKeepingOfFilters, useForShallowQuery, useForTruthToggle, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
+import { useFilteredDataFetching, useForAlertingUserWhenFetchFoundNothing, useForDefaultFetching, useForSafetyKeepingOfFilters, useForShallowQuery, useForTruthToggle, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
 import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, hydrate } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
@@ -55,7 +55,36 @@ const SearchNews = () => {
         }
     }, [filteredFetchedData, defaultFetchedData])
 
-    console.log(data, "DATA!!!!", filteredFetchedData?.data)
+    // useEffect(() => {
+    //     if(isTrue && defaultFetchedData?.results?.length) {
+    //         alert("showing data!!")
+    //     } else {
+    //         setTimeout(() => {
+    //             console.log(filteredFetchedData?.data?.results?.length, "fn!!")
+    //             !filteredFetchedData?.data?.results?.length && alert("found nothing!!")
+    //             // !isTrue && Object.keys(routerQuery).length && !defaultFetchedData?.results?.length && alert("found nothing!!")
+    //         }, 6000)
+    //         // !isTrue && Object.keys(routerQuery).length && !defaultFetchedData?.results?.length && setTimeout(() => {
+    //         //     !defaultFetchedData?.results?.length && alert("found nothing!!")
+    //         // }, 4000)
+    //     }
+    //     // isTrue && defaultFetchedData?.results?.length && alert("showing data!!")
+    //     // !isTrue && Object.keys(routerQuery).length && !defaultFetchedData?.results?.length && setTimeout(() => {
+    //     //     !data.length && alert("found nothing!!")
+    //     // }, 4000)
+    // }, [isTrue, routerQuery])
+
+    // console.log(data, "DATA!!!!", filteredFetchedData?.data, filtersUsed, !isTrue && Object.keys(routerQuery).length ? routerQuery : isTrue ? filtersUsed : null)
+
+    // useForAlertingUserWhenFetchFoundNothing(isTrue ? filtersUsed : !isTrue && Object.keys(routerQuery).length ? routerQuery : {}, filteredFetchedData?.data?.results)
+
+    // useForAlertingUserWhenFetchFoundNothing(!isTrue && Object.keys(routerQuery).length ? routerQuery : isTrue ? filtersUsed :  {}, filteredFetchedData?.data?.results)
+
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         Object.keys(filtersUsed).length && !filteredFetchedData?.data?.results?.length && alert("found nothing!! try a different option maybe?! thanks :)")
+    //     }, 4000)
+    // }, [filtersUsed])
 
     // console.log(filteredFetchedData?.data?.results?.length || defaultFetchedData?.articles?.length, "!!!!!!!!!!whtwhwtw!!!!!!!!!", filteredFetchedData, defaultFetchedData, filteredFetchedData?.data?.results)
 
@@ -95,7 +124,7 @@ const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters
     const handleSearchText = e => handleEntries(e, "q")
 
     return (
-        <ReuseableRelatedUi width={"434px"} height={"535px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
+        <ReuseableRelatedUi width={"434px"} height={"499px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
             <GetUserSearchQuery required={true} handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
             {/* <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} langPref={entries?.lang} /> */}
         </ReuseableRelatedUi>

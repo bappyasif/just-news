@@ -27,6 +27,19 @@ const LatestHeadlines = () => {
     filteredFetchedData?.data?.results?.length && makeTruthy()
   }, [filteredFetchedData?.data?.results])
 
+  // useForAlertingUserWhenFetchFoundNothing(filtersUsed, filteredFetchedData?.data?.results)
+
+//   useEffect(() => {
+//     if(isTrue && defaultFetchedData?.results?.length) {
+//         alert("showing data!!")
+//     } else {
+//         setTimeout(() => {
+//             // console.log(defaultFetchedData?.results?.length, "fn!!")
+//             !filteredFetchedData?.data?.results?.length && alert("found nothing!!")
+//         }, 6000)
+//     }
+// }, [isTrue, routerQuery])
+
   return (
     <main className='min-h-screen'>
       <h2 className="text-red-800 font-extrabold text-4xl bg-blue-600">App Is Going Through Refactoring Using New Api Source For News Data. Please wait till it gets back up in full prospect!!</h2>
@@ -56,7 +69,7 @@ const LatestHeadlines = () => {
 
 const RelatedUi = ({ entries, handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
   return (
-    <ReuseableRelatedUi width={"434px"} height={"630px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
+    <ReuseableRelatedUi width={"434px"} height={"566px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
       {/* <ChooseNewsTimePeriod handleTime={handleEntries} /> */}
       <HeadlinesTimeframe handleSources={handleEntries} />
       <GetNewsSourcesInput handleSources={handleEntries} />

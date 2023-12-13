@@ -177,6 +177,15 @@ export const useForContentRendering = (sources, filtersInUse, initialTo, nextPag
 //     return { sourcesParts, handleBackward, handleForward }
 // }
 
+export const useForAlertingUserWhenFetchFoundNothing = (filtersUsed, data) => {
+    useEffect(() => {
+        setTimeout(() => {
+            Object.keys(filtersUsed).length && !data?.length && alert("found nothing!! try a different option maybe?! thanks :)")
+            console.log(Object.keys(filtersUsed).length && !data?.length, Object.keys(filtersUsed).length, !data?.length)
+        }, 8000)
+    }, [filtersUsed, data])
+}
+
 export const useForSafetyKeepingOfFilters = (entries) => {
     const { isTrue, makeFalsy, makeTruthy } = useForTruthToggle()
 
@@ -243,7 +252,10 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
         refetchOnWindowFocus: false,
         onSuccess: (data) => {
             neutralizeVariablesAfterFetch()
-            console.log(data, "filterd|!!")
+            // setTimeout(() => {
+            //     !data?.results?.length && alert("found nothing!! try a different option maybe?! thanks :)")
+            // }, 4000)
+            // console.log(data, "filterd|!!")
         },
         onError: (err) => {
             console.log(err, "ERRYERRR")

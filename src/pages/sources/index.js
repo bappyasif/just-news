@@ -39,6 +39,12 @@ const NewsSources = () => {
     }, [filteredFetchedSourcesData])
 
     // useEffect(() => {
+    //     setTimeout(() => {
+    //         !filteredFetchedSourcesData?.results?.length && alert("found nothing!! try a different option maybe?! thanks :)")
+    //     }, 4000)
+    // }, [filtersUsed])
+
+    // useEffect(() => {
     //     Object.keys(routerQuery).length && makeTruthy()
     // }, [routerQuery])
 

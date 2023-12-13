@@ -28,7 +28,7 @@ const RenderSources = ({ data }) => {
     // const token = url.split("https://")[1]
     const token = url.split(/https:\/\/|http:\/\//)[1]
     const wwwToken = token.split("www.")[1]
-    const nextRound = wwwToken.split("/")[0]
+    const nextRound = wwwToken ? wwwToken.split("/")[0] : token.split("/")[0]
     // console.log(wwwToken, "www")
 
     router.push(`/news?domainurl=${nextRound}`, undefined, { shallow: true })

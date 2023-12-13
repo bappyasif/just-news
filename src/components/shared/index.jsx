@@ -204,10 +204,10 @@ export const ReUseableJustUi = ({ handleEntries, langPref }) => {
             <DomainsPriority handleTopics={handleEntries} />
             <ShowTopics handleTopics={handleEntries} />
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} langPref={langPref} />
-            <label htmlFor="ifMult">
+            {/* <label htmlFor="ifMult">
                 <p className="text-cyan-200 font-bold">If News From Single Country</p>
                 <ChooseIfMultipleCountries handleChange={handleIfMultiples} />
-            </label>
+            </label> */}
             <MultipleCountriesHandleInputs handleChanges={handleEntries} />
             {/* {
                 multiple === "Multiple"
