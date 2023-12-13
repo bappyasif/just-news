@@ -1,17 +1,19 @@
 import { RenderAllNewsSources } from '@/components/forSources';
 import { FilterToggleAndAnnouncement, ReuseableRelatedUi } from '@/components/shared'
-import { useFilteredDataFetching, useForDefaultFetching, useForShallowQuery, useMaintainUserInteractions } from '@/hooks';
+import { useFilteredDataFetchingForSources, useForDefaultFetching, useForSafetyKeepingOfFilters, useForShallowQuery, useMaintainUserInteractions } from '@/hooks';
 import { fetchSourcesForDefault, makeRoutes } from '@/utils';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const NewsSources = () => {
     const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forSources", "Sources", "SourcesFilters")
 
     const router = useRouter();
 
-    const { defaultFetchedData } = useForDefaultFetching("sources?topic=business&lang=en&countries=US", ["sources", "us"])
+    // const { defaultFetchedData } = useForDefaultFetching("sources?topic=business&lang=en&countries=US", ["sources", "us"])
+
+    const { defaultFetchedData } = useForDefaultFetching(`sources?category=business&language=en&country=us&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["sources", "us"])
 
     const handleShallowRoutes = () => {
         if (Object.keys(entries).length) {
@@ -24,9 +26,17 @@ const NewsSources = () => {
 
     const { routerQuery } = useForShallowQuery(setFetchData)
 
+    const {filtersUsed, isTrue, makeTruthy} = useForSafetyKeepingOfFilters(entries)
+
     // console.log(router.query, "QUERY!!")
 
-    const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), "/sources", neutralizeVariablesAfterFetch)
+    const { filteredFetchedSourcesData } = useFilteredDataFetchingForSources(fetchData, (routerQuery || entries), "/sources", neutralizeVariablesAfterFetch)
+
+    useEffect(() => {
+        if(filteredFetchedSourcesData?.data?.results?.length) {
+            makeTruthy()
+        }
+    }, [filteredFetchedSourcesData])
 
     return (
         <main className='min-h-screen'>
@@ -37,7 +47,7 @@ const NewsSources = () => {
                 showFilters
                     ? <ReuseableRelatedUi
                         width={"434px"}
-                        height={"355px"}
+                        height={"386px"}
                         handleEntries={handleEntries}
                         handleHideFilters={handleShallowRoutes}
                         handleSaveSearchedFilters={handleSaveSearchedFilters}
@@ -46,10 +56,16 @@ const NewsSources = () => {
             }
 
             {
+                filteredFetchedSourcesData?.data?.results?.length || defaultFetchedData?.results?.length
+                    ? <RenderAllNewsSources sources={filteredFetchedSourcesData?.data?.results || defaultFetchedData?.results} filtersInUse={filteredFetchedSourcesData?.data?.user_input || defaultFetchedData?.user_input || (isTrue ? filtersUsed : {})} />
+                    : null
+            }
+
+            {/* {
                 filteredFetchedData?.data?.sources?.length || defaultFetchedData?.sources?.length
                     ? <RenderAllNewsSources sources={filteredFetchedData?.data?.sources || defaultFetchedData?.sources} filtersInUse={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
                     : null
-            }
+            } */}
         </main>
     )
 }
@@ -64,7 +80,8 @@ export const getStaticProps = (context) => {
 
     queryClient.prefetchQuery({
         queryKey: ["sources", "us"],
-        queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US`),
+        // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/sources?topic=business&lang=en&countries=US`),
+        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/sources?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&category=business&language=en&country=us`),
         cacheTime: 86400000
     })
 

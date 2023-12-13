@@ -9,7 +9,8 @@ const SearchNews = () => {
     const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forNews", "News", "NewsFilters")
 
     // const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
-    const { defaultFetchedData } = useForDefaultFetching("q=Apple&country=us&image=1&full_content=1&language=en", ["news", "ca"])
+    // const { defaultFetchedData } = useForDefaultFetching("q=Apple&country=us&image=1&full_content=1&language=en", ["news", "ca"])
+    const { defaultFetchedData } = useForDefaultFetching(`news?q=Apple&country=us&image=1&full_content=1&language=en&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["news", "ca"])
 
     const { routerQuery } = useForShallowQuery(setFetchData)
 

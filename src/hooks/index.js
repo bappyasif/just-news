@@ -190,6 +190,34 @@ export const useForSafetyKeepingOfFilters = (entries) => {
     return { isTrue, makeFalsy, makeTruthy, filtersUsed }
 }
 
+export const useFilteredDataFetchingForSources = (fetchData, entries, endpoint, neutralizeVariablesAfterFetch) => {
+    const makeRequest = () => {
+        const url = endpoint;
+        const params = { ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}
+        return fetchSourcesOnRequests({ url, params })
+    }
+
+    const { data: filteredFetchedSourcesData } = useQuery({
+        queryKey: ["sources", `${makeKeys(entries)}`],
+        queryFn: makeRequest,
+        enabled: fetchData && Object.values(entries).length ? true : false,
+        refetchOnWindowFocus: false,
+        onSuccess: (data) => {
+            neutralizeVariablesAfterFetch()
+            console.log(data, "filterd|!! sources")
+        },
+        onError: (err) => {
+            console.log(err, "ERRYERRR")
+        },
+        cacheTime: 86400000,
+        retryDelay: 4000
+    })
+
+    // console.log(filteredFetchedData, "filterd OUTSIDE!!")
+
+    return { filteredFetchedSourcesData }
+}
+
 export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralizeVariablesAfterFetch) => {
     const makeRequest = () => {
         // const method = "GET"
@@ -209,7 +237,7 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
     }
 
     const { data: filteredFetchedData } = useQuery({
-        queryKey: ["sources", `${makeKeys(entries)}`],
+        queryKey: ["news", `${makeKeys(entries)}`],
         queryFn: makeRequest,
         enabled: fetchData && Object.values(entries).length ? true : false,
         refetchOnWindowFocus: false,
@@ -242,7 +270,8 @@ export const useForDefaultFetching = (urlStr, keys) => {
         queryKey: keys,
         // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/${urlStr}`),
         // queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza`),
-        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&${urlStr}`),
+        // queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&${urlStr}`),
+        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/${urlStr}`),
         // enabled: false
         onSuccess: (data) => {
             console.log(data, "!! default data!!")

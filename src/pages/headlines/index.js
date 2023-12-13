@@ -8,7 +8,9 @@ import React, { useEffect } from 'react'
 const LatestHeadlines = () => {
   const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forHeadlines", "Headlines", "HeadlinesFilters")
 
-  const { defaultFetchedData } = useForDefaultFetching("country=us&language=en&category=world&timeframe=12&image=1&full_content=1", ["headlines", "us"])
+  // const { defaultFetchedData } = useForDefaultFetching("country=us&language=en&category=world&timeframe=12&image=1&full_content=1", ["headlines", "us"])
+
+  const { defaultFetchedData } = useForDefaultFetching(`news?country=us&language=en&category=world&timeframe=12&image=1&full_content=1&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["headlines", "us"])
 
   console.log(defaultFetchedData, "de", entries)
 
@@ -70,7 +72,8 @@ export const getStaticProps = () => {
   queryClient.prefetchQuery({
     queryKey: ["headlines", "us"],
     // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/latest_headlines?countries=US&lang=en&topic=world&page_size=100`),
-    queryFn: () => useForDefaultFetching("country=us&language=en&category=world&timeframe=12&prioritydomain=top&image=1&full_content=1", ["headlines", "us"]),
+    // queryFn: () => useForDefaultFetching("country=us&language=en&category=world&timeframe=12&prioritydomain=top&image=1&full_content=1", ["headlines", "us"]),
+    queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&country=us&language=en&category=world&timeframe=12&prioritydomain=top&image=1&full_content=1`),
     cacheTime: 86400000
   })
 
