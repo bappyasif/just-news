@@ -1,6 +1,6 @@
 import { RenderAllNewsSources } from '@/components/forSources';
 import { FilterToggleAndAnnouncement, ReuseableRelatedUi } from '@/components/shared'
-import { useFilteredDataFetchingForSources, useForDefaultFetching, useForSafetyKeepingOfFilters, useForShallowQuery, useMaintainUserInteractions } from '@/hooks';
+import { useFilteredDataFetchingForSources, useForDefaultFetching, useForDefaultFetchingForSources, useForSafetyKeepingOfFilters, useForShallowQuery, useMaintainUserInteractions } from '@/hooks';
 import { fetchSourcesForDefault, makeRoutes } from '@/utils';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -13,7 +13,7 @@ const NewsSources = () => {
 
     // const { defaultFetchedData } = useForDefaultFetching("sources?topic=business&lang=en&countries=US", ["sources", "us"])
 
-    const { defaultFetchedData } = useForDefaultFetching(`sources?category=business&language=en&country=us&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["sources", "us"])
+    const { defaultFetchedData } = useForDefaultFetchingForSources(`sources?category=business&language=en&country=us&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["sources", "us"])
 
     const handleShallowRoutes = () => {
         if (Object.keys(entries).length) {

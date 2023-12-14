@@ -177,14 +177,14 @@ export const useForContentRendering = (sources, filtersInUse, initialTo, nextPag
 //     return { sourcesParts, handleBackward, handleForward }
 // }
 
-export const useForAlertingUserWhenFetchFoundNothing = (filtersUsed, data) => {
-    useEffect(() => {
-        setTimeout(() => {
-            Object.keys(filtersUsed).length && !data?.length && alert("found nothing!! try a different option maybe?! thanks :)")
-            console.log(Object.keys(filtersUsed).length && !data?.length, Object.keys(filtersUsed).length, !data?.length)
-        }, 8000)
-    }, [filtersUsed, data])
-}
+// export const useForAlertingUserWhenFetchFoundNothing = (filtersUsed, data) => {
+//     useEffect(() => {
+//         setTimeout(() => {
+//             Object.keys(filtersUsed).length && !data?.length && alert("found nothing!! try a different option maybe?! thanks :)")
+//             console.log(Object.keys(filtersUsed).length && !data?.length, Object.keys(filtersUsed).length, !data?.length)
+//         }, 8000)
+//     }, [filtersUsed, data])
+// }
 
 export const useForSafetyKeepingOfFilters = (entries) => {
     const { isTrue, makeFalsy, makeTruthy } = useForTruthToggle()
@@ -245,17 +245,17 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
         return fetchSourcesOnRequests({ url, params })
     }
 
-    const { data: filteredFetchedData } = useQuery({
+    const { data: filteredFetchedData, isLoading, isError, isSuccess } = useQuery({
         queryKey: ["news", `${makeKeys(entries)}`],
         queryFn: makeRequest,
         enabled: fetchData && Object.values(entries).length ? true : false,
         refetchOnWindowFocus: false,
         onSuccess: (data) => {
             neutralizeVariablesAfterFetch()
-            // setTimeout(() => {
-            //     !data?.results?.length && alert("found nothing!! try a different option maybe?! thanks :)")
-            // }, 4000)
-            // console.log(data, "filterd|!!")
+            setTimeout(() => {
+                !data?.data?.results?.length && alert("found nothing!! try a different option maybe?! thanks :)")
+            }, 8000)
+            // console.log(data, "filterd|!!", data?.data?.results?.length)
         },
         onError: (err) => {
             console.log(err, "ERRYERRR")
@@ -276,10 +276,25 @@ export const useForTruthToggle = () => {
     return { isTrue, makeFalsy, makeTruthy }
 }
 
-export const useForDefaultFetching = (urlStr, keys) => {
+export const useForDefaultFetchingForSources = (urlStr, keys) => {
     // console.log(urlStr, keys, "wtf!!")
-    const { data: defaultFetchedData } = useQuery({
+    const { data: defaultFetchedData, isLoading, isError, isSuccess } = useQuery({
         queryKey: keys,
+        queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/${urlStr}`),
+        onSuccess: (data) => {
+            console.log(data, "!! default data!!")
+        },
+        refetchOnWindowFocus: false
+    })
+
+    return { defaultFetchedData }
+}
+
+export const useForDefaultFetching = (urlStr, keys, routerQuery) => {
+    // console.log(urlStr, keys, "wtf!!")
+    const { data: defaultFetchedData, isLoading, isError, isSuccess } = useQuery({
+        queryKey: keys,
+        enabled: !Object.keys(routerQuery).length,
         // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/${urlStr}`),
         // queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza`),
         // queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&${urlStr}`),
@@ -317,12 +332,12 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
     const router = useRouter()
 
     const handleHttpRequestWhenSourceOrSearchQueryExists = () => {
-        if (entries?.q || entries.sources) {
+        if (entries?.q || entries?.domainurl) {
             let data;
             if (entries.q) {
                 data = { type: "q", text: entries.q }
-            } else if (entries.sources) {
-                data = { type: "sources", text: entries.sources }
+            } else if (entries.domainurl) {
+                data = { type: "sources", text: entries.domainurl }
             }
 
             happensAfterHttpRequest(() => setEntries({}), { data, url: "/liveSearch", method: "POST" })

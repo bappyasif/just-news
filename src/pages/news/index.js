@@ -1,6 +1,6 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
 import { FilterToggleAndAnnouncement, GetUserSearchQuery, NotInThisLanguage, ReuseableRelatedUi, ToogleFilters } from '@/components/shared'
-import { useFilteredDataFetching, useForAlertingUserWhenFetchFoundNothing, useForDefaultFetching, useForSafetyKeepingOfFilters, useForShallowQuery, useForTruthToggle, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
+import { useFilteredDataFetching, useForDefaultFetching, useForSafetyKeepingOfFilters, useForShallowQuery, useForTruthToggle, useMaintainUserInteractions, useSSGPreFetching, useStaticPreFetching } from '@/hooks';
 import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, hydrate } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
@@ -8,17 +8,20 @@ import React, { useEffect, useState } from 'react'
 const SearchNews = () => {
     const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forNews", "News", "NewsFilters")
 
+    const { routerQuery } = useForShallowQuery(setFetchData)
+
     // const { defaultFetchedData } = useForDefaultFetching("search?q=Apple&countries=CA", ["news", "ca"])
     // const { defaultFetchedData } = useForDefaultFetching("q=Apple&country=us&image=1&full_content=1&language=en", ["news", "ca"])
-    const { defaultFetchedData } = useForDefaultFetching(`news?q=Apple&country=us&image=1&full_content=1&language=en&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["news", "ca"])
+    // const { defaultFetchedData } = useForDefaultFetching(`news?q=Apple&country=us&image=1&full_content=1&language=en&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["news", "ca"])
+    const { defaultFetchedData, isLoading:defaultLoading, isError:defaultError, isSuccess:defaultSuccess } = useForDefaultFetching(`news?q=Apple&country=us&image=1&full_content=1&language=en&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["news", "ca"], routerQuery)
 
-    const { routerQuery } = useForShallowQuery(setFetchData)
+    // const { routerQuery } = useForShallowQuery(setFetchData)
 
     // console.log(entries, "entries!!")
 
     // const { filteredFetchedData } = useFilteredDataFetching(fetchData, (entries || routerQuery), "/news", () => null)
 
-    const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), "/news", neutralizeVariablesAfterFetch)
+    const { filteredFetchedData, isLoading, isError, isSuccess } = useFilteredDataFetching(fetchData, ( routerQuery || entries), "/news", neutralizeVariablesAfterFetch)
 
     // const { filteredFetchedData } = useFilteredDataFetching(fetchData, ( routerQuery || entries), "/search", neutralizeVariablesAfterFetch)
 
@@ -96,6 +99,20 @@ const SearchNews = () => {
                 showFilters
                     ? <RelatedUi entries={entries} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
                     : null
+            }
+
+            {
+                defaultLoading
+                ? <h2 className='font-bold text-red-600 text-2xl'>Default data is loading....</h2>
+                : defaultError
+                ? <h2 className='font-bold text-red-600 text-2xl'>Default data fetching failed!!</h2>
+                : isLoading
+                ? <h2 className='font-bold text-blue-600 text-2xl'>Filtered data is loading....</h2>
+                : isError
+                ? <h2 className='font-bold text-blue-600 text-2xl'>Filtered data fetching failed!!</h2>
+                : isSuccess
+                ? <h2 className='font-bold text-blue-600 text-2xl'>Filtered data loaded successfully....</h2>
+                : null
             }
 
             {

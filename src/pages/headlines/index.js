@@ -8,15 +8,17 @@ import React, { useEffect } from 'react'
 const LatestHeadlines = () => {
   const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forHeadlines", "Headlines", "HeadlinesFilters")
 
+  const { routerQuery } = useForShallowQuery(setFetchData)
+
   // const { defaultFetchedData } = useForDefaultFetching("country=us&language=en&category=world&timeframe=12&image=1&full_content=1", ["headlines", "us"])
 
-  const { defaultFetchedData } = useForDefaultFetching(`news?country=us&language=en&category=world&timeframe=12&image=1&full_content=1&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["headlines", "us"])
+  const { defaultFetchedData } = useForDefaultFetching(`news?country=us&language=en&category=world&timeframe=12&image=1&full_content=1&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["headlines", "us"], routerQuery)
 
   console.log(defaultFetchedData, "de", entries)
 
   // const { defaultFetchedData } = useForDefaultFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
 
-  const { routerQuery } = useForShallowQuery(setFetchData)
+  // const { routerQuery } = useForShallowQuery(setFetchData)
 
   // const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), "/latest_headlines", neutralizeVariablesAfterFetch)
   const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || { prioritydomain: 'top', timeframe: 6, ...entries }), "/news", neutralizeVariablesAfterFetch)
@@ -69,7 +71,7 @@ const LatestHeadlines = () => {
 
 const RelatedUi = ({ entries, handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
   return (
-    <ReuseableRelatedUi width={"434px"} height={"566px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
+    <ReuseableRelatedUi width={"434px"} height={"519px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
       {/* <ChooseNewsTimePeriod handleTime={handleEntries} /> */}
       <HeadlinesTimeframe handleSources={handleEntries} />
       <GetNewsSourcesInput handleSources={handleEntries} />
