@@ -9,10 +9,10 @@ export const RenderFiltersInUse = ({ data }) => {
     const renderFilters = () => dataset?.map((item, idx) => <RenderFilter key={idx} item={item} />)
 
     return (
-        <div className='text-xl bg-zinc-400 w-full text-center px-2 my-6'>
+        <div className='text-xl bg-zinc-400 w-fit text-center px-10 my-6 mx-auto'>
             <h2 className='text-2xl'>Filters In Use</h2>
             <ul className='flex gap-4 flex-wrap xxs:text-md lg:text-xl justify-center'>
-                {renderFilters()}
+                {renderFilters().length ? renderFilters() : "N/A"}
             </ul>
         </div>
     )

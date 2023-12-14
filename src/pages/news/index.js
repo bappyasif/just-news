@@ -6,7 +6,10 @@ import { QueryClient, hydrate } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
 
 const SearchNews = () => {
-    const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forNews", "News", "NewsFilters")
+    const [data, setData] = useState([])
+
+
+    const { entries, fetchData, setFetchData, showFilters, neutralizeVariablesAfterFetch, handleEntries, handleHideFilters, handleToggleShowFilters, handleSaveSearchedFilters } = useMaintainUserInteractions("/forNews", "News", "NewsFilters", data)
 
     const { routerQuery } = useForShallowQuery(setFetchData)
 
@@ -38,9 +41,9 @@ const SearchNews = () => {
 
     const {filtersUsed, isTrue, makeTruthy} = useForSafetyKeepingOfFilters(entries)
 
-    const [data, setData] = useState([])
+    // const [data, setData] = useState([])
 
-    console.log(entries, isTrue, filtersUsed)
+    console.log(entries, isTrue, filtersUsed, isSuccess, isLoading, "wht wht!!", defaultError, defaultSuccess, defaultLoading)
 
     useEffect(() => {
         if (filteredFetchedData?.data?.results?.length) {
@@ -91,18 +94,36 @@ const SearchNews = () => {
 
     // console.log(filteredFetchedData?.data?.results?.length || defaultFetchedData?.articles?.length, "!!!!!!!!!!whtwhwtw!!!!!!!!!", filteredFetchedData, defaultFetchedData, filteredFetchedData?.data?.results)
 
+    // const handleHideFiltersModded = () => {
+    //     setTimeout(() => {
+    //         filteredFetchedData?.data?.results?.length && isSuccess && handleHideFilters()
+    //     }, 6060)
+    // }
+
+    // const handleSaveFiltersModded = () => {
+    //     setTimeout(() => {
+    //         filteredFetchedData?.data?.results?.length && isSuccess && handleSaveSearchedFilters()
+    //     }, 6060)
+    // }
+
     return (
         <main className='min-h-screen'>
             <FilterToggleAndAnnouncement showFilters={showFilters} handleHideFilters={handleHideFilters} handleToggleShowFilters={handleToggleShowFilters} />
             <h2 className="text-red-800 font-extrabold text-4xl bg-blue-600">App Is Going Through Refactoring Using New Api Source For News Data. Please wait till it gets back up in full prospect!!</h2>
             {
                 showFilters
-                    ? <RelatedUi entries={entries} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} />
+                    ? <RelatedUi entries={entries} 
+                        handleSaveSearchedFilters={handleSaveSearchedFilters} 
+                        handleHideFilters={handleHideFilters} 
+                        // handleSaveSearchedFilters={handleSaveFiltersModded} 
+                        // handleHideFilters={handleHideFiltersModded} 
+                        handleEntries={handleEntries} 
+                        />
                     : null
             }
 
-            {
-                defaultLoading
+            {/* {
+                defaultLoading && !isLoading
                 ? <h2 className='font-bold text-red-600 text-2xl'>Default data is loading....</h2>
                 : defaultError
                 ? <h2 className='font-bold text-red-600 text-2xl'>Default data fetching failed!!</h2>
@@ -110,10 +131,10 @@ const SearchNews = () => {
                 ? <h2 className='font-bold text-blue-600 text-2xl'>Filtered data is loading....</h2>
                 : isError
                 ? <h2 className='font-bold text-blue-600 text-2xl'>Filtered data fetching failed!!</h2>
-                : isSuccess
-                ? <h2 className='font-bold text-blue-600 text-2xl'>Filtered data loaded successfully....</h2>
+                // : isSuccess
+                // ? <h2 className='font-bold text-blue-600 text-2xl'>Filtered data loaded successfully....</h2>
                 : null
-            }
+            } */}
 
             {
                 data?.length
@@ -141,7 +162,7 @@ const RelatedUi = ({ handleEntries, handleHideFilters, handleSaveSearchedFilters
     const handleSearchText = e => handleEntries(e, "q")
 
     return (
-        <ReuseableRelatedUi width={"434px"} height={"499px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
+        <ReuseableRelatedUi width={"434px"} height={"450px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
             <GetUserSearchQuery required={true} handleValueChanges={handleSearchText} labelText={"Search News"} placeholderText={"Query your news term right here...."} />
             {/* <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} langPref={entries?.lang} /> */}
         </ReuseableRelatedUi>

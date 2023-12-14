@@ -59,7 +59,7 @@ const NewsSources = () => {
                 showFilters
                     ? <ReuseableRelatedUi
                         width={"434px"}
-                        height={"414px"}
+                        height={"350px"}
                         handleEntries={handleEntries}
                         handleHideFilters={handleShallowRoutes}
                         handleSaveSearchedFilters={handleSaveSearchedFilters}

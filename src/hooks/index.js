@@ -266,7 +266,7 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
 
     // console.log(filteredFetchedData, "filterd OUTSIDE!!")
 
-    return { filteredFetchedData }
+    return { filteredFetchedData, isLoading, isError, isSuccess }
 }
 
 export const useForTruthToggle = () => {
@@ -306,7 +306,7 @@ export const useForDefaultFetching = (urlStr, keys, routerQuery) => {
         refetchOnWindowFocus: false
     })
 
-    return { defaultFetchedData }
+    return { defaultFetchedData, isLoading, isError, isSuccess }
 }
 
 export const useStaticPreFetching = (urlStr, keys) => {
@@ -321,7 +321,7 @@ export const useStaticPreFetching = (urlStr, keys) => {
     return { queryClient }
 }
 
-export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
+export const useMaintainUserInteractions = (endpoint, type, defaultName, newsData) => {
     const [entries, setEntries] = useState({});
     const [showFilters, setShowFilters] = useState(true);
     const [fetchData, setFetchData] = useState(false);
@@ -339,6 +339,9 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName) => {
             } else if (entries.domainurl) {
                 data = { type: "sources", text: entries.domainurl }
             }
+
+            // trying to deny wrting to db when there is no data found with any given filters
+            // if(!newsData.length) return
 
             happensAfterHttpRequest(() => setEntries({}), { data, url: "/liveSearch", method: "POST" })
         }
