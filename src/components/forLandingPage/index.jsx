@@ -291,7 +291,7 @@ const RenderLink = ({ item }) => {
             </Link>
             {
                 showTip ?
-                    <p className="absolute bg-white bottom-10 min-w-max px-2 z-50">{name}</p>
+                    <p className="absolute bg-white text-blue-600 bottom-10 min-w-max px-2 z-50">{name}</p>
                     : null
             }
         </div>

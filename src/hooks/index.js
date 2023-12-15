@@ -214,7 +214,9 @@ export const useMaintainUserInteractions = (endpoint, type, defaultName, newsDat
             // trying to deny wrting to db when there is no data found with any given filters
             // if(!newsData.length) return
 
-            happensAfterHttpRequest(() => setEntries({}), { data, url: "/liveSearch", method: "POST" })
+            // happensAfterHttpRequest(() => setEntries({}), { data, url: "/liveSearch", method: "POST" })
+
+            session?.user?.sub && happensAfterHttpRequest(() => setEntries({}), { data, url: "/liveSearch", method: "POST" })
         }
     }
 
