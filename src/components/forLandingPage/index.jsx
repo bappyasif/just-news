@@ -17,7 +17,7 @@ export const AppHeadline = () => {
             <h2>You are in a good place, you will find them all in here and more, enjoy :)</h2>
 
             <hr />
-            <h2 className="text-red-800 font-extrabold">App Is Going Through Refactoring Using New Api Source For News Data. Please wait till it gets back up in full prospect!!</h2>
+            {/* <h2 className="text-red-800 font-extrabold">App Is Going Through Refactoring Using New Api Source For News Data. Please wait till it gets back up in full prospect!!</h2> */}
         </div>
     )
 }

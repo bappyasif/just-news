@@ -1,5 +1,5 @@
 import { ShowAllArticlesData } from '@/components/forNewsArticles';
-import { ChooseNewsTimePeriod, FilterToggleAndAnnouncement, GetNewsSourcesInput, HeadlinesTimeframe, NotInThisLanguage, ReuseableRelatedUi } from '@/components/shared'
+import { FilterToggleAndAnnouncement, GetNewsSourcesInput, HeadlinesTimeframe, ReuseableRelatedUi } from '@/components/shared'
 import { useFilteredDataFetching, useForDefaultFetching, useForSafetyKeepingOfFilters, useForShallowQuery, useMaintainUserInteractions } from '@/hooks';
 import { fetchSourcesForDefault, filterArticlesOfDuplicates } from '@/utils';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
@@ -10,17 +10,8 @@ const LatestHeadlines = () => {
 
   const { routerQuery } = useForShallowQuery(setFetchData)
 
-  // const { defaultFetchedData } = useForDefaultFetching("country=us&language=en&category=world&timeframe=12&image=1&full_content=1", ["headlines", "us"])
-
   const { defaultFetchedData } = useForDefaultFetching(`news?country=us&language=en&category=world&timeframe=12&image=1&full_content=1&apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}`, ["headlines", "us"], routerQuery)
 
-  console.log(defaultFetchedData, "de", entries)
-
-  // const { defaultFetchedData } = useForDefaultFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
-
-  // const { routerQuery } = useForShallowQuery(setFetchData)
-
-  // const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || entries), "/latest_headlines", neutralizeVariablesAfterFetch)
   const { filteredFetchedData } = useFilteredDataFetching(fetchData, (routerQuery || { prioritydomain: 'top', timeframe: 6, ...entries }), "/news", neutralizeVariablesAfterFetch)
 
   const { filtersUsed, isTrue, makeTruthy } = useForSafetyKeepingOfFilters(entries)
@@ -29,22 +20,9 @@ const LatestHeadlines = () => {
     filteredFetchedData?.data?.results?.length && makeTruthy()
   }, [filteredFetchedData?.data?.results])
 
-  // useForAlertingUserWhenFetchFoundNothing(filtersUsed, filteredFetchedData?.data?.results)
-
-//   useEffect(() => {
-//     if(isTrue && defaultFetchedData?.results?.length) {
-//         alert("showing data!!")
-//     } else {
-//         setTimeout(() => {
-//             // console.log(defaultFetchedData?.results?.length, "fn!!")
-//             !filteredFetchedData?.data?.results?.length && alert("found nothing!!")
-//         }, 6000)
-//     }
-// }, [isTrue, routerQuery])
-
   return (
     <main className='min-h-screen'>
-      <h2 className="text-red-800 font-extrabold text-4xl bg-blue-600">App Is Going Through Refactoring Using New Api Source For News Data. Please wait till it gets back up in full prospect!!</h2>
+      {/* <h2 className="text-red-800 font-extrabold text-4xl bg-blue-600">App Is Going Through Refactoring Using New Api Source For News Data. Please wait till it gets back up in full prospect!!</h2> */}
 
       <FilterToggleAndAnnouncement showFilters={showFilters} handleHideFilters={handleHideFilters} handleToggleShowFilters={handleToggleShowFilters} />
 
@@ -59,12 +37,6 @@ const LatestHeadlines = () => {
           ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.results || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || (Object.keys(routerQuery).length ? routerQuery : isTrue ? filtersUsed :  null)} nextPageRef={ filteredFetchedData?.data?.nextPage || defaultFetchedData?.nextPage} />
           : null
       }
-
-      {/* {
-        filteredFetchedData?.data?.results?.length || defaultFetchedData?.results?.length
-          ? <ShowAllArticlesData list={filterArticlesOfDuplicates(filteredFetchedData?.data?.results || defaultFetchedData?.results)} filtersUsed={filteredFetchedData?.data?.user_input || defaultFetchedData?.user_input} />
-          : null
-      } */}
     </main>
   )
 }
@@ -72,22 +44,17 @@ const LatestHeadlines = () => {
 const RelatedUi = ({ entries, handleEntries, handleHideFilters, handleSaveSearchedFilters }) => {
   return (
     <ReuseableRelatedUi width={"434px"} height={"519px"} handleSaveSearchedFilters={handleSaveSearchedFilters} handleHideFilters={handleHideFilters} handleEntries={handleEntries} langPref={entries?.not_lang}>
-      {/* <ChooseNewsTimePeriod handleTime={handleEntries} /> */}
       <HeadlinesTimeframe handleSources={handleEntries} />
       <GetNewsSourcesInput handleSources={handleEntries} />
-      {/* <NotInThisLanguage handleEntries={handleEntries} labelText={"Exclude Language"} elemName={"not_lang"} langPref={entries?.lang} /> */}
     </ReuseableRelatedUi>
   )
 }
 
 export const getStaticProps = () => {
-  // const { queryClient } = useStaticPreFetching("latest_headlines?countries=US&lang=en&topic=world&page_size=100", ["headlines", "us"])
   const queryClient = new QueryClient();
 
   queryClient.prefetchQuery({
     queryKey: ["headlines", "us"],
-    // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/latest_headlines?countries=US&lang=en&topic=world&page_size=100`),
-    // queryFn: () => useForDefaultFetching("country=us&language=en&category=world&timeframe=12&prioritydomain=top&image=1&full_content=1", ["headlines", "us"]),
     queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&country=us&language=en&category=world&timeframe=12&prioritydomain=top&image=1&full_content=1`),
     cacheTime: 86400000
   })

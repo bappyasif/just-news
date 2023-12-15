@@ -196,25 +196,12 @@ export const HeadlinesTimeframe = ({ handleSources }) => {
 }
 
 export const ReUseableJustUi = ({ handleEntries, langPref }) => {
-    const [multiple, setMultiple] = useState("Single")
-    const handleIfMultiples = evt => setMultiple(evt.target.value)
-
     return (
         <section className="flex flex-col gap-2">
             <DomainsPriority handleTopics={handleEntries} />
             <ShowTopics handleTopics={handleEntries} />
             <NotInThisLanguage handleEntries={handleEntries} labelText={"Choose Language"} elemName={"language"} langPref={langPref} />
-            {/* <label htmlFor="ifMult">
-                <p className="text-cyan-200 font-bold">If News From Single Country</p>
-                <ChooseIfMultipleCountries handleChange={handleIfMultiples} />
-            </label> */}
             <MultipleCountriesHandleInputs handleChanges={handleEntries} />
-            {/* {
-                multiple === "Multiple"
-                    ? <MultipleCountriesHandleInputs handleChanges={handleEntries} />
-                    : null
-                    // : <RenderAllPublishingCountries handleCountries={handleEntries} />
-            } */}
         </section>
     )
 }

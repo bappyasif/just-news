@@ -28,8 +28,6 @@ export const fetchNextBunchOfNewsArticles = async (nextPageRef, filtersUsed) => 
 
     const response = await fetchSourcesOnRequests({ url: "/news", params })
 
-    console.log(response, "!!response!!")
-
     return response
 }
 
@@ -51,17 +49,10 @@ export const useForContentRendering = (sources, filtersInUse, initialTo, nextPag
 
     const handleForward = () => {
         setPageNum(prev => {
-            console.log(pageNum, arrParts[arrParts.length -1]?.pageNum, "matches!!", arrParts[arrParts.length-1]?.nextPage, nextPageRef, filtersUsed, arrParts[arrParts.length-1])
-            
-            // pageNum === arrParts[arrParts.length -1]?.pageNum ? fetchNextBunchOfNewsArticles(arrParts[arrParts.length -1]?.nextPage, filtersUsed) : null
-
             if(pageNum === arrParts[arrParts.length -1]?.pageNum) {
                 fetchNextPageNews()
             }
 
-
-
-            // setArrParts([{ pageNum: pageNum, data: sources, nextPage: nextPageRef }])
             return prev + 1
         })
     }
@@ -69,8 +60,6 @@ export const useForContentRendering = (sources, filtersInUse, initialTo, nextPag
     const handleBackward = () => {
         setPageNum(prev => {
             if (prev > 1) {
-                // const prevPaginationData = arrParts.find(item => item.pageNum === prev - 1)
-                // setArrParts()
                 return prev - 1
             }
 
@@ -85,106 +74,8 @@ export const useForContentRendering = (sources, filtersInUse, initialTo, nextPag
         }
     }, [sources, nextPageRef])
 
-    console.log(arrParts, pageNum, arrParts[pageNum-1]?.data, nextPageRef)
-
-    // const paginationData = arrParts?.find(item => item.pageNum === pageNum)
-
     return { sourcesParts: arrParts[pageNum-1]?.data || [], handleBackward, handleForward }
 }
-
-// export const useForContentRendering = (sources, filtersInUse, initialTo) => {
-//     const [arrParts, setArrParts] = useState({});
-
-//     const [sourcesParts, setSourcesParts] = useState();
-
-//     const handleForward = () => {
-//         if (arrParts?.to <= sources?.length && arrParts?.to >= 0) {
-//             if (sources.length - arrParts?.to >= initialTo) {
-//                 setArrParts(prev => {
-//                     return {
-//                         from: prev?.to,
-//                         to: prev.to + initialTo
-//                     }
-//                 })
-//             } else {
-//                 setArrParts(prev => {
-//                     const nextTo = prev.to + (sources.length - prev.to)
-//                     if (nextTo > prev.to) {
-//                         return {
-//                             from: prev.to,
-//                             to: prev.to + (sources.length - prev.to)
-//                         }
-//                     } else {
-//                         return {
-//                             from: prev.from,
-//                             to: prev.to
-//                         }
-//                     }
-//                 })
-//             }
-//         }
-//     }
-
-//     const handleBackward = () => {
-//         if (arrParts?.to <= sources?.length && arrParts?.to >= 0) {
-//             if (sources.length - arrParts?.from >= initialTo && arrParts?.from > 0) {
-//                 setArrParts(prev => {
-//                     return {
-//                         from: prev.from - initialTo,
-//                         to: prev.from
-//                     }
-//                 })
-//             } else {
-//                 setArrParts(prev => {
-//                     const nextFrom = prev.from - (sources.length - prev.from)
-//                     if (prev.to === sources?.length) {
-//                         return {
-//                             from: sources.length - (sources.length % initialTo) - initialTo,
-//                             to: sources.length - (sources.length % initialTo)
-//                         }
-//                     }
-//                     if (nextFrom < prev.from && nextFrom > 0) {
-//                         return {
-//                             from: nextFrom,
-//                             to: prev.to - (sources.length - prev.to)
-//                         }
-//                     } else {
-//                         return {
-//                             from: prev.from,
-//                             to: prev.to
-//                         }
-//                     }
-//                 })
-//             }
-//         }
-//     }
-
-//     const handleSourcesParts = () => {
-//         const from = arrParts?.from
-//         const to = arrParts?.to
-
-//         setSourcesParts(sources?.filter((v, i) => i >= from && i < to && v))
-//     }
-
-//     useEffect(() => {
-//         setArrParts({ from: 0, to: initialTo || 100 })
-//     }, [])
-
-//     useEffect(() => {
-//         handleSourcesParts()
-//     }, [arrParts, sources])
-
-//     return { sourcesParts, handleBackward, handleForward }
-// }
-
-// export const useForAlertingUserWhenFetchFoundNothing = (filtersUsed, data) => {
-//     useEffect(() => {
-//         setTimeout(() => {
-//             Object.keys(filtersUsed).length && !data?.length && alert("found nothing!! try a different option maybe?! thanks :)")
-//             console.log(Object.keys(filtersUsed).length && !data?.length, Object.keys(filtersUsed).length, !data?.length)
-//         }, 8000)
-//     }, [filtersUsed, data])
-// }
 
 export const useForSafetyKeepingOfFilters = (entries) => {
     const { isTrue, makeFalsy, makeTruthy } = useForTruthToggle()
@@ -213,7 +104,6 @@ export const useFilteredDataFetchingForSources = (fetchData, entries, endpoint, 
         refetchOnWindowFocus: false,
         onSuccess: (data) => {
             neutralizeVariablesAfterFetch()
-            console.log(data, "filterd|!! sources")
         },
         onError: (err) => {
             console.log(err, "ERRYERRR")
@@ -222,26 +112,15 @@ export const useFilteredDataFetchingForSources = (fetchData, entries, endpoint, 
         retryDelay: 4000
     })
 
-    // console.log(filteredFetchedData, "filterd OUTSIDE!!")
-
     return { filteredFetchedSourcesData }
 }
 
 export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralizeVariablesAfterFetch) => {
     const makeRequest = () => {
-        // const method = "GET"
         const url = endpoint;
-        // const image = 1;
-        // const full_content = 1;
+        
         const params = { ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY, image: 1, full_content: 1 }
-        // const params = { language:"en", ...entries, apikey: process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
-        // const headers = { 'apikey': process.env.NEXT_PUBLIC_NEWSDATA_API_KEY }
-        // const headers = { 'apikey': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY }
-        // const headers = { 'X-RapidAPI-Key': '16ecb1e169msh1f719a2c940b075p117e09jsn47e729518524',
-        // 'X-RapidAPI-Host': 'news-api14.p.rapidapi.com' }
-        // console.log(url, params, headers)
-        // return fetchSourcesOnRequests({ method, url, params, headers })
-        // console.log(url, params, "is it?!?!?!?")
+        
         return fetchSourcesOnRequests({ url, params })
     }
 
@@ -254,8 +133,7 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
             neutralizeVariablesAfterFetch()
             setTimeout(() => {
                 !data?.data?.results?.length && alert("found nothing!! try a different option maybe?! thanks :)")
-            }, 8000)
-            // console.log(data, "filterd|!!", data?.data?.results?.length)
+            }, 4500)
         },
         onError: (err) => {
             console.log(err, "ERRYERRR")
@@ -263,8 +141,6 @@ export const useFilteredDataFetching = (fetchData, entries, endpoint, neutralize
         cacheTime: 86400000,
         retryDelay: 4000
     })
-
-    // console.log(filteredFetchedData, "filterd OUTSIDE!!")
 
     return { filteredFetchedData, isLoading, isError, isSuccess }
 }
@@ -282,26 +158,21 @@ export const useForDefaultFetchingForSources = (urlStr, keys) => {
         queryKey: keys,
         queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/${urlStr}`),
         onSuccess: (data) => {
-            console.log(data, "!! default data!!")
+            // console.log(data, "!! default data!!")
         },
         refetchOnWindowFocus: false
     })
 
-    return { defaultFetchedData }
+    return { defaultFetchedData, isLoading, isError, isSuccess }
 }
 
 export const useForDefaultFetching = (urlStr, keys, routerQuery) => {
-    // console.log(urlStr, keys, "wtf!!")
     const { data: defaultFetchedData, isLoading, isError, isSuccess } = useQuery({
         queryKey: keys,
         enabled: !Object.keys(routerQuery).length,
-        // queryFn: () => fetchSourcesForDefault(`https://api.newscatcherapi.com/v2/${urlStr}`),
-        // queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&q=pizza`),
-        // queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/news?apikey=${process.env.NEXT_PUBLIC_NEWSDATA_API_KEY}&${urlStr}`),
         queryFn: () => fetchSourcesForDefault(`https://newsdata.io/api/1/${urlStr}`),
-        // enabled: false
         onSuccess: (data) => {
-            console.log(data, "!! default data!!")
+            // console.log(data, "!! default data!!")
         },
         refetchOnWindowFocus: false
     })

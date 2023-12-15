@@ -1,12 +1,10 @@
 import React from 'react'
-import { PaginationsButtons, RenderFiltersInUse } from '../shared/forDataRendering';
+import { RenderFiltersInUse } from '../shared/forDataRendering';
 import { useForContentRendering } from '@/hooks';
 import { useRouter } from 'next/router';
 
 export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
   const {sourcesParts, handleBackward, handleForward} = useForContentRendering(sources, null, 100)
-
-  console.log(sources, sourcesParts, "wht wht!!", filtersInUse)
 
   return (
     <section className='flex flex-col gap-y-5 mt-4'>
@@ -18,23 +16,14 @@ export const RenderAllNewsSources = ({ sources, filtersInUse }) => {
 }
 
 const RenderSources = ({ data }) => {
-  // const renderNames = () => data?.map(item => <li className='px-4 bg-gray-400 hover:bg-gray-600 py-2 h-fit rounded-sm' key={item}>{item}</li>)
-
   const router = useRouter()
 
   const handleClick = (url) => {
-    // const pathname = router.basePath
-    // const
-    // const token = url.split("https://")[1]
     const token = url.split(/https:\/\/|http:\/\//)[1]
     const wwwToken = token.split("www.")[1]
     const nextRound = wwwToken ? wwwToken.split("/")[0] : token.split("/")[0]
-    // console.log(wwwToken, "www")
 
     router.push(`/news?domainurl=${nextRound}`, undefined, { shallow: true })
-
-    // router.push(`/news?domainurl=nytimes.com`, undefined, { shallow: true })
-    // router.push()
   }
 
   const renderNames = () => data?.map(item => {
@@ -56,7 +45,6 @@ const RenderSources = ({ data }) => {
 
   return (
     <ul 
-      // className='flex gap-2 justify-start flex-wrap' 
       className='columns-1 md:columns-2 lg:columns-3 gap-4 px-2'
       style={{minHeight: "710px"}}
     >

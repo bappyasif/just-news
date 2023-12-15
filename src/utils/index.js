@@ -45,15 +45,10 @@ export const filterArticlesOfDuplicates = (arr) => {
     articles = arr?.filter((val, idx, self) => {
         return idx === self.findIndex(t => (t.title === val.title && t?.author?.toLowerCase() === val?.author?.toLowerCase()))
     })
-    // console.log(articles, "HERE")
+
     // return articles
     return removeArticlesContainingSummary(articles)
 }
-
-// export const fetchSourcesForDefault = (url) => fetch(
-//     url,
-//     { headers: { 'x-api-key': process.env.NEXT_PUBLIC_NEWSCATCHER_API_KEY } })
-//     .then(resp => resp.json()).then(d => d)
 
 export const fetchSourcesForDefault = (url) => fetch(
     url,
@@ -63,9 +58,6 @@ export const fetchSourcesForDefault = (url) => fetch(
 export const fetchSourcesOnRequests = (options) => newsApiRequestInterceptor(options).then(data => data)
 
 export const newsApiRequestInterceptor = async ({ ...options }) => {
-    // const client = axios.create({ baseURL: "https://news-api14.p.rapidapi.com" })
-
-    console.log(options, "newsapireqIntrceptor")
     const client = axios.create({ baseURL: "https://www.newsdata.io/api/1" })
     // const client = axios.create({ baseURL: "https://newsdata.io/api/1" })
 
@@ -75,16 +67,6 @@ export const newsApiRequestInterceptor = async ({ ...options }) => {
 
     return client(options).then(onSuccess).catch(onError)
 }
-
-// export const newsApiRequestInterceptor = async ({ ...options }) => {
-//     const client = axios.create({ baseURL: "https://api.newscatcherapi.com/v2" })
-
-//     const onSuccess = resp => resp
-
-//     const onError = err => err
-
-//     return client(options).then(onSuccess).catch(onError)
-// }
 
 export const sendHttpReuestToInternalApi = options => internalApiRequestInterceptor(options)
 
@@ -102,7 +84,6 @@ export const convertUserInputsDataFromServer = (dataset) => {
     let data = [];
     dataset?.forEach(item => {
         item.user_input = item.user_input[0]
-        // console.log(item.user_input[0])
         data.push(item)
     })
 
@@ -117,7 +98,6 @@ export const happensAfterHttpRequest = async (dataUpdater, options) => {
             } else if (resp.status >= 400) {
                 console.log("oops something is wrong!!")
             }
-            // console.log(resp)
             return resp
         }).catch(err => {
             console.log("error occured", err)
@@ -130,8 +110,6 @@ const afterFoundBadWord = (fidx, text, badWord) => {
     const after = text.substring(badWord.length + fidx)
     const bw = text.substring(fidx, badWord.length + fidx)
     const bwMids = bw[0] + text.substring(fidx + 1, badWord.length + fidx - 1).split('').map(v => '*').join('') + bw[bw.length - 1]
-    // const bwMids = text.substring(fidx+1, badWord.length+fidx - 1).split('').map(v => '*').join('')
-    // console.log(fidx, "FIUND", text, b4, bw, bwMids, after, str, b4 + bwMids + after)
 
     str = b4 + bwMids + after
     text = str
